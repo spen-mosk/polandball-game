@@ -38,31 +38,52 @@
 **
 ****************************************************************************/
 
-#ifndef GLWIDGET_H
-#define GLWIDGET_H
+#include "gamewidget.h"
 
-#include <QOpenGLWidget>
-#include "actor.h"
+
+#include <QPainter>
+#include <QTimer>
+#include <stdio.h>
+#include <vector>
 
 //! [0]
-
-class GLWidget : public QOpenGLWidget
+GameWidget::GameWidget(Actor * control, QWidget *parent)
+    : QOpenGameWidget(parent)
 {
-    Q_OBJECT
-
-public:
-    GLWidget(Actor * control, QWidget *parent);
-
-public slots:
-    void animate();
-    void movePlayer(int,int);
-
-protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-
-private:
-    Actor * player;
-};
+    setFixedSize(500, 500);
+    setAutoFillBackground(false);
+    player = control;
+}
 //! [0]
 
-#endif
+//! [1]
+void GameWidget::animate()
+{
+    update();
+}
+
+void GameWidget::movePlayer(int xoffset, int yoffset){
+    player->move(xoffset, yoffset);
+    printf("Slotted");
+    update();
+}
+
+
+//! [1]
+
+//! [2]
+void GameWidget::paintEvent(QPaintEvent *event)
+{
+    QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setBrush(QBrush(Qt::black));
+    painter.drawRect(0, 0, 5000, 5000);
+    const QBrush brush = QBrush(Qt::white, Qt::SolidPattern);
+    painter.setBrush(brush);
+    const QPoint center = *(player->getPosition());
+    painter.drawEllipse(center, 50, 50);
+    printf("CENTER %d, %d\n", center.x(), center.y());
+    painter.end();
+}
+//! [2]

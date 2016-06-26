@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "glwidget.h"
+#include "gamewidget.h"
 #include "widget.h"
 #include "window.h"
 
@@ -53,7 +53,7 @@ Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
     Actor * player = new Actor(0, 0);
-    GLWidget *openGL = new GLWidget(player, this);
+    GameWidget *openGL = new GameWidget(player, this);
     connect(this, SIGNAL(movement(int,int)), openGL, SLOT(movePlayer(int,int)));
     printf("WE Started");
 }
@@ -61,7 +61,8 @@ Window::Window()
 void Window::keyPressEvent(QKeyEvent * event){
     printf("KEY PRESSED");
     int key = event->key();
-    switch(key){
+    emit keyPress(key);
+    /*switch(key){
         case Qt::Key_Left:
             printf("LEFT PRESS\n");
             emit movement(-5, 0);
@@ -75,6 +76,6 @@ void Window::keyPressEvent(QKeyEvent * event){
         case Qt::Key_Down:
             emit movement(0, 5);
             break;
-    }
+    }*/
 }
 //! [0]

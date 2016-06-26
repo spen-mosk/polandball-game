@@ -38,23 +38,30 @@
 **
 ****************************************************************************/
 
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef GameWidget_H
+#define GameWidget_H
 
-
-#include <QWidget>
+#include <QOpenGameWidget>
+#include "actor.h"
 
 //! [0]
-class Window : public QWidget
+
+class GameWidget : public QOpenGameWidget
 {
     Q_OBJECT
 
 public:
-    Window();
-    void keyPressEvent(QKeyEvent *);
+    GameWidget(Actor * control, QWidget *parent);
 
-signals:
-    void keyPress(int);
+public slots:
+    void animate();
+    void movePlayer(int,int);
+
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
+private:
+    Actor * player;
 };
 //! [0]
 

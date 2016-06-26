@@ -38,17 +38,17 @@
 **
 ****************************************************************************/
 
-#include "glwidget.h"
+#include "gamewidget.h"
 
 
 #include <QPainter>
 #include <QTimer>
 #include <stdio.h>
-#include <vector>
+
 
 //! [0]
-GLWidget::GLWidget(Actor * control, QWidget *parent)
-    : QOpenGLWidget(parent)
+GameWidget::GameWidget(Actor * control, QWidget *parent)
+    : QOpenGameWidget(parent)
 {
     setFixedSize(500, 500);
     setAutoFillBackground(false);
@@ -57,12 +57,12 @@ GLWidget::GLWidget(Actor * control, QWidget *parent)
 //! [0]
 
 //! [1]
-void GLWidget::animate()
+void GameWidget::animate()
 {
     update();
 }
 
-void GLWidget::movePlayer(int xoffset, int yoffset){
+void GameWidget::movePlayer(int xoffset, int yoffset){
     player->move(xoffset, yoffset);
     printf("Slotted");
     update();
@@ -72,7 +72,7 @@ void GLWidget::movePlayer(int xoffset, int yoffset){
 //! [1]
 
 //! [2]
-void GLWidget::paintEvent(QPaintEvent *event)
+void GameWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter;
     painter.begin(this);
