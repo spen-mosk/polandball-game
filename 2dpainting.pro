@@ -7,7 +7,9 @@ HEADERS     = \
     level.h \
     gamewidget.h \
     gameobject.h \
-    player.h
+    player.h \
+    platform.h \
+    movingplatform.h
 SOURCES     = \
               main.cpp \
               window.cpp \
@@ -16,7 +18,9 @@ SOURCES     = \
     level.cpp \
     gamewidget.cpp \
     gameobject.cpp \
-    player.cpp
+    player.cpp \
+    platform.cpp \
+    movingplatform.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

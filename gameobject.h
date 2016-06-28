@@ -11,6 +11,8 @@ public:
     virtual void draw(QPainter *) = 0;
     int getX();
     int getY();
+    int getHeight();
+    int getWidth();
     void setX(int);
     void setY(int);
     int drawingX;
