@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include "gamewidget.h"
+#include "player.h"
 #include "widget.h"
 #include "window.h"
 
@@ -52,9 +53,9 @@
 Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
-    Actor * player = new Actor(0, 0);
+    Player * player = new Player(0, 0, 50, 10);
     GameWidget *openGL = new GameWidget(player, this);
-    connect(this, SIGNAL(movement(int,int)), openGL, SLOT(movePlayer(int,int)));
+    connect(this, SIGNAL(keyPress(int)), player, SLOT(handleInput(int)));
     printf("WE Started");
 }
 

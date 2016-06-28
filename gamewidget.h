@@ -41,12 +41,15 @@
 #ifndef GameWidget_H
 #define GameWidget_H
 
-#include <QOpenGameWidget>
+#include <QOpenGLWidget>
+#include <QTimer>
+#include <vector>
 #include "actor.h"
+#include "level.h"
 
 //! [0]
 
-class GameWidget : public QOpenGameWidget
+class GameWidget : public QOpenGLWidget
 {
     Q_OBJECT
 
@@ -55,14 +58,19 @@ public:
 
 public slots:
     void animate();
-    void movePlayer(int,int);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
     Actor * player;
+    int interval;
+    QTimer * timer;
+    Level * level;
+    std::vector<GameObject*> *toDraw;
+    Camera * camera;
 };
+
 //! [0]
 
 #endif

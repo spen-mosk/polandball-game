@@ -1,18 +1,25 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <vector>
+#include "actor.h"
+#include "gameobject.h"
+#include <QWidget>
+
 
 class Camera
 {
+
 public:
-    Camera();
-    snapshot(Actor * actor, Level * level);
+    Camera(int, double, QWidget *);
+    std::vector<GameObject*> * snapshot(GameObject *, std::vector<GameObject *>);
+
 
 private:
     int metersPerScreen;
     double pixPerMeter;
-    int screenSize;
-
+    int screenWidth;
+    int screenHeight;
 };
 
 #endif // CAMERA_H

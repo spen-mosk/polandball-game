@@ -44,30 +44,30 @@
 #include <QPainter>
 #include <QTimer>
 #include <stdio.h>
-
+#include <QOpenGLWidget>
+#include <vector>
 
 //! [0]
 GameWidget::GameWidget(Actor * control, QWidget *parent)
-    : QOpenGameWidget(parent)
+    : QOpenGLWidget(parent)
 {
     setFixedSize(500, 500);
     setAutoFillBackground(false);
     player = control;
+    timer = new QTimer(this);
+    interval = 22;
+    connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
 }
 //! [0]
 
 //! [1]
 void GameWidget::animate()
 {
+    level->update();
+    //TODO change player in this widget
+    toDraw = camera->snapshot(player, level->getObjects());
     update();
 }
-
-void GameWidget::movePlayer(int xoffset, int yoffset){
-    player->move(xoffset, yoffset);
-    printf("Slotted");
-    update();
-}
-
 
 //! [1]
 
@@ -79,11 +79,9 @@ void GameWidget::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setBrush(QBrush(Qt::black));
     painter.drawRect(0, 0, 5000, 5000);
-    const QBrush brush = QBrush(Qt::white, Qt::SolidPattern);
-    painter.setBrush(brush);
-    const QPoint center = *(player->getPosition());
-    painter.drawEllipse(center, 50, 50);
-    printf("CENTER %d, %d\n", center.x(), center.y());
+    for(std::vector<GameObject *>::iterator it = toDraw->begin(); it != toDraw->end(); ++it) {
+        (*it)->draw(&painter);
+    }
     painter.end();
 }
 //! [2]

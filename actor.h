@@ -3,20 +3,21 @@
 
 #include <QPoint>
 #include <QPainter>
+#include "gameobject.h"
 
-class Actor
+class Actor : public GameObject
 {
 public:
-    Actor();
     Actor(int, int, int);
     QPoint * getPosition();
     bool contains(QPoint * point);
-    void move(int,int);
-    void draw(QPainter * painter);
+    void updateLocation(int,int);
+    virtual void update() = 0;
+    int getRadius();
 
 private:
-    int xPos;
-    int yPos;
+    int xMove;
+    int yMove;
     int radius;
 };
 

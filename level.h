@@ -1,17 +1,22 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 #include <vector>
-#include <actor.h>
-#include <camera.h>
+#include "actor.h"
+#include "camera.h"
 
 class Level
 {
+
 public:
     Level();
-    Level(double, Camera);
+    void update();
+    std::vector<GameObject *> getObjects();
+
 private:
-    vector<Actor *> actors;
-    double gravity;
+    std::vector<GameObject *> objects;
+    //this is stupid, change to double later
+    int gravity;
+
 };
 
 #endif // LEVEL_H

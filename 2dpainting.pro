@@ -6,7 +6,8 @@ HEADERS     = \
     camera.h \
     level.h \
     gamewidget.h \
-    inputhandler.h
+    gameobject.h \
+    player.h
 SOURCES     = \
               main.cpp \
               window.cpp \
@@ -14,7 +15,8 @@ SOURCES     = \
     camera.cpp \
     level.cpp \
     gamewidget.cpp \
-    inputhandler.cpp
+    gameobject.cpp \
+    player.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

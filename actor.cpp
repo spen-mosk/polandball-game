@@ -1,24 +1,16 @@
 #include "actor.h"
 #include <stdio.h>
 
-Actor::Actor()
-{
-    xPos = 0;
-    yPos = 0;
+Actor::Actor(int a, int b, int radius)
+    :GameObject(a, b, radius, radius){
+    this->radius = radius;
 }
 
-Actor::Actor(int a, int b){
-    xPos = a;
-    yPos = b;
+void Actor::updateLocation(int xOffset, int yOffset){
+    xMove += xOffset;
+    yMove += yOffset;
 }
 
-QPoint * Actor::getPosition(){
-    QPoint * point = new QPoint(xPos, yPos);
-    printf("QPOINT: %d, %d", point->x(), point->y());
-    return point;
-}
-
-void Actor::move(int xOffset, int yOffset){
-    xPos += xOffset;
-    yPos += yOffset;
+int Actor::getRadius(){
+    return this->radius;
 }
