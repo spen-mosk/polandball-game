@@ -16,6 +16,7 @@ public:
 
 public slots:
     void handleInput(int);
+    void handleRelease(int);
 
 private:
     QSet<int> * keySet;

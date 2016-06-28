@@ -3,12 +3,13 @@
 #include <vector>
 #include "actor.h"
 #include "camera.h"
+#include "player.h"
 
 class Level
 {
 
 public:
-    Level();
+    Level(Player *);
     void update();
     std::vector<GameObject *> getObjects();
 

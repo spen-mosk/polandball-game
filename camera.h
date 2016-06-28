@@ -11,7 +11,7 @@ class Camera
 {
 
 public:
-    Camera(int, double, QWidget *);
+    Camera(int, QWidget *);
     std::vector<GameObject*> * snapshot(GameObject *, std::vector<GameObject *>);
 
 

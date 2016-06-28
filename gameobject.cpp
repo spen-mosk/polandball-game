@@ -1,4 +1,5 @@
 #include "gameobject.h"
+#include <stdio.h>
 
 GameObject::GameObject(int x, int y, int h, int w)
 {
@@ -11,6 +12,12 @@ GameObject::GameObject(int x, int y, int h, int w)
 int GameObject::getX(){
     return xPos;
 }
+
+QPoint * GameObject::getDrawingPosition(){
+    QPoint * point = new QPoint(drawingX, drawingY);
+    return point;
+}
+
 
 int GameObject::getY(){
     return yPos;

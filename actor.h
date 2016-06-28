@@ -12,8 +12,8 @@ public:
     QPoint * getPosition();
     bool contains(QPoint * point);
     void updateLocation(int,int);
-    virtual void update() = 0;
     int getRadius();
+    int drawingRadius;
 
 private:
     int xMove;

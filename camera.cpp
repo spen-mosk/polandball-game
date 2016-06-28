@@ -1,13 +1,13 @@
 #include "camera.h"
 #include <QSize>
 
-Camera::Camera(int meters, double pix, QWidget * parent)
+Camera::Camera(int meters, QWidget * parent)
 {
     metersPerScreen = meters;
-    pixPerMeter = pix;
     QSize size = parent->frameSize();
     screenWidth = size.width();
     screenHeight = size.height();
+    pixPerMeter = screenWidth / meters;
 }
 
 std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<GameObject *> actors){
@@ -18,7 +18,7 @@ std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<Ga
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
-        if(current->getX() > leftX && current->getY() < rightX){
+        if(current->getX() > leftX && current->getX() < rightX){
             if(current->getY() < topY && current->getY() > bottomY){
                 //convert
                 //add to a list somehow
@@ -32,5 +32,8 @@ std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<Ga
             }
         }
     }
+    center->drawingX = screenWidth / 2;
+    center->drawingY = screenHeight / 2;
+    toDraw->push_back(center);
     return toDraw;
 }

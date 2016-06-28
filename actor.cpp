@@ -7,8 +7,8 @@ Actor::Actor(int a, int b, int radius)
 }
 
 void Actor::updateLocation(int xOffset, int yOffset){
-    xMove += xOffset;
-    yMove += yOffset;
+    setX(this->getX() + xOffset);
+    setY(this->getY() + yOffset);
 }
 
 int Actor::getRadius(){

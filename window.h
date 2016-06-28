@@ -52,9 +52,11 @@ class Window : public QWidget
 public:
     Window();
     void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
 
 signals:
     void keyPress(int);
+    void keyRelease(int);
 };
 //! [0]
 

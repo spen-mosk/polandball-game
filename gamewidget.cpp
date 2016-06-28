@@ -55,8 +55,11 @@ GameWidget::GameWidget(Player * control, QWidget *parent)
     setAutoFillBackground(false);
     player = control;
     timer = new QTimer(this);
+    level = new Level(player);
+    camera = new Camera(20, this);
     interval = 22;
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
+    timer->start();
 }
 //! [0]
 
@@ -65,7 +68,7 @@ void GameWidget::animate()
 {
     level->update();
     //TODO change player in this widget
-    toDraw = camera->snapshot(player, level->getObjects());
+    toDraw = *camera->snapshot(player, level->getObjects());
     update();
 }
 
@@ -79,8 +82,8 @@ void GameWidget::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setBrush(QBrush(Qt::black));
     painter.drawRect(0, 0, 5000, 5000);
-    for(std::vector<GameObject *>::iterator it = toDraw->begin(); it != toDraw->end(); ++it) {
-        (*it)->draw(&painter);
+    for(int i = 0; i < toDraw.size(); i++) {
+        toDraw[i]->draw(&painter);
     }
     painter.end();
 }

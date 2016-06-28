@@ -64,11 +64,11 @@ protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    Actor * player;
+    Player * player;
     int interval;
     QTimer * timer;
     Level * level;
-    std::vector<GameObject*> *toDraw;
+    std::vector<GameObject*> toDraw;
     Camera * camera;
 };
 
