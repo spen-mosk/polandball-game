@@ -46,6 +46,7 @@
 #include <vector>
 #include "actor.h"
 #include "level.h"
+#include "player.h"
 
 //! [0]
 
