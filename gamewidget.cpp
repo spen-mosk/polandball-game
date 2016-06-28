@@ -48,7 +48,7 @@
 #include <vector>
 
 //! [0]
-GameWidget::GameWidget(Actor * control, QWidget *parent)
+GameWidget::GameWidget(Player * control, QWidget *parent)
     : QOpenGLWidget(parent)
 {
     setFixedSize(500, 500);

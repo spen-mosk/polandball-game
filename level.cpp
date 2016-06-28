@@ -11,6 +11,8 @@ std::vector<GameObject *> Level::getObjects(){
 }
 
 void Level::update(){
-    //do stuff
+    /*DO:
+     * Update all actors
+     */
 
 }
