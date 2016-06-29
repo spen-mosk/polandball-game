@@ -12,6 +12,8 @@ public:
     virtual void update() = 0;
     int getX();
     int getY();
+    int getHeight();
+    int getWidth();
     void setX(int);
     void setY(int);
     int drawingX;

@@ -23,6 +23,14 @@ int GameObject::getY(){
     return yPos;
 }
 
+int GameObject::getHeight(){
+    return height;
+}
+
+int GameObject::getWidth(){
+    return width;
+}
+
 void GameObject::setX(int newX){
     xPos = newX;
 }
