@@ -1,19 +1,12 @@
 #include <platform.h>
 
-Platform::Platform(int x, int y, int h, int w, int platT, bool breaky) : GameObject(x, y, h, w){
-    this->breakable = breaky;
-    this->platType = platT;
-}
-
-int Platform::getPlatType(){
-    return platType;
-}
-
-bool Platform::isBreakable(){
-    return breakable;
+Platform::Platform(int x, int y, int h, int w) : GameObject(x, y, h, w){
 }
 
 void Platform::draw(QPainter * painter){
-    painter->setBrush(Qt::black);
-    painter->drawRect((GameObject::getX()), (GameObject::getY()),(GameObject::getHeight()), (GameObject::getWidth()));
+    painter->setBrush(Qt::white);
+    QPoint *point = getDrawingPosition();
+    painter->drawRect(point->x(), point->y(), GameObject::getHeight(), GameObject::getWidth());
 }
+
+void Platform::update(){}

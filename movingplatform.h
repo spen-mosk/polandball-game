@@ -6,8 +6,9 @@ class MovingPlatform : public Platform
 {
 
 public:
-    MovingPlatform(int, int, int, int, int, bool, int, int);
+    MovingPlatform(int, int, int, int, int, int);
     void updateLocation();
+    virtual void update() override;
 
 private:
     int xSpeed;

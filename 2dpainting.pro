@@ -9,7 +9,9 @@ HEADERS     = \
     gameobject.h \
     player.h \
     platform.h \
-    movingplatform.h
+    movingplatform.h \
+    surfacedecorator.h \
+    oncontactdecorator.h
 SOURCES     = \
               main.cpp \
               window.cpp \
@@ -20,7 +22,9 @@ SOURCES     = \
     gameobject.cpp \
     player.cpp \
     platform.cpp \
-    movingplatform.cpp
+    movingplatform.cpp \
+    surfacedecorator.cpp \
+    oncontactdecorator.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting
