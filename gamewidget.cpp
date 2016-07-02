@@ -51,7 +51,7 @@
 GameWidget::GameWidget(Player * control, QWidget *parent)
     : QOpenGLWidget(parent)
 {
-    setFixedSize(500, 500);
+    setFixedSize(1376, 764);
     setAutoFillBackground(false);
     player = control;
     timer = new QTimer(this);
