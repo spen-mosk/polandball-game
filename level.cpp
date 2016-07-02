@@ -56,13 +56,25 @@ void Level::update(){
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
         bool applyGrav = true;
-        for (int b = 0; b < plats.size(); i++){
-            if(actors[i]->getY() == plats[i]->getY() + actors[i]->getRadius() && (actors[i]->getX() >= plats[i]->getX() && actors[i]->getX() <= plats[i]->getX() + plats[i]->getWidth())){
+        for (int b = 0; b < plats.size(); b++){
+            if(actors[i]->getY() == plats[b]->getY() + actors[i]->getRadius() && (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
                 applyGrav = false;
+                break;
             }
         }
         if (applyGrav){
             actors[i]->Actor::updateLocation(0,gravity);
+        }
+    }
+}
+
+void Level::ActorPlatformCollisions(){
+    Platform plat;
+    for(int i = 0; i < actors.size(); i++){
+        for (int b = 0; b < plats.size(); b++){
+            if((actors[i]->getY() > plats[b]->getY() && actors[i]->getY < plats[b]->getY() + plats[b]->getHeight())){
+                plat = plats[b];
+            }
         }
     }
 }

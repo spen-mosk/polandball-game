@@ -4,6 +4,7 @@
 #include <QPoint>
 #include <QPainter>
 #include "GameObjects/gameobject.h"
+#include <vector>
 
 class Actor : public GameObject
 {
@@ -14,11 +15,13 @@ public:
     void updateLocation(int,int);
     int getRadius();
     int drawingRadius;
+    std::vector<int> getPreviousLocation();
 
 private:
     int xMove;
     int yMove;
     int radius;
+    std::vector<int> previousLocation;
 };
 
 #endif // ACTOR_H
