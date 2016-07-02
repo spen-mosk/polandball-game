@@ -1,8 +1,8 @@
 #include "level.h"
-#include "gameobject.h"
-#include "actor.h"
-#include "platform.h"
-#include "player.h"
+#include "GameObjects/gameobject.h"
+#include "GameObjects/Actors/actor.h"
+#include "GameObjects/Platforms/platform.h"
+#include "GameObjects/Actors/player.h"
 #include <vector>
 
 Level::Level(Player * player)

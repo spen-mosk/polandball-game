@@ -38,40 +38,51 @@
 **
 ****************************************************************************/
 
-#ifndef GameWidget_H
-#define GameWidget_H
+#include "gamewidget.h"
+#include "GameObjects/Actors/player.h"
+#include "window.h"
 
-#include <QOpenGLWidget>
+#include <QGridLayout>
+#include <QLabel>
 #include <QTimer>
-#include <vector>
-#include "actor.h"
-#include "level.h"
-#include "player.h"
+#include <stdio.h>
+#include <QKeyEvent>
 
 //! [0]
-
-class GameWidget : public QOpenGLWidget
+Window::Window()
 {
-    Q_OBJECT
+    setWindowTitle(tr("Polandball Game"));
+    Player * player = new Player(0, 0, 50, 1);
+    GameWidget *openGL = new GameWidget(player, this);
+    connect(this, SIGNAL(keyPress(int)), player, SLOT(handleInput(int)));
+    connect(this, SIGNAL(keyRelease(int)), player, (SLOT(handleRelease(int))));
+    printf("WE Started");
+}
 
-public:
-    GameWidget(Player *control, QWidget *parent);
+void Window::keyPressEvent(QKeyEvent * event){
+    printf("KEY PRESSED\n");
+    int key = event->key();
+    emit keyPress(key);
+    /*switch(key){
+        case Qt::Key_Left:
+            printf("LEFT PRESS\n");
+            emit movement(-5, 0);
+            break;
+        case Qt::Key_Right:
+            emit movement(5, 0);
+            break;
+        case Qt::Key_Up:
+            emit movement(0, -5);
+            break;
+        case Qt::Key_Down:
+            emit movement(0, 5);
+            break;
+    }*/
+}
 
-public slots:
-    void animate();
-
-protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-
-private:
-    Player * player;
-    int interval;
-    QTimer * timer;
-    Level * level;
-    std::vector<GameObject*> toDraw;
-    Camera * camera;
-};
+void Window::keyReleaseEvent(QKeyEvent *event){
+    int key = event->key();
+    emit keyRelease(key);
+}
 
 //! [0]
-
-#endif

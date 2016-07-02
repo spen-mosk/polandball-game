@@ -3,7 +3,7 @@
 
 #include <QPoint>
 #include <QPainter>
-#include "gameobject.h"
+#include "GameObjects/gameobject.h"
 
 class Actor : public GameObject
 {

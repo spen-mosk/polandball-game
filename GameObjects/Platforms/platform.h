@@ -1,7 +1,7 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
-#include "gameobject.h"
-#include "actor.h"
+#include "GameObjects/gameobject.h"
+#include "GameObjects/Actors/actor.h"
 
 class Platform : public GameObject
 {

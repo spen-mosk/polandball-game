@@ -2,8 +2,8 @@
 #define CAMERA_H
 
 #include <vector>
-#include "actor.h"
-#include "gameobject.h"
+#include "GameObjects/Actors/actor.h"
+#include "GameObjects/gameobject.h"
 #include <QWidget>
 
 

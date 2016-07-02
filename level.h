@@ -1,10 +1,10 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 #include <vector>
-#include "actor.h"
-#include "camera.h"
-#include "platform.h"
-#include "player.h"
+#include "GameObjects/Actors/actor.h"
+#include "Graphics/camera.h"
+#include "GameObjects/Platforms/platform.h"
+#include "GameObjects/Actors/player.h"
 
 class Level
 {

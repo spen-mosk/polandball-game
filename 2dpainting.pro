@@ -1,30 +1,30 @@
 QT          += widgets
 
 HEADERS     = \
-              window.h \
-    actor.h \
+              Graphics/window.h \
+    GameObjects/Actors/actor.h \
     camera.h \
     level.h \
-    gamewidget.h \
-    gameobject.h \
-    player.h \
-    platform.h \
-    movingplatform.h \
-    surfacedecorator.h \
-    oncontactdecorator.h
+    Graphics/gamewidget.h \
+    GameObjects/gameobject.h \
+    GameObjects/Actors/player.h \
+    GameObjects/Platforms/platform.h \
+    GameObjects/Platforms/movingplatform.h \
+    GameObjects/Platforms/surfacedecorator.h \
+    GameObjects/Platforms/oncontactdecorator.h
 SOURCES     = \
               main.cpp \
-              window.cpp \
-    actor.cpp \
-    camera.cpp \
+              Graphics/window.cpp \
+    GameObjects/Actors/actor.cpp \
+    Graphics/camera.cpp \
     level.cpp \
-    gamewidget.cpp \
-    gameobject.cpp \
-    player.cpp \
-    platform.cpp \
-    movingplatform.cpp \
-    surfacedecorator.cpp \
-    oncontactdecorator.cpp
+    Graphics/gamewidget.cpp \
+    GameObjects/gameobject.cpp \
+    GameObjects/Actors/player.cpp \
+    GameObjects/Platforms/platform.cpp \
+    GameObjects/Platforms/movingplatform.cpp \
+    GameObjects/Platforms/surfacedecorator.cpp \
+    GameObjects/Platforms/oncontactdecorator.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

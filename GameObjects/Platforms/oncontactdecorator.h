@@ -8,13 +8,13 @@
 class OnContactDecorator : public Platform
 {
 public:
-    OnContactDecorator(SurfaceDecortator);
+    OnContactDecorator(SurfaceDecorator *, int, int, int, int);
     virtual void onContact(Actor *) override;
     virtual void surfaceEffect(Actor *) override;
 
 
 private:
-    SurfaceDecorator decorator;
+    SurfaceDecorator *decorator;
 };
 
 #endif // ONCONTACTDECORATOR_H
