@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "window.h"
+#include "Graphics/window.h"
 
 #include <QApplication>
 #include <QSurfaceFormat>

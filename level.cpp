@@ -8,7 +8,7 @@
 Level::Level(Player * player)
 {
     objects.push_back(player);
-    Player * test = new Player(5, 0, 20, 20);
+    Player * test = new Player(5, 0, 3, 3);
     objects.push_back(test);
     this->gravity = -5;
     for(int i = 0; i < objects.size(); i++){

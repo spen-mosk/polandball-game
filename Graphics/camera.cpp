@@ -28,6 +28,10 @@ std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<Ga
                 double yPixels = yDisplacement * pixPerMeter;
                 current->drawingX = xPixels;
                 current->drawingY = yPixels;
+                double heightPixels = current->getHeight() * pixPerMeter;
+                double widthPixels = current->getWidth() * pixPerMeter;
+                current->drawingWidth = widthPixels;
+                current->drawingHeight = heightPixels;
                 toDraw->push_back(current);
             }
         }

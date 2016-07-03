@@ -18,6 +18,8 @@ public:
     void setY(int);
     int drawingX;
     int drawingY;
+    int drawingWidth;
+    int drawingHeight;
     QPoint * getDrawingPosition();
     QPoint * getPosition();
 
