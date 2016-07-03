@@ -1,6 +1,6 @@
 #ifndef MOVINGPLATFORM_H
 #define MOVINGPLATFORM_H
-#include <platform.h>
+#include <GameObjects/Platforms/platform.h>
 
 class MovingPlatform : public Platform
 {

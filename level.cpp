@@ -56,9 +56,10 @@ void Level::update(){
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
         bool applyGrav = true;
-        for (int b = 0; b < plats.size(); i++){
-            if(actors[i]->getY() == plats[i]->getY() + actors[i]->getRadius() && (actors[i]->getX() >= plats[i]->getX() && actors[i]->getX() <= plats[i]->getX() + plats[i]->getWidth())){
+        for (int b = 0; b < plats.size(); b++){
+            if(actors[i]->getY() + actors[i]->getRadius() == plats[b]->getY()&& (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
                 applyGrav = false;
+                break;
             }
         }
         if (applyGrav){
@@ -66,3 +67,26 @@ void Level::applyGravity(){
         }
     }
 }
+
+void Level::ActorPlatformCollisions(){
+      for(int i = 0; i < actors.size(); i++){
+        for (int b = 0; b < plats.size(); b++){
+            if((actors[i]->GameObject::getY() + actors[i]->getRadius() > plats[b]->GameObject::getY() && actors[i]->GameObject::getY()+ actors[i]->getRadius() < plats[b]->GameObject::getY() + plats[b]->getHeight()) && (actors[i]->getX()>= plats[b]->getX() && actors[i]->getX()<= plats[b]->getX() + plats[b]->getWidth())){
+                Platform* plat = plats[b];
+                if(actors[i]->getPreviousLocation()[1] - actors[i]->getRadius()> plat->getY() + plat->getHeight()){
+                    actors[i]->setY(plat->GameObject::getY() + plat->GameObject::getHeight() + actors[i]->getRadius());
+                }
+                if(actors[i]->getPreviousLocation()[1] + actors[i]->getRadius() < plat->getY()){
+                    actors[i]->setY(plat->GameObject::getY() - actors[i]->getRadius());
+                }
+                if(actors[i]->getPreviousLocation()[0] + actors[i]->getRadius() < plat->getX()){
+                    actors[i]->setX(plat->GameObject::getX() - actors[i]->getRadius());
+                }
+                if(actors[i]->getPreviousLocation()[0] - actors[i]->getRadius() > plat->getX()){
+                    actors[i]->setX(plat->GameObject::getX() + actors[i]->getRadius());
+                }
+            }
+        }
+        }
+    }
+

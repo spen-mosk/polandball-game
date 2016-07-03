@@ -14,6 +14,7 @@ public:
     Level(Player *, std::vector<GameObject *>);
     void update();
     void applyGravity();
+    void ActorPlatformCollisions();
     std::vector<GameObject *> getObjects();
 
 private:
