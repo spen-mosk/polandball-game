@@ -74,7 +74,8 @@ void Level::applyGravity(){
 void Level::ActorPlatformCollisions(){
       for(int i = 0; i < actors.size(); i++){
         for (int b = 0; b < plats.size(); b++){
-            if((actors[i]->GameObject::getY() + actors[i]->getRadius() > plats[b]->GameObject::getY() && actors[i]->GameObject::getY()+ actors[i]->getRadius() < plats[b]->GameObject::getY() + plats[b]->getHeight()) && (actors[i]->getX()>= plats[b]->getX() && actors[i]->getX()<= plats[b]->getX() + plats[b]->getWidth())){
+            QPoint * center = actors[i]->getCenter();
+            if((center->y() + actors[i]->getRadius() > plats[b]->GameObject::getY() && center->y()+ actors[i]->getRadius() < plats[b]->GameObject::getY() + plats[b]->getHeight()) && (center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth())){
                 Platform* plat = plats[b];
                 if(actors[i]->getPreviousLocation()[1] - actors[i]->getRadius()> plat->getY() + plat->getHeight()){
                     actors[i]->setY(plat->GameObject::getY() + plat->GameObject::getHeight() + actors[i]->getRadius());
