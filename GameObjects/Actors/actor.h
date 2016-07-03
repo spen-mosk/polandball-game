@@ -14,7 +14,6 @@ public:
     bool contains(QPoint * point);
     void updateLocation(int,int);
     int getRadius();
-    int drawingRadius;
     std::vector<int> getPreviousLocation();
 
 private:
