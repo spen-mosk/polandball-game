@@ -74,7 +74,8 @@ void Level::ActorPlatformCollisions(){
       for(int i = 0; i < actors.size(); i++){
         for (int b = 0; b < plats.size(); b++){
             QPoint * center = actors[i]->getCenter();
-            if((center->y() - actors[i]->getRadius() < plats[b]->GameObject::getY() && center->y()- actors[i]->getRadius() > plats[b]->GameObject::getY() - plats[b]->getHeight()) && (center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth())){
+            if((center->y() - actors[i]->getRadius() < plats[b]->GameObject::getY() && center->y()- actors[i]->getRadius() > plats[b]->GameObject::getY() - plats[b]->getHeight())
+                && (center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth())){
                 printf("WE HAVE A COLLISION");
                 Platform* plat = plats[b];
                 if(actors[i]->getPreviousLocation()[1] + actors[i]->getRadius()< plat->getY() - plat->getHeight()){
