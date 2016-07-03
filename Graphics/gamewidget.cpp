@@ -55,7 +55,11 @@ GameWidget::GameWidget(Player * control, QWidget *parent)
     setAutoFillBackground(false);
     player = control;
     timer = new QTimer(this);
-    level = new Level(player);
+    std::vector<GameObject*> testingitems;
+    testingitems.push_back(new Platform(0,0,20,20));
+    testingitems.push_back(new Platform(-100,100,100,100));
+    testingitems.push_back(new Platform(100,100,100,100));
+    level = new Level(player,testingitems);
     camera = new Camera(20, this);
     interval = 22;
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
