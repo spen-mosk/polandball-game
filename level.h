@@ -22,6 +22,7 @@ private:
     std::vector<Actor *> actors;
     std::vector<Platform *> plats;
     //this is stupid, change to double later
+    void checkCollisions();
     int gravity;
 
 };

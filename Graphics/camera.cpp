@@ -12,9 +12,9 @@ Camera::Camera(int meters, QWidget * parent)
 
 std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<GameObject *> actors){
     int leftX = center->getX() - (metersPerScreen / 2);
-    int bottomY = center->getY() - (metersPerScreen / 2);
     int rightX = center->getX() + (metersPerScreen / 2);
-    int topY = center->getY() + (metersPerScreen / 2);
+    int bottomY = center->getY() - ((screenHeight / pixPerMeter) / 2);
+    int topY = center->getY() + ((screenHeight / pixPerMeter) / 2);
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
