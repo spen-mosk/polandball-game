@@ -8,7 +8,7 @@
 Level::Level(Player * player)
 {
     objects.push_back(player);
-    Player * test = new Player(5, 0, 3, 3);
+    Player * test = new Player(20, 0, 3, 3);
     objects.push_back(test);
     this->gravity = -5;
     for(int i = 0; i < objects.size(); i++){
@@ -53,7 +53,6 @@ void Level::update(){
     }
     //this->applyGravity();
     this->ActorPlatformCollisions();
-
 }
 
 void Level::applyGravity(){
@@ -75,19 +74,24 @@ void Level::ActorPlatformCollisions(){
       for(int i = 0; i < actors.size(); i++){
         for (int b = 0; b < plats.size(); b++){
             QPoint * center = actors[i]->getCenter();
-            if((center->y() + actors[i]->getRadius() > plats[b]->GameObject::getY() && center->y()+ actors[i]->getRadius() < plats[b]->GameObject::getY() + plats[b]->getHeight()) && (center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth())){
+            if((center->y() - actors[i]->getRadius() < plats[b]->GameObject::getY() && center->y()- actors[i]->getRadius() > plats[b]->GameObject::getY() - plats[b]->getHeight()) && (center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth())){
+                printf("WE HAVE A COLLISION");
                 Platform* plat = plats[b];
-                if(actors[i]->getPreviousLocation()[1] - actors[i]->getRadius()> plat->getY() + plat->getHeight()){
-                    actors[i]->setY(plat->GameObject::getY() + plat->GameObject::getHeight() + actors[i]->getRadius());
+                if(actors[i]->getPreviousLocation()[1] + actors[i]->getRadius()< plat->getY() - plat->getHeight()){
+                    int offsetY = plat->GameObject::getY() + plat->GameObject::getHeight() + actors[i]->getRadius() - center->y();
+                    actors[i]->updateLocation(0, offsetY);
                 }
-                if(actors[i]->getPreviousLocation()[1] + actors[i]->getRadius() < plat->getY()){
-                    actors[i]->setY(plat->GameObject::getY() - actors[i]->getRadius());
+                if(actors[i]->getPreviousLocation()[1] - actors[i]->getRadius() > plat->getY()){
+                    int offsetY = plat->GameObject::getY() + actors[i]->getRadius() - center->y() ;
+                    actors[i]->updateLocation(0, offsetY);
                 }
                 if(actors[i]->getPreviousLocation()[0] + actors[i]->getRadius() < plat->getX()){
-                    actors[i]->setX(plat->GameObject::getX() - actors[i]->getRadius());
+                    int offsetX = plat->GameObject::getX() - actors[i]->getRadius() - center->x();
+                    actors[i]->updateLocation(offsetX, 0);
                 }
                 if(actors[i]->getPreviousLocation()[0] - actors[i]->getRadius() > plat->getX()){
-                    actors[i]->setX(plat->GameObject::getX() + actors[i]->getRadius());
+                    int offsetX = plat->GameObject::getX() + actors[i]->getRadius() - center->x();
+                    actors[i]->updateLocation(offsetX, 0);
                 }
             }
         }
