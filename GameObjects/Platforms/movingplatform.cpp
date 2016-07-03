@@ -1,4 +1,4 @@
-#include <movingplatform.h>
+#include <GameObjects/Platforms/movingplatform.h>
 
 MovingPlatform::MovingPlatform(int x, int y, int h, int w, int xs, int ys) : Platform(x,y,h,w){
     this->xSpeed = xs;

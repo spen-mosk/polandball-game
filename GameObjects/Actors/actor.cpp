@@ -10,10 +10,10 @@ Actor::Actor(int a, int b, int radius)
 }
 
 void Actor::updateLocation(int xOffset, int yOffset){
-    temp = std::vector<int>;
+    std::vector<int> temp;
     temp.push_back(this->getX());
     temp.push_back(this->getY());
-    previousLocation = std::vector<int>;
+    previousLocation = temp;
     setX(this->getX() + xOffset);
     setY(this->getY() + yOffset);
 }
@@ -22,7 +22,7 @@ int Actor::getRadius(){
     return this->radius;
 }
 
-std::vector Actor::getPreviousLocation(){
+std::vector<int> Actor::getPreviousLocation(){
     return previousLocation;
 }
 
