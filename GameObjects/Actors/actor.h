@@ -13,6 +13,7 @@ public:
     Actor(int, int, int);
     QPoint * getPosition();
     bool contains(QPoint * point);
+    QPoint * getCenter();
     void updateLocation(int,int);
     int getRadius();
     std::vector<int> getPreviousLocation();

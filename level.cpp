@@ -51,7 +51,7 @@ void Level::update(){
     for(int i = 0; i < objects.size(); i++){
         objects[i]->update();
     }
-    this->applyGravity();
+    //this->applyGravity();
     this->ActorPlatformCollisions();
 
 }

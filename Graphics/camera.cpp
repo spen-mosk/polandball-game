@@ -18,8 +18,8 @@ std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<Ga
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
-        if(current->getX() > leftX && current->getX() < rightX){
-            if(current->getY() < topY && current->getY() > bottomY){
+        if(current->getX() + current->getWidth() > leftX && current->getX() < rightX){
+            if(current->getY() - current->getHeight() < topY && current->getY() > bottomY){
                 //convert
                 //add to a list somehow
                 int xDisplacement = current->getX() - leftX;
@@ -38,6 +38,8 @@ std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<Ga
     }
     center->drawingX = screenWidth / 2;
     center->drawingY = screenHeight / 2;
+    center->drawingHeight = center->getHeight() * pixPerMeter;
+    center->drawingWidth = center->getWidth() * pixPerMeter;
     toDraw->push_back(center);
     return toDraw;
 }

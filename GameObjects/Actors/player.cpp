@@ -33,5 +33,5 @@ void Player::update(){
 
 void Player::draw(QPainter * painter){
     painter->setBrush(Qt::blue);
-    painter->drawEllipse(*(GameObject::getDrawingPosition()), drawingHeight, drawingWidth);
+    painter->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
 }
