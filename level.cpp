@@ -70,26 +70,26 @@ void Level::checkCollisions(){
             int platRight = plat->getX() + plat->getWidth();
             int platTop = plat->getY();
             int platBottom = plat->getY() - plat->getHeight();
-            if(actorLeft >= platLeft && actorLeft <= platRight
-                    && p->y() <= platTop && p->y() >= platBottom){
+            if(actorLeft > platLeft && actorLeft < platRight
+                    && p->y() < platTop && p->y() > platBottom){
                 printf("Collision from the right\n");
                 int offsetX = plat->getX() + plat->getWidth() - actorLeft;
                 actor->updateLocation(offsetX,0);
             }
-            else if(actorRight >= platRight && actorRight <= platRight
-                    && p->y() <= platTop && p->y() >= platBottom){
+            else if(actorRight > platRight && actorRight < platRight
+                    && p->y() < platTop && p->y() > platBottom){
                 int offsetX = actorRight - plat->getX() + plat->getWidth();
                 actor->updateLocation(-offsetX,0);
                 printf("Collision from the left\n");
             }
-            else if(actorTop <= platTop && actorTop >= platBottom
-                    && p->x() <= platRight && p->x() >= platLeft){
+            else if(actorTop < platTop && actorTop > platBottom
+                    && p->x() < platRight && p->x() > platLeft){
                 int offsetY = actorTop - plat->getY() - plat->getHeight();
                 actor->updateLocation(0, -offsetY);
                 printf("Collision from the bottom\n");
             }
-            else if(actorBottom <= platTop && actorBottom >= platBottom
-                    && p->x() <= platRight && p->x() >= platLeft){
+            else if(actorBottom < platTop && actorBottom > platBottom
+                    && p->x() < platRight && p->x() > platLeft){
                 int offsetY = plat->getY() - actorBottom;
                 actor->updateLocation(0, offsetY);
                 printf("Collision from the top\n");
