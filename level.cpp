@@ -62,6 +62,7 @@ void Level::checkCollisions(){
             Actor * actor = actors[i];
             Platform * plat = plats[b];
             QPoint * p = actor->getCenter();
+            printf("actorRadius: %d, actorX: %d, actorY: %d\n",actor->getRadius(), p->x(), p->y());
             int actorLeft = p->x() - actor->getRadius();
             int actorRight = p->x() + actor->getRadius();
             int actorTop = p->y() + actor->getRadius();
@@ -70,6 +71,7 @@ void Level::checkCollisions(){
             int platRight = plat->getX() + plat->getWidth();
             int platTop = plat->getY();
             int platBottom = plat->getY() - plat->getHeight();
+            printf("actorTop: %d, actorBottom: %d, actorLeft: %d, actorRight %d\n", actorTop, actorBottom, actorLeft, actorRight);
             if(actorLeft > platLeft && actorLeft < platRight
                     && p->y() < platTop && p->y() > platBottom){
                 printf("Collision from the right\n");
