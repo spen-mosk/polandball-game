@@ -28,7 +28,7 @@ void Player::update(){
     if(keySet->contains(Qt::Key_Down)){
         this->updateLocation(0, -speed);
     }
-    printf("pos: %d, %d\n", this->getX(), this->getY());
+    //printf("pos: %d, %d\n", this->getX(), this->getY());
 }
 
 void Player::draw(QPainter * painter){
