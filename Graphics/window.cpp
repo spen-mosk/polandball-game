@@ -52,7 +52,7 @@
 Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
-    Player * player = new Player(20, 0, 1, 1);
+    Player * player = new Player(15, 30, 1, 1);
     GameWidget *openGL = new GameWidget(player, this);
     connect(this, SIGNAL(keyPress(int)), player, SLOT(handleInput(int)));
     connect(this, SIGNAL(keyRelease(int)), player, (SLOT(handleRelease(int))));
@@ -60,7 +60,7 @@ Window::Window()
 }
 
 void Window::keyPressEvent(QKeyEvent * event){
-    printf("KEY PRESSED\n");
+    //printf("KEY PRESSED\n");
     int key = event->key();
     emit keyPress(key);
     /*switch(key){
