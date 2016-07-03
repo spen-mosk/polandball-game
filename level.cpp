@@ -14,10 +14,11 @@ Level::Level(Player * player)
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
-        }else{
-        if(Platform* v = dynamic_cast<Platform*>(objects[i])) {
-           plats.push_back(v);
         }
+        else{
+            if(Platform* v = dynamic_cast<Platform*>(objects[i])){
+               plats.push_back(v);
+            }
         }
     }
 }
@@ -29,10 +30,11 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
-        }else{
-        if(Platform* v = dynamic_cast<Platform*>(objects[i])) {
-           plats.push_back(v);
         }
+        else{
+            if(Platform* v = dynamic_cast<Platform*>(objects[i])) {
+               plats.push_back(v);
+            }
         }
     }
 }

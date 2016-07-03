@@ -8,6 +8,7 @@
 
 class Actor : public GameObject
 {
+
 public:
     Actor(int, int, int);
     QPoint * getPosition();
