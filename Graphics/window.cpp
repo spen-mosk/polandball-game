@@ -60,7 +60,7 @@ Window::Window()
 }
 
 void Window::keyPressEvent(QKeyEvent * event){
-    printf("KEY PRESSED\n");
+    //printf("KEY PRESSED\n");
     int key = event->key();
     emit keyPress(key);
     /*switch(key){
