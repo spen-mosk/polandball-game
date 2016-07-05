@@ -35,7 +35,7 @@ void Player::update(){
 //    if(keySet->contains(Qt::Key_Down)){
 //        this->updateLocation(0, -speed);
  //   }
-    printf("pos: %d, %d\n", this->getX(), this->getY());
+   // printf("pos: %d, %d\n", this->getX(), this->getY());
 }
 
 void Player::jump(){
@@ -46,10 +46,16 @@ void Player::jump(){
             verticalSpeed = 3;
         }
     }
+    else{
+        verticalSpeed = 0;
+    }
+
 }
 
 void Player::resetJump(){
+    printf("Hello");
     jumpCount = 0;
+    verticalSpeed = 0;
 }
 
 void Player::draw(QPainter * painter){
