@@ -12,6 +12,8 @@ public:
     Player(int, int, int, int);
     virtual void update() override;
     virtual void draw(QPainter *) override;
+    void jump();
+    void resetJump();
 
 
 public slots:
@@ -21,6 +23,8 @@ public slots:
 private:
     QSet<int> * keySet;
     int speed;
+    int verticalSpeed;
+    int jumpCount;
 };
 
 #endif // PLAYER_H

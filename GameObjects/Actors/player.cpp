@@ -5,6 +5,8 @@
 Player::Player(int x, int y, int radius, int speed) : Actor(x, y, radius){
     keySet = new QSet<int>();
     this->speed = speed;
+    this->jumpCount = 0;
+    this->verticalSpeed = 0;
 }
 
 void Player::handleInput(int key){
@@ -12,6 +14,10 @@ void Player::handleInput(int key){
 }
 
 void Player::handleRelease(int a){
+    if(a == (Qt::Key_Up)){
+        jumpCount = 25;
+        verticalSpeed = 0;
+    }
     *keySet -= a;
 }
 
@@ -20,7 +26,8 @@ void Player::update(){
         this->updateLocation(-speed, 0);
     }
     if(keySet->contains(Qt::Key_Up)){
-        this->updateLocation(0, speed);
+        this->jump();
+        this->updateLocation(0, verticalSpeed);
     }
     if(keySet->contains(Qt::Key_Right)){
         this->updateLocation(speed,0);
@@ -29,6 +36,20 @@ void Player::update(){
 //        this->updateLocation(0, -speed);
  //   }
     printf("pos: %d, %d\n", this->getX(), this->getY());
+}
+
+void Player::jump(){
+    if(jumpCount < 25){
+        jumpCount += 1;
+        verticalSpeed = jumpCount/15;
+        if(verticalSpeed < 1){
+            verticalSpeed = 3;
+        }
+    }
+}
+
+void Player::resetJump(){
+    jumpCount = 0;
 }
 
 void Player::draw(QPainter * painter){

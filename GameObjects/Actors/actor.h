@@ -17,6 +17,8 @@ public:
     void updateLocation(int,int);
     int getRadius();
     std::vector<int> getPreviousLocation();
+    virtual void jump() = 0;
+    virtual void resetJump() = 0;
 
 private:
     int xMove;
