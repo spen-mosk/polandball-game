@@ -27,6 +27,7 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
     this->objects = levelObs;
     objects.push_back(player);
     this->gravity = -1;
+    printf("MENIAL CHANGE");
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
