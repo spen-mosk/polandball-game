@@ -10,7 +10,7 @@ Level::Level(Player * player)
     objects.push_back(player);
     Player * test = new Player(20, 0, 3, 3);
     objects.push_back(test);
-    this->gravity = -5;
+    this->gravity = -1;
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
@@ -26,7 +26,7 @@ Level::Level(Player * player)
 Level::Level(Player * player, std::vector<GameObject *> levelObs){
     this->objects = levelObs;
     objects.push_back(player);
-    this->gravity = -5;
+    this->gravity = -1;
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
@@ -51,7 +51,7 @@ void Level::update(){
     for(int i = 0; i < objects.size(); i++){
         objects[i]->update();
     }
-    //this->applyGravity();
+    this->applyGravity();
     //this->ActorPlatformCollisions();
     this->checkCollisions();
 }
@@ -103,9 +103,11 @@ void Level::checkCollisions(){
 
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
+        QPoint * p = actors[i]->getCenter();
+        int actorBottom = p->y() - actors[i]->getRadius();
         bool applyGrav = true;
         for (int b = 0; b < plats.size(); b++){
-            if(actors[i]->getY() - actors[i]->getRadius() == plats[b]->getY()&& (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
+            if(actorBottom == plats[b]->getY()&& (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
                 applyGrav = false;
                 break;
             }

@@ -25,9 +25,9 @@ void Player::update(){
     if(keySet->contains(Qt::Key_Right)){
         this->updateLocation(speed,0);
     }
-    if(keySet->contains(Qt::Key_Down)){
-        this->updateLocation(0, -speed);
-    }
+//    if(keySet->contains(Qt::Key_Down)){
+//        this->updateLocation(0, -speed);
+ //   }
     printf("pos: %d, %d\n", this->getX(), this->getY());
 }
 
