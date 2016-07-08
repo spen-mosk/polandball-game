@@ -95,7 +95,6 @@ void Level::checkCollisions(){
                     && p->x() < platRight && p->x() > platLeft){
                 int offsetY = platTop - actorBottom;
                 actor->updateLocation(0, offsetY);
-                actor->resetJump();
               //  printf("Collision from the top\n");
             }
         }
@@ -105,19 +104,20 @@ void Level::checkCollisions(){
 
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
-        actors[i]->Actor::updateLocation(0,gravity);
-//        QPoint * p = actors[i]->getCenter();
-//        int actorBottom = p->y() - actors[i]->getRadius();
-//        bool applyGrav = true;
-//        for (int b = 0; b < plats.size(); b++){
-//            if(actorBottom == plats[b]->getY()&& (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
-//                applyGrav = false;
-//                break;
-//            }
-//        }
-//        if (applyGrav){
-//            actors[i]->Actor::updateLocation(0,gravity);
-//        }
+//        actors[i]->Actor::updateLocation(0,gravity);
+        QPoint * p = actors[i]->getCenter();
+        int actorBottom = p->y() - actors[i]->getRadius();
+        bool applyGrav = true;
+        for (int b = 0; b < plats.size(); b++){
+            if(actorBottom == plats[b]->getY()&& (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
+                applyGrav = false;
+                actors[i]->resetJump();
+                break;
+            }
+        }
+        if (applyGrav){
+            actors[i]->Actor::updateLocation(0,gravity);
+        }
     }
 }
 
