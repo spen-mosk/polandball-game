@@ -11,7 +11,11 @@ HEADERS     = \
     GameObjects/Platforms/platform.h \
     GameObjects/Platforms/movingplatform.h \
     GameObjects/Platforms/surfacedecorator.h \
-    GameObjects/Platforms/oncontactdecorator.h
+    GameObjects/Platforms/oncontactdecorator.h \
+    GameObjects/tempgameobject.h \
+    GameObjects/Attacks/attack.h \
+    GameObjects/Attacks/meleeattack.h \
+    GameObjects/Attacks/rangedattack.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -24,7 +28,11 @@ SOURCES     = \
     GameObjects/Platforms/platform.cpp \
     GameObjects/Platforms/movingplatform.cpp \
     GameObjects/Platforms/surfacedecorator.cpp \
-    GameObjects/Platforms/oncontactdecorator.cpp
+    GameObjects/Platforms/oncontactdecorator.cpp \
+    GameObjects/tempgameobject.cpp \
+    GameObjects/Attacks/meleeattack.cpp \
+    GameObjects/Attacks/attack.cpp \
+    GameObjects/Attacks/rangedattack.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting
