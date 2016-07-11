@@ -4,6 +4,7 @@
 #include "GameObjects/Platforms/platform.h"
 #include "GameObjects/Actors/player.h"
 #include <vector>
+#include <math.h>
 
 Level::Level(Player * player)
 {
@@ -29,6 +30,7 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
     this->gravity = -1;
     printf("MENIAL CHANGE");
     for(int i = 0; i < objects.size(); i++){
+        tree.insert(objects[i]);
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
         }
@@ -57,7 +59,77 @@ void Level::update(){
     this->checkCollisions();
 }
 
+int distance(Actor * one, GameObject*two){
+   QPoint * point = one->getCenter();
+   int minX2 = two->getX() + one->getWidth();
+   int minY2 = two->getY() + one->getHeight();
+   int maxX2 = two->getX();
+   int maxY2 = two->getY();
+   int dx = (minX2 - point->x() > point->x() - maxX2) ? minX2 - point->x() : point->x() - maxX2;
+   dx = (dx > 0) ? dx : 0;
+   int dy = (minY2 - point->y() > point->y() - maxY2) ? minY2 - point->y() : point->y() - maxY2;
+   dy = (dy > 0) ? dy : 0;
+   return sqrt(dx*dx + dy*dy);
+
+}
+
 void Level::checkCollisions(){
+    for(int i = 0; i < actors.size(); i++){
+        std::vector<GameObject *> list = std::vector<GameObject*>();
+        int num = 5;
+        bool haveCollision = false;
+        do{
+           std::vector<GameObject*> near = (tree.kNN(actors[i], num));
+           for(int a = num-1; a >=0; a--){
+              if(distance(actors[i], near[a]) < actors[i]->getRadius()){
+                  actorCollisions(actors[i], near[a]);
+                  haveCollision = true;
+              }
+              else{
+                  haveCollision = false;
+              }
+           }
+           num *= 2;
+        }while(haveCollision);
+    }
+}
+
+void Level::actorCollisions(Actor * actor, GameObject * plat){
+    QPoint * p = actor->getCenter();
+    int actorLeft = p->x() - actor->getRadius();
+    int actorRight = p->x() + actor->getRadius();
+    int actorTop = p->y() + actor->getRadius();
+    int actorBottom = p->y() - actor->getRadius();
+    int platLeft = plat->getX();
+    int platRight = plat->getX() + plat->getWidth();
+    int platTop = plat->getY();
+    int platBottom = plat->getY() - plat->getHeight();
+    if(actorLeft > platLeft && actorLeft < platRight
+            && p->y() < platTop && p->y() > platBottom){
+        printf("Collision from the right\n");
+        int offsetX = plat->getX() + plat->getWidth() - actorLeft;
+        actor->updateLocation(offsetX,0);
+    }
+    else if(actorRight < platRight && actorRight > platLeft
+            && p->y() < platTop && p->y() > platBottom){
+        int offsetX = actorRight - platLeft;
+        actor->updateLocation(-offsetX,0);
+        printf("Collision from the left\n");
+    }
+    else if(actorTop < platTop && actorTop > platBottom
+            && p->x() < platRight && p->x() > platLeft){
+        int offsetY = actorTop - platBottom;
+        actor->updateLocation(0, -offsetY);
+        printf("Collision from the bottom\n");
+    }
+    else if(actorBottom < platTop && actorBottom > platBottom
+            && p->x() < platRight && p->x() > platLeft){
+        int offsetY = platTop - actorBottom;
+        actor->updateLocation(0, offsetY);
+      //  printf("Collision from the top\n");
+    }
+}
+    /*
     for(int i = 0; i < actors.size(); i++){
         for (int b = 0; b < plats.size(); b++){
             Actor * actor = actors[i];
@@ -101,7 +173,7 @@ void Level::checkCollisions(){
     }
 
 }
-
+*/
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
 //        actors[i]->Actor::updateLocation(0,gravity);
@@ -120,39 +192,3 @@ void Level::applyGravity(){
         }
     }
 }
-
-/*void Level::ActorPlatformCollisions(){
-      for(int i = 0; i < actors.size(); i++){
-        for (int b = 0; b < plats.size(); b++){
-            QPoint * center = actors[i]->getCenter();
-            if(((center->y() - actors[i]->getRadius() < plats[b]->GameObject::getY() && center->y()- actors[i]->getRadius() > plats[b]->GameObject::getY() - plats[b]->getHeight())
-                || (center->y() + actors[i]->getRadius() < plats[b]->GameObject::getY() && center->y()+ actors[i]->getRadius() > plats[b]->GameObject::getY() - plats[b]->getHeight()))
-                && ((center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth())
-                ||(center->x()>= plats[b]->getX() && center->x()<= plats[b]->getX() + plats[b]->getWidth()))){
-                //printf("WE HAVE A COLLISION");
-                Platform* plat = plats[b];
-                if(actors[i]->getPreviousLocation()[1] + actors[i]->getRadius()< plat->getY() - plat->getHeight()){
-                    printf("upward collision");
-                    int offsetY = plat->GameObject::getY() + plat->GameObject::getHeight() + actors[i]->getRadius() - center->y();
-                    actors[i]->updateLocation(0, offsetY);
-                }
-                if(actors[i]->getPreviousLocation()[1] - actors[i]->getRadius() > plat->getY()){
-                    printf("downward collision");
-                    int offsetY = plat->GameObject::getY() + actors[i]->getRadius() - center->y() ;
-                    actors[i]->updateLocation(0, offsetY);
-                }
-                if(actors[i]->getPreviousLocation()[0] + actors[i]->getRadius() < plat->getX()){
-                    printf("right collision");
-                    int offsetX = plat->GameObject::getX() - actors[i]->getRadius() - center->x();
-                    actors[i]->updateLocation(offsetX, 0);
-                }
-                if(actors[i]->getPreviousLocation()[0] - actors[i]->getRadius() > plat->getX()){
-                    printf("left collision");
-                    int offsetX = plat->GameObject::getX() + actors[i]->getRadius() - center->x();
-                    actors[i]->updateLocation(offsetX, 0);
-                }
-            }
-        }
-        }
-    }
-*/

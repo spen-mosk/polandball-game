@@ -79,6 +79,7 @@ KDTree::insert(GameObject * obj){
     else{
         insertRecursive(obj, root, 0);
     }
+    size++;
 }
 
 KDTree::insertRecursive(GameObject* obj,Node * compare,  int level){
@@ -127,4 +128,5 @@ KDTree::insertRecursive(GameObject* obj,Node * compare,  int level){
         }
 
     }
+
 }

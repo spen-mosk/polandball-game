@@ -4,6 +4,6 @@ TempGameObject::TempGameObject(int x, int y, int height, int width, int dura) : 
     this->duration = dura;
 }
 
-TempGameObject::getDuration(){
+int TempGameObject::getDuration(){
     return duration;
 }

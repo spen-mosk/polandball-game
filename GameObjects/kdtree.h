@@ -9,8 +9,7 @@ public:
     KDTree();
     ~KDTree();
     void insert(GameObject *);
-    GameObject* kNN(GameObject*, int);
-    std::vector<GameObject *> getObjs();
+    std::vector<GameObject *> kNN(GameObject*, int);
 private:
     class Node{
         public:
@@ -22,7 +21,7 @@ private:
             int priority;
     };
     class Compare{
-        bool operator(Node * first, Node * last){
+        bool operator() (Node * first, Node * last){
             return first->priority < last->priority;
         }
     };
