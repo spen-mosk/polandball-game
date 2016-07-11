@@ -15,7 +15,9 @@ HEADERS     = \
     GameObjects/tempgameobject.h \
     GameObjects/Attacks/attack.h \
     GameObjects/Attacks/meleeattack.h \
-    GameObjects/Attacks/rangedattack.h
+    GameObjects/Attacks/rangedattack.h \
+    GameObjects/platformbuilder.h \
+    GameObjects/kdtree.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -32,7 +34,9 @@ SOURCES     = \
     GameObjects/tempgameobject.cpp \
     GameObjects/Attacks/meleeattack.cpp \
     GameObjects/Attacks/attack.cpp \
-    GameObjects/Attacks/rangedattack.cpp
+    GameObjects/Attacks/rangedattack.cpp \
+    GameObjects/platformbuilder.cpp \
+    GameObjects/kdtree.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting
