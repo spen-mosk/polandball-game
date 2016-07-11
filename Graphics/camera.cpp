@@ -1,5 +1,6 @@
 #include "camera.h"
 #include <QSize>
+#include "GameObjects/Actors/player.h"
 
 Camera::Camera(int meters, QWidget * parent)
 {
@@ -10,11 +11,11 @@ Camera::Camera(int meters, QWidget * parent)
     pixPerMeter = screenWidth / meters;
 }
 
-std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<GameObject *> actors){
-    int leftX = center->getX() - (metersPerScreen / 2);
-    int rightX = center->getX() + (metersPerScreen / 2);
-    int bottomY = center->getY() - ((screenHeight / pixPerMeter) / 2);
-    int topY = center->getY() + ((screenHeight / pixPerMeter) / 2);
+std::vector<GameObject *> * Camera::snapshot(Player * center, std::vector<GameObject *> actors){
+    int leftX = center->getCenter()->x() - (metersPerScreen / 2);
+    int rightX = center->getCenter()->x() + (metersPerScreen / 2);
+    int bottomY = center->getCenter()->y() - ((screenHeight / pixPerMeter) / 2);
+    int topY = center->getCenter()->y() + ((screenHeight / pixPerMeter) / 2);
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
@@ -26,8 +27,10 @@ std::vector<GameObject *> * Camera::snapshot(GameObject * center, std::vector<Ga
                 int yDisplacement = topY - current->getY();
                 double xPixels = xDisplacement * pixPerMeter;
                 double yPixels = yDisplacement * pixPerMeter;
-                current->drawingX = xPixels;
-                current->drawingY = yPixels;
+              //  printf("%d",pixPerMeter);
+               // printf("x: %d, y: %d\n", xDisplacement * pixPerMeter, yDisplacement * pixPerMeter);
+                current->drawingX = xPixels + 9;
+                current->drawingY = yPixels + 9;
                 double heightPixels = current->getHeight() * pixPerMeter;
                 double widthPixels = current->getWidth() * pixPerMeter;
                 current->drawingWidth = widthPixels;
