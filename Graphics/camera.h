@@ -19,8 +19,8 @@ public:
 private:
     int metersPerScreen;
     double pixPerMeter;
-    int screenWidth;
-    int screenHeight;
+    double screenWidth;
+    double screenHeight;
 };
 
 #endif // CAMERA_H

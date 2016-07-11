@@ -30,4 +30,6 @@ private:
 
 };
 
+int distance(Actor *, GameObject*);
+
 #endif // LEVEL_H

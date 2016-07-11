@@ -30,13 +30,13 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
     this->gravity = -1;
     printf("MENIAL CHANGE");
     for(int i = 0; i < objects.size(); i++){
-        tree.insert(objects[i]);
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
         }
         else{
             if(Platform* v = dynamic_cast<Platform*>(objects[i])) {
                plats.push_back(v);
+               tree.insert(v);
             }
         }
     }
@@ -61,9 +61,9 @@ void Level::update(){
 
 int distance(Actor * one, GameObject*two){
    QPoint * point = one->getCenter();
-   int minX2 = two->getX() + one->getWidth();
-   int minY2 = two->getY() + one->getHeight();
-   int maxX2 = two->getX();
+   int maxX2 = two->getX() + two->getWidth();
+   int minY2 = two->getY() - two->getHeight();
+   int minX2 = two->getX();
    int maxY2 = two->getY();
    int dx = (minX2 - point->x() > point->x() - maxX2) ? minX2 - point->x() : point->x() - maxX2;
    dx = (dx > 0) ? dx : 0;
@@ -78,9 +78,10 @@ void Level::checkCollisions(){
         std::vector<GameObject *> list = std::vector<GameObject*>();
         int num = 5;
         bool haveCollision = false;
+        std::vector<GameObject*> near;
         do{
-           std::vector<GameObject*> near = (tree.kNN(actors[i], num));
-           for(int a = num-1; a >=0; a--){
+           near = (tree.kNN(actors[i], num));
+           for(int a = near.size()-1; a >=0; a--){
               if(distance(actors[i], near[a]) < actors[i]->getRadius()){
                   actorCollisions(actors[i], near[a]);
                   haveCollision = true;
@@ -90,7 +91,7 @@ void Level::checkCollisions(){
               }
            }
            num *= 2;
-        }while(haveCollision);
+        }while(haveCollision && near.size() == num);
     }
 }
 
@@ -110,19 +111,19 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
         int offsetX = plat->getX() + plat->getWidth() - actorLeft;
         actor->updateLocation(offsetX,0);
     }
-    else if(actorRight < platRight && actorRight > platLeft
+    if(actorRight < platRight && actorRight > platLeft
             && p->y() < platTop && p->y() > platBottom){
         int offsetX = actorRight - platLeft;
         actor->updateLocation(-offsetX,0);
         printf("Collision from the left\n");
     }
-    else if(actorTop < platTop && actorTop > platBottom
+    if(actorTop < platTop && actorTop > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = actorTop - platBottom;
         actor->updateLocation(0, -offsetY);
         printf("Collision from the bottom\n");
     }
-    else if(actorBottom < platTop && actorBottom > platBottom
+    if(actorBottom < platTop && actorBottom > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = platTop - actorBottom;
         actor->updateLocation(0, offsetY);

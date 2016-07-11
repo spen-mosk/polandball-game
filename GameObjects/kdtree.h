@@ -2,34 +2,35 @@
 #define KDTREE_H
 
 #include <vector>
+#include <queue>
 #include "GameObjects/gameobject.h"
 class KDTree
 {
 public:
     KDTree();
-    ~KDTree();
+    ~KDTree(){};
     void insert(GameObject *);
     std::vector<GameObject *> kNN(GameObject*, int);
 private:
     class Node{
         public:
-            Node();
-            ~Node();
+            Node(){
+                this->left = 0;
+                this->right = 0;
+            };
+            ~Node(){};
             Node * left;
             Node * right;
             GameObject * data;
             int priority;
+            bool operator <(const Node rhs) const{
+                return this->priority < rhs.priority;
+            }
     };
-    class Compare{
-        bool operator() (Node * first, Node * last){
-            return first->priority < last->priority;
-        }
-    };
-
     Node * root;
     int size;
-    std::vector<GameObject *> objs;
     void insertRecursive(GameObject*, Node*,int level);
+    void kNNRecursive(GameObject*, std::priority_queue<Node*>*, int, Node*, int);
 };
 
 #endif // KDTREE_H

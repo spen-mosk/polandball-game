@@ -5,9 +5,9 @@
 class MeleeAttack: public Attack{
 public:
     MeleeAttack(int,int,int,int,int);
-    draw(QPainter *);
-    update();
-    inRange(Level *);
+    virtual void draw(QPainter *);
+    virtual void update();
+    virtual void inRange(Level *);
 
 
 private:

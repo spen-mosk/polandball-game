@@ -5,10 +5,10 @@
 class RangedAttack: public Attack{
 public:
     RangedAttack(int,int,int,int,int,int);
-    draw(QPainter *);
-    update();
-    inRange(Level *);
-    getSpeed();
+    virtual void draw(QPainter *);
+    virtual void update();
+    virtual void inRange(Level *);
+    int getSpeed();
 
 
 private:

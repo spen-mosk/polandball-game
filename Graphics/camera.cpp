@@ -12,10 +12,10 @@ Camera::Camera(int meters, QWidget * parent)
 }
 
 std::vector<GameObject *> * Camera::snapshot(Player * center, std::vector<GameObject *> actors){
-    int leftX = center->getCenter()->x() - (metersPerScreen / 2);
-    int rightX = center->getCenter()->x() + (metersPerScreen / 2);
-    int bottomY = center->getCenter()->y() - ((screenHeight / pixPerMeter) / 2);
-    int topY = center->getCenter()->y() + ((screenHeight / pixPerMeter) / 2);
+    double leftX = center->getCenter()->x() - (metersPerScreen / 2);
+    double rightX = center->getCenter()->x() + (metersPerScreen / 2);
+    double bottomY = center->getCenter()->y() - ((screenHeight / pixPerMeter) / 2);
+    double topY = center->getCenter()->y() + ((screenHeight / pixPerMeter) / 2);
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
@@ -23,14 +23,14 @@ std::vector<GameObject *> * Camera::snapshot(Player * center, std::vector<GameOb
             if(current->getY() - current->getHeight() < topY && current->getY() > bottomY){
                 //convert
                 //add to a list somehow
-                int xDisplacement = current->getX() - leftX;
-                int yDisplacement = topY - current->getY();
+                double xDisplacement = current->getX() - leftX;
+                double yDisplacement = topY - current->getY();
                 double xPixels = xDisplacement * pixPerMeter;
                 double yPixels = yDisplacement * pixPerMeter;
               //  printf("%d",pixPerMeter);
                // printf("x: %d, y: %d\n", xDisplacement * pixPerMeter, yDisplacement * pixPerMeter);
-                current->drawingX = xPixels + 9;
-                current->drawingY = yPixels + 9;
+                current->drawingX = xPixels;
+                current->drawingY = yPixels;
                 double heightPixels = current->getHeight() * pixPerMeter;
                 double widthPixels = current->getWidth() * pixPerMeter;
                 current->drawingWidth = widthPixels;

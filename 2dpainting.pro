@@ -3,7 +3,7 @@ QT          += widgets
 HEADERS     = \
               Graphics/window.h \
     GameObjects/Actors/actor.h \
-    camera.h \
+    Graphics/camera.h \
     level.h \
     Graphics/gamewidget.h \
     GameObjects/gameobject.h \

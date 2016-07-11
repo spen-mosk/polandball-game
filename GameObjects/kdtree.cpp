@@ -2,6 +2,7 @@
 #include <QPoint>
 #include <queue>
 #include <vector>
+#include "level.h"
 
 KDTree::KDTree()
 {
@@ -13,7 +14,9 @@ std::vector<GameObject*> KDTree::kNN(GameObject * obj, int k){
     kNNRecursive(obj, &queue, k, this->root, 0);
     std::vector<GameObject *> list;
     for(int i = 0; i < queue.size(); i++){
-        list.push_back(queue.pop());
+        Node * node = (Node*)queue.top();
+        queue.pop();
+        list.push_back(node->data);
     }
     return list;
 }
@@ -26,25 +29,23 @@ void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, in
     int y = obj->getY();
     int treeX = node->data->getX();
     int treeY = node->data->getY();
-    int distance = (x-treeX)*(x-treeX) + (y-treeY)*(y-treeY);
-    node->priority = distance;
+    int priority = distance((Actor*)obj, node->data);
+    node->priority = priority;
     queue->push(node);
     if(queue->size() > k){
-        queue->pop();
+        queue->top();
     }
     if(level % 2 == 0){
         if(x < treeX){
             kNNRecursive(obj, queue, k, node->left, ++level);
-            Node * greatest = queue->pop();
-            queue->push(greatest);
+            Node * greatest = queue->top();
             if(queue->size() < k || treeX-x < greatest->priority){
-                kNNRecursive(obj, queue, k, node->right, ++level)
+                kNNRecursive(obj, queue, k, node->right, ++level);
             }
         }
         else{
             kNNRecursive(obj, queue, k, node->right, ++level);
-            Node * greatest = queue->pop();
-            queue->push(greatest);
+            Node * greatest = queue->top();
             if(queue->size() < k || x-treeX < greatest->priority){
                 kNNRecursive(obj, queue, k, node->left, ++level);
             }
@@ -53,26 +54,24 @@ void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, in
     else{
         if(y < treeY){
             kNNRecursive(obj, queue, k, node->left, ++level);
-            Node * greatest = queue->pop();
-            queue->push(greatest);
+            Node * greatest = queue->top();
             if(queue->size() < k || treeY - y < greatest->priority){
-                kNNRecursive(obj, queue, k, node->right, ++level)
+                kNNRecursive(obj, queue, k, node->right, ++level);
             }
         }
         else{
             kNNRecursive(obj, queue, k, node->right, ++level);
-            Node * greatest = queue->pop();
-            queue->push(greatest);
+            Node * greatest = queue->top();
             if(queue->size() < k || y - treeY < greatest->priority){
-                kNNRecursive(obj, queue, k, node->left, ++level)
+                kNNRecursive(obj, queue, k, node->left, ++level);
             }
         }
     }
 }
 
-KDTree::insert(GameObject * obj){
-    Node node = new Node();
-    node.data = obj;
+void KDTree::insert(GameObject * obj){
+    Node *node = new Node();
+    node->data = obj;
     if(size == 0){
         root = node;
     }
@@ -82,7 +81,7 @@ KDTree::insert(GameObject * obj){
     size++;
 }
 
-KDTree::insertRecursive(GameObject* obj,Node * compare,  int level){
+void KDTree::insertRecursive(GameObject* obj,Node * compare,  int level){
     int x = obj->getX();
     int y = obj->getY();
     int treeX = compare->data->getX();

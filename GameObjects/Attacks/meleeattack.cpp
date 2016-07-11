@@ -4,14 +4,14 @@ MeleeAttack::MeleeAttack(int x, int y, int height, int width, int duration): Att
 // to have more later
 }
 
-MeleeAttack::inRange(Level *l){
+void MeleeAttack::inRange(Level *l){
 
 }
 
-MeleeAttack::draw(QPainter *q){
+void MeleeAttack::draw(QPainter *q){
 
 }
 
-MeleeAttack::update(){
+void MeleeAttack::update(){
 
 }
