@@ -65,6 +65,14 @@ GameWidget::GameWidget(Player * control, QWidget *parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
     timer->start();
 }
+
+GameWidget::~GameWidget(){
+    delete player;
+    delete timer;
+    delete level;
+    delete camera;
+}
+
 //! [0]
 
 //! [1]

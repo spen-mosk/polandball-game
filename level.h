@@ -13,6 +13,7 @@ class Level
 public:
     Level(Player *);
     Level(Player *, std::vector<GameObject *>);
+    ~Level();
     void update();
     void applyGravity();
     void ActorPlatformCollisions();

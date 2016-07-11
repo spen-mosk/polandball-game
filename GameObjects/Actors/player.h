@@ -10,6 +10,7 @@ class Player : public Actor
 
 public:
     Player(int, int, int, int);
+    virtual ~Player() override;
     virtual void update() override;
     virtual void draw(QPainter *) override;
     void jump();

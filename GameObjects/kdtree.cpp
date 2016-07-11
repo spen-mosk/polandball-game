@@ -9,6 +9,11 @@ KDTree::KDTree()
    this->size = 0;
 }
 
+KDTree::~KDTree(){
+    delete root;
+}
+
+
 std::vector<GameObject*> KDTree::kNN(GameObject * obj, int k){
     std::priority_queue<Node *> queue;
     kNNRecursive(obj, &queue, k, this->root, 0);

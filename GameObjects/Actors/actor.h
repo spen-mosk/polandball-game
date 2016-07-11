@@ -11,12 +11,12 @@ class Actor : public GameObject
 
 public:
     Actor(int, int, int);
+    virtual ~Actor(){};
     QPoint * getPosition();
     bool contains(QPoint * point);
     QPoint * getCenter();
     void updateLocation(int,int);
     int getRadius();
-    std::vector<int> getPreviousLocation();
     virtual void jump() = 0;
     virtual void resetJump() = 0;
 
@@ -24,7 +24,6 @@ private:
     int xMove;
     int yMove;
     int radius;
-    std::vector<int> previousLocation;
 };
 
 #endif // ACTOR_H

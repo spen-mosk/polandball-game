@@ -13,6 +13,7 @@ class Camera
 
 public:
     Camera(int, QWidget *);
+    ~Camera();
     std::vector<GameObject*> * snapshot(Player *, std::vector<GameObject *>);
 
 

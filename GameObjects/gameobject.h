@@ -8,6 +8,7 @@ class GameObject : public QObject
 {
 public:
     GameObject(int, int, int, int);
+    virtual ~GameObject(){};
     virtual void draw(QPainter *) = 0;
     virtual void update() = 0;
     int getX();

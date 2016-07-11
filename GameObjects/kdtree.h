@@ -8,7 +8,7 @@ class KDTree
 {
 public:
     KDTree();
-    ~KDTree(){};
+    ~KDTree();
     void insert(GameObject *);
     std::vector<GameObject *> kNN(GameObject*, int);
 private:
@@ -18,7 +18,11 @@ private:
                 this->left = 0;
                 this->right = 0;
             };
-            ~Node(){};
+            ~Node(){
+                delete data;
+                delete left;
+                delete right;
+            };
             Node * left;
             Node * right;
             GameObject * data;

@@ -9,6 +9,10 @@ Player::Player(int x, int y, int radius, int speed) : Actor(x, y, radius){
     this->verticalSpeed = 0;
 }
 
+Player::~Player(){
+    delete keySet;
+}
+
 void Player::handleInput(int key){
     *keySet += key;
 }

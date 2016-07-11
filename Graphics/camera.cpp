@@ -11,6 +11,9 @@ Camera::Camera(int meters, QWidget * parent)
     pixPerMeter = screenWidth / meters;
 }
 
+Camera::~Camera(){
+}
+
 std::vector<GameObject *> * Camera::snapshot(Player * center, std::vector<GameObject *> actors){
     double leftX = center->getCenter()->x() - (metersPerScreen / 2);
     double rightX = center->getCenter()->x() + (metersPerScreen / 2);

@@ -56,6 +56,7 @@ class GameWidget : public QOpenGLWidget
 
 public:
     GameWidget(Player *control, QWidget *parent);
+    ~GameWidget();
 
 public slots:
     void animate();

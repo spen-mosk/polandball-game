@@ -59,6 +59,9 @@ Window::Window()
     printf("WE Started");
 }
 
+Window::~Window(){
+}
+
 void Window::keyPressEvent(QKeyEvent * event){
     //printf("KEY PRESSED\n");
     int key = event->key();

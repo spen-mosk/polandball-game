@@ -42,6 +42,13 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
     }
 }
 
+Level::~Level(){
+   delete &objects;
+   delete &actors;
+   delete &plats;
+   delete &tree;
+}
+
 std::vector<GameObject *> Level::getObjects(){
     return objects;
 }
