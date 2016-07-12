@@ -15,6 +15,7 @@ public:
     virtual void draw(QPainter *) override;
     void jump();
     void resetJump();
+    void maximizeJump();
 
 
 public slots:

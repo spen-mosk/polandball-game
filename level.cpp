@@ -109,6 +109,7 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
     int platRight = plat->getX() + plat->getWidth();
     int platTop = plat->getY();
     int platBottom = plat->getY() - plat->getHeight();
+    printf("%d, %d, %d, %d\n", actorRight, platRight, actorRight, platLeft);
     if(actorLeft > platLeft && actorLeft < platRight
             && p->y() < platTop && p->y() > platBottom){
         printf("Collision from the right: %d\n", numCollisions++);
@@ -193,6 +194,7 @@ void Level::applyGravity(){
             }
         }
         if (applyGrav){
+            actors[i]->maximizeJump();
             actors[i]->Actor::updateLocation(0,gravity);
         }
     }

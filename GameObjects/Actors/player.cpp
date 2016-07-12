@@ -61,6 +61,12 @@ void Player::resetJump(){
     verticalSpeed = 0;
 }
 
+void Player::maximizeJump(){
+    if(jumpCount == 0){
+        jumpCount = 25;
+    }
+}
+
 void Player::draw(QPainter * painter){
     painter->setBrush(Qt::blue);
     painter->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
