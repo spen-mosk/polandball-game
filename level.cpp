@@ -43,10 +43,6 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
 }
 
 Level::~Level(){
-   delete &objects;
-   delete &actors;
-   delete &plats;
-   delete &tree;
 }
 
 std::vector<GameObject *> Level::getObjects(){
@@ -103,6 +99,7 @@ void Level::checkCollisions(){
 }
 
 void Level::actorCollisions(Actor * actor, GameObject * plat){
+    static int numCollisions = 0;
     QPoint * p = actor->getCenter();
     int actorLeft = p->x() - actor->getRadius();
     int actorRight = p->x() + actor->getRadius();
@@ -114,27 +111,27 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
     int platBottom = plat->getY() - plat->getHeight();
     if(actorLeft > platLeft && actorLeft < platRight
             && p->y() < platTop && p->y() > platBottom){
-        printf("Collision from the right\n");
+        printf("Collision from the right: %d\n", numCollisions++);
         int offsetX = plat->getX() + plat->getWidth() - actorLeft;
         actor->updateLocation(offsetX,0);
     }
-    if(actorRight < platRight && actorRight > platLeft
+    else if(actorRight < platRight && actorRight > platLeft
             && p->y() < platTop && p->y() > platBottom){
         int offsetX = actorRight - platLeft;
         actor->updateLocation(-offsetX,0);
-        printf("Collision from the left\n");
+        printf("Collision from the left %d\n", numCollisions++);
     }
-    if(actorTop < platTop && actorTop > platBottom
+    else if(actorTop < platTop && actorTop > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = actorTop - platBottom;
         actor->updateLocation(0, -offsetY);
-        printf("Collision from the bottom\n");
+        printf("Collision from the bottom %d\n", numCollisions++);
     }
-    if(actorBottom < platTop && actorBottom > platBottom
+    else if(actorBottom < platTop && actorBottom > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = platTop - actorBottom;
         actor->updateLocation(0, offsetY);
-      //  printf("Collision from the top\n");
+        printf("Collision from the top %d\n", numCollisions++);
     }
 }
     /*

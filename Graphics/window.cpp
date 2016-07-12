@@ -52,7 +52,7 @@
 Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
-    Player * player = new Player(0, 50, 1, 1);
+    Player * player = new Player(-50, 50, 1, 1);
     GameWidget *openGL = new GameWidget(player, this);
     connect(this, SIGNAL(keyPress(int)), player, SLOT(handleInput(int)));
     connect(this, SIGNAL(keyRelease(int)), player, (SLOT(handleRelease(int))));

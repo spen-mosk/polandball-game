@@ -57,7 +57,6 @@ void Player::jump(){
 }
 
 void Player::resetJump(){
-    printf("Hello");
     jumpCount = 0;
     verticalSpeed = 0;
 }
