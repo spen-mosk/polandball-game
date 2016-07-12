@@ -19,6 +19,7 @@ public:
     int getRadius();
     virtual void jump() = 0;
     virtual void resetJump() = 0;
+    virtual void maximizeJump() = 0;
 
 private:
     int xMove;

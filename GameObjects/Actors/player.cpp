@@ -57,9 +57,15 @@ void Player::jump(){
 }
 
 void Player::resetJump(){
-    printf("Hello");
+//    printf("Hello");
     jumpCount = 0;
     verticalSpeed = 0;
+}
+
+void Player::maximizeJump(){
+    if(jumpCount == 0){
+        jumpCount = 25;
+    }
 }
 
 void Player::draw(QPainter * painter){

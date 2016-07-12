@@ -112,29 +112,30 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
     int platRight = plat->getX() + plat->getWidth();
     int platTop = plat->getY();
     int platBottom = plat->getY() - plat->getHeight();
+    printf("%d, %d, %d, %d\n", actorRight, platRight, actorRight, platLeft);
     if(actorLeft > platLeft && actorLeft < platRight
             && p->y() < platTop && p->y() > platBottom){
         printf("Collision from the right\n");
         int offsetX = plat->getX() + plat->getWidth() - actorLeft;
         actor->updateLocation(offsetX,0);
     }
-    if(actorRight < platRight && actorRight > platLeft
+    else if(actorRight < platRight && actorRight > platLeft
             && p->y() < platTop && p->y() > platBottom){
         int offsetX = actorRight - platLeft;
         actor->updateLocation(-offsetX,0);
         printf("Collision from the left\n");
     }
-    if(actorTop < platTop && actorTop > platBottom
+    else if(actorTop < platTop && actorTop > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = actorTop - platBottom;
         actor->updateLocation(0, -offsetY);
         printf("Collision from the bottom\n");
     }
-    if(actorBottom < platTop && actorBottom > platBottom
+    else if(actorBottom < platTop && actorBottom > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = platTop - actorBottom;
         actor->updateLocation(0, offsetY);
-      //  printf("Collision from the top\n");
+        printf("Collision from the top\n");
     }
 }
     /*
@@ -196,6 +197,7 @@ void Level::applyGravity(){
             }
         }
         if (applyGrav){
+            actors[i]->maximizeJump();
             actors[i]->Actor::updateLocation(0,gravity);
         }
     }
