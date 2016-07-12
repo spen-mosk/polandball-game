@@ -18,7 +18,8 @@ std::vector<GameObject*> KDTree::kNN(GameObject * obj, int k){
     std::priority_queue<Node *> queue;
     kNNRecursive(obj, &queue, k, this->root, 0);
     std::vector<GameObject *> list;
-    for(int i = 0; i < queue.size(); i++){
+    int size = queue.size();
+    for(int i = 0; i < size; i++){
         Node * node = (Node*)queue.top();
         queue.pop();
         list.push_back(node->data);
@@ -38,7 +39,7 @@ void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, in
     node->priority = priority;
     queue->push(node);
     if(queue->size() > k){
-        queue->top();
+        queue->pop();
     }
     if(level % 2 == 0){
         if(x < treeX){

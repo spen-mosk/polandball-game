@@ -84,7 +84,9 @@ void Level::checkCollisions(){
         std::vector<GameObject*> near;
         do{
            near = (tree.kNN(actors[i], num));
+           printf("SIZE %d\n", near.size());
            for(int a = near.size()-1; a >=0; a--){
+              printf("NEAR[%d] x:%d y:%d\n", a, near[a]->getX(), near[a]->getY());
               if(distance(actors[i], near[a]) < actors[i]->getRadius()){
                   actorCollisions(actors[i], near[a]);
                   haveCollision = true;
