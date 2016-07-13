@@ -10,11 +10,14 @@ Player::Player(int x, int y, int radius, int speed) : Actor(x, y, radius){
 }
 
 Player::~Player(){
-    delete keySet;
 }
 
 void Player::handleInput(int key){
     *keySet += key;
+}
+
+void Player::setKeySet(QSet * set){
+    keySet = set;
 }
 
 void Player::handleRelease(int a){
@@ -36,10 +39,6 @@ void Player::update(){
     if(keySet->contains(Qt::Key_Right)){
         this->updateLocation(speed,0);
     }
-//    if(keySet->contains(Qt::Key_Down)){
-//        this->updateLocation(0, -speed);
- //   }
-   // printf("pos: %d, %d\n", this->getX(), this->getY());
 }
 
 void Player::jump(){

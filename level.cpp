@@ -9,8 +9,8 @@
 Level::Level(Player * player)
 {
     objects.push_back(player);
-    Player * test = new Player(20, 0, 3, 3);
     objects.push_back(test);
+    this->player = player;
     this->gravity = -1;
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
@@ -26,7 +26,7 @@ Level::Level(Player * player)
 
 Level::Level(Player * player, std::vector<GameObject *> levelObs){
     this->objects = levelObs;
-    objects.push_back(player);
+    this->player = player;
     this->gravity = -1;
     printf("MENIAL CHANGE");
     for(int i = 0; i < objects.size(); i++){
@@ -43,6 +43,7 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
 }
 
 Level::~Level(){
+    delete keySet;
 }
 
 std::vector<GameObject *> Level::getObjects(){
@@ -62,6 +63,14 @@ void Level::update(){
     this->checkCollisions();
 }
 
+void Level::handlePress(int key){
+    keySet += key;
+}
+
+void Level::handleRelease(int key){
+    keySet -= key;
+}
+
 int distance(Actor * one, GameObject*two){
    QPoint * point = one->getCenter();
    int maxX2 = two->getX() + two->getWidth();
@@ -73,7 +82,6 @@ int distance(Actor * one, GameObject*two){
    int dy = (minY2 - point->y() > point->y() - maxY2) ? minY2 - point->y() : point->y() - maxY2;
    dy = (dy > 0) ? dy : 0;
    return sqrt(dx*dx + dy*dy);
-
 }
 
 void Level::checkCollisions(){

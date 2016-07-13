@@ -4,8 +4,10 @@
 
 class OnHitDecorator: public Attack{
 public:
-    OnHitDecorator(int,int,int,int,int);
-    virtual void damageEffect(Actor *);
+    OnHitDecorator(Attack *);
+    virtual void onContact(Actor *);
+private:
+    Attack *attack;
 
 };
 

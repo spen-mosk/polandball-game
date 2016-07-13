@@ -16,17 +16,13 @@ public:
     void jump();
     void resetJump();
     void maximizeJump();
-
-
-public slots:
-    void handleInput(int);
-    void handleRelease(int);
+    void setKeySet(QSet *);
 
 private:
-    QSet<int> * keySet;
     int speed;
     int verticalSpeed;
     int jumpCount;
+    QSet * keySet;
 };
 
 #endif // PLAYER_H

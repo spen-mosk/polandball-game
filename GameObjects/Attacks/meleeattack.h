@@ -7,7 +7,6 @@ public:
     MeleeAttack(int,int,int,int,int);
     virtual void draw(QPainter *);
     virtual void update();
-    virtual void inRange(Level *);
 
 
 private:

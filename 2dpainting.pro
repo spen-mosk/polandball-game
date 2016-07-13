@@ -17,7 +17,10 @@ HEADERS     = \
     GameObjects/Attacks/meleeattack.h \
     GameObjects/Attacks/rangedattack.h \
     GameObjects/platformbuilder.h \
-    GameObjects/kdtree.h
+    GameObjects/kdtree.h \
+    GameObjects/Attacks/onhitdecorator.h \
+    actorstatistics.h \
+    GameObjects/playerstatistics.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -30,13 +33,16 @@ SOURCES     = \
     GameObjects/Platforms/platform.cpp \
     GameObjects/Platforms/movingplatform.cpp \
     GameObjects/Platforms/surfacedecorator.cpp \
+    GameObjects/Attacks/onhitdecorator.cpp \
     GameObjects/Platforms/oncontactdecorator.cpp \
     GameObjects/tempgameobject.cpp \
     GameObjects/Attacks/meleeattack.cpp \
     GameObjects/Attacks/attack.cpp \
     GameObjects/Attacks/rangedattack.cpp \
     GameObjects/platformbuilder.cpp \
-    GameObjects/kdtree.cpp
+    GameObjects/kdtree.cpp \
+    actorstatistics.cpp \
+    GameObjects/playerstatistics.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting
