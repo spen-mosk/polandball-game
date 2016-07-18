@@ -16,13 +16,14 @@ public:
     void jump();
     void resetJump();
     void maximizeJump();
-    void setKeySet(QSet *);
+    void setKeySet(QSet<int> *);
+    void endJump();
 
 private:
     int speed;
     int verticalSpeed;
     int jumpCount;
-    QSet * keySet;
+    QSet<int> * keySet;
 };
 
 #endif // PLAYER_H

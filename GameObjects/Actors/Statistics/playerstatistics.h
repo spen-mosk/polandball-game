@@ -1,6 +1,7 @@
 #ifndef PLAYERSTATISTICS_H
 #define PLAYERSTATISTICS_H
 #include <vector>
+#include "actorstatistics.h"
 
 class PlayerStatistics : public ActorStatistics
 {

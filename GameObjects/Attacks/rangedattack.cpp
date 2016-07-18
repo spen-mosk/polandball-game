@@ -4,9 +4,6 @@ RangedAttack::RangedAttack(int x, int y, int height, int width, int duration, in
     this->speed = spd;
 }
 
-void RangedAttack::inRange(Level *l){
-
-}
 
 void RangedAttack::draw(QPainter *q){
 

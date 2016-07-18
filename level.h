@@ -21,8 +21,8 @@ public:
     std::vector<GameObject *> getObjects();
 
 public slots:
-    handlePress(int);
-    handleRelease(int);
+    void handlePress(int);
+    void handleRelease(int);
 
 private:
     std::vector<GameObject *> objects;
@@ -33,7 +33,7 @@ private:
     KDTree tree;
     void checkCollisions();
     void actorCollisions(Actor*, GameObject*);
-    QSet * keySet;
+    QSet<int>* keySet;
     int gravity;
 
 };

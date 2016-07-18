@@ -12,20 +12,13 @@ Player::Player(int x, int y, int radius, int speed) : Actor(x, y, radius){
 Player::~Player(){
 }
 
-void Player::handleInput(int key){
-    *keySet += key;
-}
-
-void Player::setKeySet(QSet * set){
+void Player::setKeySet(QSet<int> * set){
     keySet = set;
 }
 
-void Player::handleRelease(int a){
-    if(a == (Qt::Key_Up)){
-        jumpCount = 25;
-        verticalSpeed = 0;
-    }
-    *keySet -= a;
+void Player::endJump(){
+    jumpCount = 25;
+    verticalSpeed = 0;
 }
 
 void Player::update(){

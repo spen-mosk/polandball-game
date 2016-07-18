@@ -8,8 +8,8 @@ ActorStatistics::ActorStatistics(int radius, int maxhealth, int speed, bool ally
     this->ally = ally;
 }
 
-int ActorStatistics::getHealth(){
-    return this->health;
+int ActorStatistics::getMaxHealth(){
+    return this->maxhealth;
 }
 
 int ActorStatistics::getRadius(){

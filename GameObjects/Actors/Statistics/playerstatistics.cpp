@@ -7,14 +7,14 @@ ActorStatistics(radius, speed, maxhealth, ally){
     this->ultAtk = ult;
 }
 
-std::vector PlayerStatistics::getMeleeInfo(){
+std::vector<int> PlayerStatistics::getMeleeInfo(){
     return meleeAtk;
 }
 
-std::vector PlayerStatistics::getRangedInfo(){
+std::vector<int> PlayerStatistics::getRangedInfo(){
     return rangedAtk;
 }
 
-std::vector PlayerStatistics::getUltInfo(){
+std::vector<int> PlayerStatistics::getUltInfo(){
     return ultAtk;
 }
