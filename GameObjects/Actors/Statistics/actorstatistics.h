@@ -5,20 +5,16 @@
 class ActorStatistics
 {
 public:
-    ActorStatistics(int, int, int, int, int, int, bool);
-    int getX();
-    int getY();
+    ActorStatistics(int, int, int, bool);
     int getRadius();
     int getSpeed();
-    int getHealth();
+    int getMaxHealth();
     bool isAlly();
     void setHealth(int);
 private:
-    int x;
-    int y;
     int radius;
     int speed;
-    int health;
+    int maxhealth;
     bool ally;
 };
 
