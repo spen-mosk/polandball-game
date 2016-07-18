@@ -12,6 +12,7 @@ public:
     int getSpeed();
     int getHealth();
     bool isAlly();
+    void setHealth(int);
 private:
     int x;
     int y;
