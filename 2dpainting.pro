@@ -19,8 +19,8 @@ HEADERS     = \
     GameObjects/platformbuilder.h \
     GameObjects/kdtree.h \
     GameObjects/Attacks/onhitdecorator.h \
-    actorstatistics.h \
-    GameObjects/playerstatistics.h
+    GameObjects/Actors/Statistics/actorstatistics.h \
+    GameObjects/Actors/Statistics/playerstatistics.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -41,8 +41,8 @@ SOURCES     = \
     GameObjects/Attacks/rangedattack.cpp \
     GameObjects/platformbuilder.cpp \
     GameObjects/kdtree.cpp \
-    actorstatistics.cpp \
-    GameObjects/playerstatistics.cpp
+    GameObjects/Actors/Statistics/actorstatistics.cpp \
+    GameObjects/Actors/Statistics/playerstatistics.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting
