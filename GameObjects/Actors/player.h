@@ -23,8 +23,8 @@ public:
     void endJump();
     void addKey(int);
     void removeKey(int);
-    MeleeAttack generateMeleeAttack();
-    RangedAttack generateRangedAttack();
+    MeleeAttack *generateMeleeAttack();
+    RangedAttack *generateRangedAttack();
     void generateUltAttack();
 
 

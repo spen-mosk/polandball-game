@@ -44,7 +44,6 @@ void Player::update(){
 void Player::jump(){
     if(jumpCount < this->stats->getMaxJumps()){
         jumpCount += 1;
-        verticalSpeed = jumpCount/15;
         if(verticalSpeed < 1){
             verticalSpeed = 4;
         }
@@ -70,14 +69,14 @@ void Player::draw(QPainter * painter){
     painter->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
 }
 
-MeleeAttack Player::generateMeleeAttack(){
+MeleeAttack* Player::generateMeleeAttack(){
     int placeholder = 10;
-    return MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, true);
+    return new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, true);
 }
 
-RangedAttack Player::generateRangedAttack(){
+RangedAttack* Player::generateRangedAttack(){
     int placeholder = 5;
-    return RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, 1, true);
+    return new RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, 1, true);
 }
 
 void Player::generateUltAttack(){
