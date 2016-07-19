@@ -27,6 +27,57 @@ std::vector<GameObject*> KDTree::kNN(GameObject * obj, int k){
     return list;
 }
 
+std::vector<GameObject*> KDTree::rangeSearch(GameObject * obj, int range){
+   std::vector<GameObject*> vector = std::vector<GameObject*>();
+   rangeRecursive(obj, &vector, range, 0, this->root);
+   return vector;
+}
+void KDTree::rangeRecursive(GameObject*obj, std::vector<int> *vec, int range, Node * node){
+    if(node == 0){
+       return;
+    }
+    int x = obj->getX();
+    int y = obj->getY();
+    int treeX = node->data->getX();
+    int treeY = node->data->getY();
+    int dist = distance((Actor*)obj, node->data);
+    if(dist < range){
+        vec->push_back(node->data);
+    }
+    if(level % 2 == 0){
+        if(x < treeX){
+            rangeRecursive(obj, queue, k, node->left, ++level);
+            Node * greatest = queue->top();
+            if(treeX-x < range){
+                kNNRecursive(obj, queue, k, node->right, ++level);
+            }
+        }
+        else{
+            kNNRecursive(obj, queue, k, node->right, ++level);
+            Node * greatest = queue->top();
+            if(queue->size() < k || x-treeX < greatest->priority){
+                kNNRecursive(obj, queue, k, node->left, ++level);
+            }
+        }
+    }
+    else{
+        if(y < treeY){
+            kNNRecursive(obj, queue, k, node->left, ++level);
+            Node * greatest = queue->top();
+            if(queue->size() < k || treeY - y < greatest->priority){
+                kNNRecursive(obj, queue, k, node->right, ++level);
+            }
+        }
+        else{
+            kNNRecursive(obj, queue, k, node->right, ++level);
+            Node * greatest = queue->top();
+            if(queue->size() < k || y - treeY < greatest->priority){
+                kNNRecursive(obj, queue, k, node->left, ++level);
+            }
+        }
+    }
+}
+
 void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, int k, Node * node, int level){
     if(node == 0){
        return;
