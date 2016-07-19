@@ -1,6 +1,6 @@
 #include <GameObjects/Attacks/rangedattack.h>
 
-RangedAttack::RangedAttack(int x, int y, int height, int width, int duration, int spd): Attack(x,y,height,width,duration){
+RangedAttack::RangedAttack(int x, int y, int height, int width, int duration, int spd, bool ally): Attack(x,y,height,width,duration,ally){
     this->speed = spd;
 }
 

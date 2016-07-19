@@ -4,6 +4,9 @@
 #include <QSet>
 #include "actor.h"
 #include "Statistics/playerstatistics.h"
+#include "GameObjects/Attacks/attack.h"
+#include "GameObjects/Attacks/meleeattack.h"
+#include "GameObjects/Attacks/rangedattack.h"
 
 class Player : public Actor
 {
@@ -20,6 +23,10 @@ public:
     void endJump();
     void addKey(int);
     void removeKey(int);
+    MeleeAttack generateMeleeAttack();
+    RangedAttack generateRangedAttack();
+    void generateUltAttack();
+
 
 private:
     int verticalSpeed;

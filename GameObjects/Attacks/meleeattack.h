@@ -4,7 +4,7 @@
 
 class MeleeAttack: public Attack{
 public:
-    MeleeAttack(int,int,int,int,int);
+    MeleeAttack(int, int, int, int, int, bool);
     virtual void draw(QPainter *);
     virtual void update();
 
