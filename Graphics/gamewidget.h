@@ -42,6 +42,7 @@
 #define GameWidget_H
 
 #include <QOpenGLWidget>
+#include <QKeyEvent>
 #include <QTimer>
 #include <vector>
 #include "GameObjects/Actors/actor.h"

@@ -12,6 +12,10 @@ int ActorStatistics::getMaxHealth(){
     return this->maxhealth;
 }
 
+int ActorStatistics::getSpeed(){
+    return speed;
+}
+
 int ActorStatistics::getRadius(){
     return this->radius;
 }

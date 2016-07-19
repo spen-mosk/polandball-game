@@ -7,14 +7,16 @@
 #include "GameObjects/Actors/player.h"
 #include <QSet>
 #include "GameObjects/kdtree.h"
+#include <QObject>
 
-class Level
+class Level : public QObject
 {
+    Q_OBJECT
 
 public:
     Level(Player *);
-    Level(Player *, std::vector<GameObject *>);
-    ~Level();
+    Level(Player *, std::vector<GameObject *>, int);
+    virtual ~Level();
     void update();
     void applyGravity();
     void ActorPlatformCollisions();
@@ -33,8 +35,7 @@ private:
     KDTree tree;
     void checkCollisions();
     void actorCollisions(Actor*, GameObject*);
-    QSet<int>* keySet;
-    int gravity;
+    int gravity = -1;
 
 };
 

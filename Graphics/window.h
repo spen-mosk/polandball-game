@@ -52,6 +52,7 @@ class Window : public QWidget
 public:
     Window();
     ~Window();
+
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
 

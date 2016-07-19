@@ -4,13 +4,14 @@
 #include <QPoint>
 #include <QPainter>
 #include "GameObjects/gameobject.h"
+#include "GameObjects/Actors/Statistics/actorstatistics.h"
 #include <vector>
 
 class Actor : public GameObject
 {
 
 public:
-    Actor(int, int, int);
+    Actor(int, int, ActorStatistics * stats);
     virtual ~Actor(){};
     QPoint * getPosition();
     bool contains(QPoint * point);
@@ -24,7 +25,7 @@ public:
 private:
     int xMove;
     int yMove;
-    int radius;
+    ActorStatistics * stats;
 };
 
 #endif // ACTOR_H

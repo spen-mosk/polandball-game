@@ -1,41 +1,48 @@
 #include "player.h"
 #include <stdio.h>
 
-
-Player::Player(int x, int y, int radius, int speed) : Actor(x, y, radius){
+Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat){
     keySet = new QSet<int>();
-    this->speed = speed;
     this->jumpCount = 0;
     this->verticalSpeed = 0;
+    this->stats = stat;
 }
 
 Player::~Player(){
 }
 
-void Player::setKeySet(QSet<int> * set){
-    keySet = set;
+void Player::addKey(int key){
+    (*keySet) += key;
+}
+
+void Player::removeKey(int key){
+    (*keySet) -= key;
+    if(key == Qt::Key_Up){
+        endJump();
+    }
 }
 
 void Player::endJump(){
-    jumpCount = 25;
+    jumpCount = stats->getJumpCount();
     verticalSpeed = 0;
 }
 
 void Player::update(){
-    if(keySet->contains(Qt::Key_Left)){
-        this->updateLocation(-speed, 0);
-    }
-    if(keySet->contains(Qt::Key_Up)){
+    int x = Qt::Key_Up;
+    if(keySet->contains(x)){
         this->jump();
         this->updateLocation(0, verticalSpeed);
     }
     if(keySet->contains(Qt::Key_Right)){
-        this->updateLocation(speed,0);
+        this->updateLocation(stats->getSpeed(),0);
+    }
+    if(keySet->contains(Qt::Key_Left)){
+        this->updateLocation(-stats->getSpeed(), 0);
     }
 }
 
 void Player::jump(){
-    if(jumpCount < 25){
+    if(jumpCount < this->stats->getJumpCount()){
         jumpCount += 1;
         verticalSpeed = jumpCount/15;
         if(verticalSpeed < 1){
@@ -45,7 +52,6 @@ void Player::jump(){
     else{
         verticalSpeed = 0;
     }
-
 }
 
 void Player::resetJump(){

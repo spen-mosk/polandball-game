@@ -41,6 +41,7 @@
 #include "gamewidget.h"
 #include "GameObjects/Actors/player.h"
 #include "window.h"
+#include "GameObjects/Actors/Statistics/playerstatistics.h"
 
 #include <QGridLayout>
 #include <QLabel>
@@ -52,7 +53,9 @@
 Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
-    Player * player = new Player(-50, 50, 1, 1);
+    std::vector<int> vec = std::vector<int>();
+    PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, vec, vec, vec, 25);
+    Player * player = new Player(0, 50, stats);
     GameWidget *openGL = new GameWidget(player, this);
     printf("WE Started");
 }
@@ -60,30 +63,14 @@ Window::Window()
 Window::~Window(){
 }
 
-void Window::keyPressEvent(QKeyEvent * event){
-    //printf("KEY PRESSED\n");
+
+void Window::keyPressEvent(QKeyEvent *event){
     int key = event->key();
     emit keyPress(key);
-    /*switch(key){
-        case Qt::Key_Left:
-            printf("LEFT PRESS\n");
-            emit movement(-5, 0);
-            break;
-        case Qt::Key_Right:
-            emit movement(5, 0);
-            break;
-        case Qt::Key_Up:
-            emit movement(0, -5);
-            break;
-        case Qt::Key_Down:
-            emit movement(0, 5);
-            break;
-    }*/
 }
 
 void Window::keyReleaseEvent(QKeyEvent *event){
     int key = event->key();
     emit keyRelease(key);
 }
-
 //! [0]

@@ -23,10 +23,12 @@ Level::Level(Player * player)
     }
 }
 
-Level::Level(Player * player, std::vector<GameObject *> levelObs){
+Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
     this->objects = levelObs;
+    gravity = grav;
+    objects.push_back(player);
     this->player = player;
-    printf("MENIAL CHANGE");
+    actors.push_back(player);
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
@@ -41,7 +43,6 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs){
 }
 
 Level::~Level(){
-    delete keySet;
 }
 
 std::vector<GameObject *> Level::getObjects(){
@@ -54,6 +55,7 @@ void Level::update(){
      * Apply gravity
      */
     for(int i = 0; i < objects.size(); i++){
+        printf("BUT DOES THIS HAPPEN\n");
         objects[i]->update();
     }
     this->applyGravity();
@@ -62,14 +64,11 @@ void Level::update(){
 }
 
 void Level::handlePress(int key){
-    keySet += key;
+    player->addKey(key);
 }
 
 void Level::handleRelease(int key){
-    keySet -= key;
-    if(key == Qt::Key_Up){
-        player->endJump();
-    }
+    player->removeKey(key);
 }
 
 int distance(Actor * one, GameObject*two){
@@ -110,6 +109,7 @@ void Level::checkCollisions(){
 }
 
 void Level::actorCollisions(Actor * actor, GameObject * plat){
+    printf("WE HAVE A COLLISION\n");
     static int numCollisions = 0;
     QPoint * p = actor->getCenter();
     int actorLeft = p->x() - actor->getRadius();
@@ -193,7 +193,7 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
 */
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
-//        actors[i]->Actor::updateLocation(0,gravity);
+        printf("APPLYING GRAV\n");
         QPoint * p = actors[i]->getCenter();
         int actorBottom = p->y() - actors[i]->getRadius();
         bool applyGrav = true;
