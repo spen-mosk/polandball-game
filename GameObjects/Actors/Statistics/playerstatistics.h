@@ -10,13 +10,13 @@ public:
     std::vector<int> getMeleeInfo();
     std::vector<int> getRangedInfo();
     std::vector<int> getUltInfo();
-    int getJumpCount();
+    int getMaxJumps();
 
 private:
     std::vector<int> meleeAtk;
     std::vector<int> rangedAtk;
     std::vector<int> ultAtk;
-    int jumpCount;
+    int maxJump;
 };
 
 #endif // PLAYERSTATISTICS_H

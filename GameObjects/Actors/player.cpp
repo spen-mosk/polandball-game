@@ -18,12 +18,12 @@ void Player::addKey(int key){
 void Player::removeKey(int key){
     (*keySet) -= key;
     if(key == Qt::Key_Up){
-        endJump();
+        this->maximizeJump();
     }
 }
 
 void Player::endJump(){
-    jumpCount = stats->getJumpCount();
+    jumpCount = stats->getMaxJumps();
     verticalSpeed = 0;
 }
 
@@ -42,11 +42,11 @@ void Player::update(){
 }
 
 void Player::jump(){
-    if(jumpCount < this->stats->getJumpCount()){
+    if(jumpCount < this->stats->getMaxJumps()){
         jumpCount += 1;
         verticalSpeed = jumpCount/15;
         if(verticalSpeed < 1){
-            verticalSpeed = 3;
+            verticalSpeed = 4;
         }
     }
     else{
@@ -61,7 +61,7 @@ void Player::resetJump(){
 
 void Player::maximizeJump(){
     if(jumpCount == 0){
-        jumpCount = 25;
+        jumpCount = this->stats->getMaxJumps();
     }
 }
 
