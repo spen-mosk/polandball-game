@@ -69,3 +69,17 @@ void Player::draw(QPainter * painter){
     painter->setBrush(Qt::blue);
     painter->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
 }
+
+MeleeAttack Player::generateMeleeAttack(){
+    int placeholder = 10;
+    return MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, true);
+}
+
+RangedAttack Player::generateRangedAttack(){
+    int placeholder = 5;
+    return RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, 1, true);
+}
+
+void Player::generateUltAttack(){
+
+}

@@ -1,6 +1,6 @@
 #include <GameObjects/Attacks/meleeattack.h>
 
-MeleeAttack::MeleeAttack(int x, int y, int height, int width, int duration): Attack(x,y,height,width,duration){
+MeleeAttack::MeleeAttack(int x, int y, int height, int width, int duration, bool ally): Attack(x,y,height,width,duration,ally){
 // to have more later
 }
 
