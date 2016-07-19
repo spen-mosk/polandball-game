@@ -86,7 +86,11 @@ int distance(Actor * one, GameObject*two){
 
 void Level::checkCollisions(){
     for(int i = 0; i < actors.size(); i++){
-        std::vector<GameObject *> list = std::vector<GameObject*>();
+        std::vector<GameObject *> list = tree.rangeSearch(actors[i], actors[i]->getRadius());
+        for(int a = 0; a < list.size(); a++){
+            actorCollisions(actors[i], list[a]);
+        }
+        /*
         int num = 5;
         bool haveCollision = false;
         std::vector<GameObject*> near;
@@ -105,6 +109,7 @@ void Level::checkCollisions(){
            }
            num *= 2;
         }while(haveCollision && near.size() == num);
+        */
     }
 }
 

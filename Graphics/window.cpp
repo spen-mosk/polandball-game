@@ -54,11 +54,7 @@ Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
     std::vector<int> vec = std::vector<int>();
-<<<<<<< HEAD
-    PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, vec, vec, vec, 50);
-=======
     PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, vec, vec, vec, 35);
->>>>>>> 28dcf1814cb0a37d66b54343468400717115e33f
     Player * player = new Player(0, 50, stats);
     GameWidget *openGL = new GameWidget(player, this);
     printf("WE Started");

@@ -11,6 +11,7 @@ public:
     ~KDTree();
     void insert(GameObject *);
     std::vector<GameObject *> kNN(GameObject*, int);
+    std::vector<GameObject*> rangeSearch(GameObject*, int);
 private:
     class Node{
         public:
@@ -35,6 +36,7 @@ private:
     int size;
     void insertRecursive(GameObject*, Node*,int level);
     void kNNRecursive(GameObject*, std::priority_queue<Node*>*, int, Node*, int);
+    void rangeRecursive(GameObject*, std::vector<GameObject*>*, int, Node*, int);
 };
 
 #endif // KDTREE_H
