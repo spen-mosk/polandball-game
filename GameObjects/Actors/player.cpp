@@ -6,6 +6,8 @@ Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat){
     this->jumpCount = 0;
     this->verticalSpeed = 0;
     this->stats = stat;
+    this->jumpDelayCount = 0;
+    this->jumpDelay = 28;
 }
 
 Player::~Player(){
@@ -30,8 +32,10 @@ void Player::endJump(){
 void Player::update(){
     int x = Qt::Key_Up;
     if(keySet->contains(x)){
+        if(jumpDelayCount == jumpDelay){
         this->jump();
         this->updateLocation(0, verticalSpeed);
+        }
     }
     if(keySet->contains(Qt::Key_Right)){
         this->updateLocation(stats->getSpeed(),0);
@@ -56,11 +60,19 @@ void Player::jump(){
 void Player::resetJump(){
     jumpCount = 0;
     verticalSpeed = 0;
+    if(jumpDelayCount < jumpDelay){
+        printf("%d\n",jumpDelayCount);
+        jumpDelayCount += 1;
+    }
 }
 
 void Player::maximizeJump(){
+    printf("maximized\n");
     if(jumpCount == 0){
         jumpCount = this->stats->getMaxJumps();
+    }
+    if(jumpCount == this->stats->getMaxJumps()){
+        jumpDelayCount = 0;
     }
 }
 

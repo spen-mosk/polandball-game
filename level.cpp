@@ -55,7 +55,7 @@ void Level::update(){
      * Apply gravity
      */
     for(int i = 0; i < objects.size(); i++){
-        printf("BUT DOES THIS HAPPEN\n");
+       // printf("BUT DOES THIS HAPPEN\n");
         objects[i]->update();
     }
     this->applyGravity();
@@ -87,7 +87,7 @@ int distance(Actor * one, GameObject*two){
 void Level::checkCollisions(){
     for(int i = 0; i < actors.size(); i++){
         std::vector<GameObject *> list = tree.rangeSearch(actors[i], actors[i]->getRadius());
-        printf("SIZE %d\n", list.size());
+       // printf("SIZE %d\n", list.size());
         for(int a = 0; a < list.size(); a++){
             actorCollisions(actors[i], list[a]);
         }
@@ -115,7 +115,7 @@ void Level::checkCollisions(){
 }
 
 void Level::actorCollisions(Actor * actor, GameObject * plat){
-    printf("WE HAVE A COLLISION\n");
+  //  printf("WE HAVE A COLLISION\n");
     static int numCollisions = 0;
     QPoint * p = actor->getCenter();
     int actorLeft = p->x() - actor->getRadius();
@@ -126,10 +126,10 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
     int platRight = plat->getX() + plat->getWidth();
     int platTop = plat->getY();
     int platBottom = plat->getY() - plat->getHeight();
-    printf("%d, %d, %d, %d\n", actorRight, platRight, actorRight, platLeft);
+  //  printf("%d, %d, %d, %d\n", actorRight, platRight, actorRight, platLeft);
     if(actorLeft > platLeft && actorLeft < platRight
             && p->y() < platTop && p->y() > platBottom){
-        printf("Collision from the right: %d\n", numCollisions++);
+    //    printf("Collision from the right: %d\n", numCollisions++);
         int offsetX = plat->getX() + plat->getWidth() - actorLeft;
         actor->updateLocation(offsetX,0);
     }
@@ -137,19 +137,19 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
             && p->y() < platTop && p->y() > platBottom){
         int offsetX = actorRight - platLeft;
         actor->updateLocation(-offsetX,0);
-        printf("Collision from the left %d\n", numCollisions++);
+   //     printf("Collision from the left %d\n", numCollisions++);
     }
     else if(actorTop < platTop && actorTop > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = actorTop - platBottom;
         actor->updateLocation(0, -offsetY);
-        printf("Collision from the bottom %d\n", numCollisions++);
+//        printf("Collision from the bottom %d\n", numCollisions++);
     }
     else if(actorBottom < platTop && actorBottom > platBottom
             && p->x() < platRight && p->x() > platLeft){
         int offsetY = platTop - actorBottom;
         actor->updateLocation(0, offsetY);
-        printf("Collision from the top %d\n", numCollisions++);
+ //       printf("Collision from the top %d\n", numCollisions++);
     }
 }
     /*
@@ -199,7 +199,7 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
 */
 void Level::applyGravity(){
     for(int i = 0; i < actors.size(); i++){
-        printf("APPLYING GRAV\n");
+ //       printf("APPLYING GRAV\n");
         QPoint * p = actors[i]->getCenter();
         int actorBottom = p->y() - actors[i]->getRadius();
         bool applyGrav = true;

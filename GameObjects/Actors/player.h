@@ -33,6 +33,8 @@ private:
     int jumpCount;
     PlayerStatistics * stats;
     QSet<int> * keySet;
+    int jumpDelay;
+    int jumpDelayCount;
 };
 
 #endif // PLAYER_H
