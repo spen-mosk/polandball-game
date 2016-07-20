@@ -29,6 +29,7 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
     objects.push_back(player);
     this->player = player;
     actors.push_back(player);
+    allObjs = KDTree();
     for(int i = 0; i < objects.size(); i++){
         if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
            actors.push_back(v);
@@ -39,14 +40,15 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
                tree.insert(v);
             }
         }
+        allObjs.insert(objects[i]);
     }
 }
 
 Level::~Level(){
 }
 
-std::vector<GameObject *> Level::getObjects(){
-    return objects;
+KDTree * Level::getObjects(){
+    return &allObjs;
 }
 
 void Level::update(){

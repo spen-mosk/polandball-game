@@ -20,7 +20,7 @@ public:
     void update();
     void applyGravity();
     void ActorPlatformCollisions();
-    std::vector<GameObject *> getObjects();
+    KDTree * getObjects();
 
 public slots:
     void handlePress(int);
@@ -31,8 +31,8 @@ private:
     std::vector<Actor *> actors;
     std::vector<Platform *> plats;
     Player * player;
-    //this is stupid, change to double later
     KDTree tree;
+    KDTree allObjs;
     void checkCollisions();
     void actorCollisions(Actor*, GameObject*);
     int gravity = -1;

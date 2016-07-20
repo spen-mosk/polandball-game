@@ -39,8 +39,6 @@
 ****************************************************************************/
 
 #include "gamewidget.h"
-
-
 #include <QPainter>
 #include <QTimer>
 #include <stdio.h>

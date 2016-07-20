@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include <vector>
+#include "GameObjects/kdtree.h"
 #include "GameObjects/Actors/actor.h"
 #include "GameObjects/Actors/player.h"
 #include "GameObjects/gameobject.h"
@@ -14,7 +15,7 @@ class Camera
 public:
     Camera(int, QWidget *);
     ~Camera();
-    std::vector<GameObject*> * snapshot(Player *, std::vector<GameObject *>);
+    std::vector<GameObject*> * snapshot(Player *, KDTree *);
 
 
 private:

@@ -14,33 +14,24 @@ Camera::Camera(int meters, QWidget * parent)
 Camera::~Camera(){
 }
 
-std::vector<GameObject *> * Camera::snapshot(Player * center, std::vector<GameObject *> actors){
+std::vector<GameObject *> * Camera::snapshot(Player * center, KDTree * tree){
+    std::vector<GameObject*> actors = tree->rangeSearch(center, metersPerScreen / 2);
     double leftX = center->getCenter()->x() - (metersPerScreen / 2);
-    double rightX = center->getCenter()->x() + (metersPerScreen / 2);
-    double bottomY = center->getCenter()->y() - ((screenHeight / pixPerMeter) / 2);
     double topY = center->getCenter()->y() + ((screenHeight / pixPerMeter) / 2);
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
-        if(current->getX() + current->getWidth() > leftX && current->getX() < rightX){
-            if(current->getY() - current->getHeight() < topY && current->getY() > bottomY){
-                //convert
-                //add to a list somehow
-                double xDisplacement = current->getX() - leftX;
-                double yDisplacement = topY - current->getY();
-                double xPixels = xDisplacement * pixPerMeter;
-                double yPixels = yDisplacement * pixPerMeter;
-              //  printf("%d",pixPerMeter);
-               // printf("x: %d, y: %d\n", xDisplacement * pixPerMeter, yDisplacement * pixPerMeter);
-                current->drawingX = xPixels;
-                current->drawingY = yPixels;
-                double heightPixels = current->getHeight() * pixPerMeter;
-                double widthPixels = current->getWidth() * pixPerMeter;
-                current->drawingWidth = widthPixels;
-                current->drawingHeight = heightPixels;
-                toDraw->push_back(current);
-            }
-        }
+        double xDisplacement = current->getX() - leftX;
+        double yDisplacement = topY - current->getY();
+        double xPixels = xDisplacement * pixPerMeter;
+        double yPixels = yDisplacement * pixPerMeter;
+        current->drawingX = xPixels;
+        current->drawingY = yPixels;
+        double heightPixels = current->getHeight() * pixPerMeter;
+        double widthPixels = current->getWidth() * pixPerMeter;
+        current->drawingWidth = widthPixels;
+        current->drawingHeight = heightPixels;
+        toDraw->push_back(current);
     }
     center->drawingX = screenWidth / 2;
     center->drawingY = screenHeight / 2;
