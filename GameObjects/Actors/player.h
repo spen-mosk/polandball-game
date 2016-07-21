@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <QSet>
+#include <vector>
 #include "actor.h"
 #include "Statistics/playerstatistics.h"
 #include "GameObjects/Attacks/attack.h"
@@ -25,7 +26,7 @@ public:
     void removeKey(int);
     MeleeAttack *generateMeleeAttack();
     RangedAttack *generateRangedAttack();
-    void generateUltAttack();
+    Attack* generateUltAttack();
 
 
 private:

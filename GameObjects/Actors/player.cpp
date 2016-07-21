@@ -91,6 +91,7 @@ RangedAttack* Player::generateRangedAttack(){
     return new RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, 1, true);
 }
 
-void Player::generateUltAttack(){
-
+Attack* Player::generateUltAttack(){
+    Attack* ult = new MeleeAttack(1,1,1,1,1,true);
+    return ult;
 }
