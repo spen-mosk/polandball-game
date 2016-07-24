@@ -21,11 +21,15 @@ public:
     virtual void jump() = 0;
     virtual void resetJump() = 0;
     virtual void maximizeJump() = 0;
+    bool isFacingRight();
+    void faceRight();
+    void faceLeft();
 
 private:
     int xMove;
     int yMove;
     ActorStatistics * stats;
+    bool direction;
 };
 
 #endif // ACTOR_H

@@ -39,9 +39,13 @@ void Player::update(){
     }
     if(keySet->contains(Qt::Key_Right)){
         this->updateLocation(stats->getSpeed(),0);
+        this->faceRight();
+        printf("facing right\n");
     }
     if(keySet->contains(Qt::Key_Left)){
         this->updateLocation(-stats->getSpeed(), 0);
+        this->faceLeft();
+        printf("facing left\n");
     }
 }
 
