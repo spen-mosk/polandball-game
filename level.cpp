@@ -8,47 +8,27 @@
 
 Level::Level(Player * player)
 {
-    objects.push_back(player);
     this->player = player;
+    tree = KDTree();
+    tree.insert(player);
     this->gravity = -1;
-    for(int i = 0; i < objects.size(); i++){
-        if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
-           actors.push_back(v);
-        }
-        else{
-            if(Platform* v = dynamic_cast<Platform*>(objects[i])){
-               plats.push_back(v);
-            }
-        }
-    }
 }
 
 Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
-    this->objects = levelObs;
     gravity = grav;
-    objects.push_back(player);
-    this->player = player;
-    actors.push_back(player);
-    allObjs = KDTree();
-    for(int i = 0; i < objects.size(); i++){
-        if(Actor* v = dynamic_cast<Actor*>(objects[i])) {
-           actors.push_back(v);
-        }
-        else{
-            if(Platform* v = dynamic_cast<Platform*>(objects[i])) {
-               plats.push_back(v);
-               tree.insert(v);
-            }
-        }
-        allObjs.insert(objects[i]);
+    //allObjs = KDTree();
+    for(int i = 0; i < levelObs.size(); i++){
+        tree.insert(levelObs[i]);
     }
+    tree.insert(player);
+    this->player = player;
 }
 
 Level::~Level(){
 }
 
 KDTree * Level::getObjects(){
-    return &allObjs;
+    return &tree;
 }
 
 void Level::update(){
@@ -56,9 +36,9 @@ void Level::update(){
      * Update all actors
      * Apply gravity
      */
-    for(int i = 0; i < objects.size(); i++){
-       // printf("BUT DOES THIS HAPPEN\n");
-        objects[i]->update();
+    for(int i = 0; i < tree.size(); i++){
+        GameObject * obj = tree.get(i);
+        obj->update();
     }
     this->applyGravity();
     //this->ActorPlatformCollisions();
@@ -67,6 +47,16 @@ void Level::update(){
 
 void Level::handlePress(int key){
     player->addKey(key);
+    if(key == Qt::Key_Z){
+        TempGameObject * attack = player->primaryAttack();
+        attack->registerObserver(this);
+        tree.insert(attack);
+    }
+}
+
+void Level::onDelete(DeleteSubject * willDelete){
+    TempGameObject* toDelete = (TempGameObject*)willDelete;
+    tree.remove(toDelete);
 }
 
 void Level::handleRelease(int key){
@@ -87,38 +77,24 @@ int distance(Actor * one, GameObject*two){
 }
 
 void Level::checkCollisions(){
-    for(int i = 0; i < actors.size(); i++){
-        std::vector<GameObject *> list = tree.rangeSearch(actors[i], actors[i]->getRadius());
-       // printf("SIZE %d\n", list.size());
+    std::vector<GameObject*> objs = std::vector<GameObject*>();
+    for(int i = 0; i < tree.size(); i++){
+        GameObject * obj = tree.get(i);
+        int radius = obj->getHeight() < obj->getWidth() ? obj->getHeight() : obj->getWidth();
+        tree.remove(obj);
+        objs.push_back(obj);
+        std::vector<GameObject *> list = tree.rangeSearch(obj, radius);
         for(int a = 0; a < list.size(); a++){
-            actorCollisions(actors[i], list[a]);
+            list[a]->initialCollision(obj);
         }
-        /*
-        int num = 5;
-        bool haveCollision = false;
-        std::vector<GameObject*> near;
-        do{
-           near = (tree.kNN(actors[i], num));
-           printf("SIZE %d\n", near.size());
-           for(int a = near.size()-1; a >=0; a--){
-              printf("NEAR[%d] x:%d y:%d\n", a, near[a]->getX(), near[a]->getY());
-              if(distance(actors[i], near[a]) < actors[i]->getRadius()){
-                  actorCollisions(actors[i], near[a]);
-                  haveCollision = true;
-              }
-              else{
-                  haveCollision = false;
-              }
-           }
-           num *= 2;
-        }while(haveCollision && near.size() == num);
-        */
     }
+    for(int b = 0; b < objs.size(); b++){
+        tree.insert(objs[b]);
+    }
+
 }
 
 void Level::actorCollisions(Actor * actor, GameObject * plat){
-  //  printf("WE HAVE A COLLISION\n");
-    static int numCollisions = 0;
     QPoint * p = actor->getCenter();
     int actorLeft = p->x() - actor->getRadius();
     int actorRight = p->x() + actor->getRadius();
@@ -128,10 +104,8 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
     int platRight = plat->getX() + plat->getWidth();
     int platTop = plat->getY();
     int platBottom = plat->getY() - plat->getHeight();
-  //  printf("%d, %d, %d, %d\n", actorRight, platRight, actorRight, platLeft);
     if(actorLeft > platLeft && actorLeft < platRight
             && p->y() < platTop && p->y() > platBottom){
-    //    printf("Collision from the right: %d\n", numCollisions++);
         int offsetX = plat->getX() + plat->getWidth() - actorLeft;
         actor->updateLocation(offsetX,0);
     }
@@ -200,7 +174,7 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
 }
 */
 void Level::applyGravity(){
-    for(int i = 0; i < actors.size(); i++){
+    for(int i = 0; i < tree.size(); i++){
  //       printf("APPLYING GRAV\n");
         QPoint * p = actors[i]->getCenter();
         int actorBottom = p->y() - actors[i]->getRadius();

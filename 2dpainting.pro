@@ -1,4 +1,4 @@
-QT          += widgets
+QT += widgets
 
 HEADERS     = \
               Graphics/window.h \
@@ -24,7 +24,9 @@ HEADERS     = \
     GameObjects/Attacks/Statistics/attackstatistics.h \
     GameObjects/Attacks/Statistics/meleeattackstatistics.h \
     GameObjects/Attacks/Statistics/rangedattackstatistics.h \
-    GameObjects/Attacks/Statistics/ultimateattackstatistics.h
+    GameObjects/Attacks/Statistics/ultimateattackstatistics.h \
+    GameObjects/deleteobserver.h \
+    GameObjects/deletesubject.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -50,7 +52,8 @@ SOURCES     = \
     GameObjects/Attacks/Statistics/attackstatistics.cpp \
     GameObjects/Attacks/Statistics/meleeattackstatistics.cpp \
     GameObjects/Attacks/Statistics/rangedattackstatistics.cpp \
-    GameObjects/Attacks/Statistics/ultimateattackstatistics.cpp
+    GameObjects/Attacks/Statistics/ultimateattackstatistics.cpp \
+    GameObjects/deletesubject.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

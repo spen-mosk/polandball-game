@@ -8,8 +8,9 @@
 #include <QSet>
 #include "GameObjects/kdtree.h"
 #include <QObject>
+#include "GameObjects/deletesubject.h"
 
-class Level : public QObject
+class Level : public QObject, public DeleteObserver
 {
     Q_OBJECT
 
@@ -20,6 +21,7 @@ public:
     void update();
     void applyGravity();
     void ActorPlatformCollisions();
+    void onDelete(DeleteSubject*);
     KDTree * getObjects();
 
 public slots:
@@ -27,12 +29,8 @@ public slots:
     void handleRelease(int);
 
 private:
-    std::vector<GameObject *> objects;
-    std::vector<Actor *> actors;
-    std::vector<Platform *> plats;
     Player * player;
     KDTree tree;
-    KDTree allObjs;
     void checkCollisions();
     void actorCollisions(Actor*, GameObject*);
     int gravity = -1;

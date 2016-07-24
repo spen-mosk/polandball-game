@@ -1,25 +1,27 @@
 #include "playerstatistics.h"
+#include "GameObjects/Attacks/Statistics/attackstatistics.h"
 
-PlayerStatistics::PlayerStatistics(int radius, int speed, int maxhealth, bool ally, std::vector<int> melee, std::vector<int> ranged, std::vector<int> ult, int jumps):
+PlayerStatistics::PlayerStatistics(int radius, int speed, int maxhealth, bool ally, AttackStatistics * attack1,
+                                   AttackStatistics* attack2, AttackStatistics* attack3, int jumps):
 ActorStatistics(radius, speed, maxhealth, ally){
-    this->meleeAtk = melee;
+    this->primary = attack1;
     this->maxJump = jumps;
-    this->rangedAtk = ranged;
-    this->ultAtk = ult;
+    this->secondary = attack2;
+    this->tertiary = attack3;
 }
 
-std::vector<int> PlayerStatistics::getMeleeInfo(){
-    return meleeAtk;
+AttackStatistics* PlayerStatistics::getMeleeInfo(){
+    return primary;
 }
 
 int PlayerStatistics::getMaxJumps(){
     return maxJump;
 }
 
-std::vector<int> PlayerStatistics::getRangedInfo(){
-    return rangedAtk;
+AttackStatistics* PlayerStatistics::getRangedInfo(){
+    return secondary;
 }
 
-std::vector<int> PlayerStatistics::getUltInfo(){
-    return ultAtk;
+AttackStatistics* PlayerStatistics::getUltInfo(){
+    return tertiary;
 }

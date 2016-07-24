@@ -1,15 +1,30 @@
 #include "attackstatistics.h"
 
-AttackStatistics::AttackStatistics(int h, int w, int d, bool allied)
+AttackStatistics::AttackStatistics(int h, int w, int d, bool allied, int dmg, int speed, bool isMelee)
 {
     this->height = h;
+    this->damage = dmg;
     this->width = w;
     this->maxDuration = d;
     this->ally = allied;
+    this->speed = speed;
+    this->melee = isMelee;
 }
 
 int AttackStatistics::getHeight(){
     return height;
+}
+
+int AttackStatistics::getSpeed(){
+    return speed;
+}
+
+bool AttackStatistics::isMelee(){
+    return melee;
+}
+
+int AttackStatistics::getDamage(){
+    return damage;
 }
 
 int AttackStatistics::getWidth(){

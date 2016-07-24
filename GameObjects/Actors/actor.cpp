@@ -13,6 +13,20 @@ void Actor::updateLocation(int xOffset, int yOffset){
     setY(this->getY() + yOffset);
 }
 
+void Actor::handleCollision(GameObject * obj, bool first){
+    if(first){
+        obj->secondCollision(this);
+    }
+}
+
+void Actor::setFacing(bool left){
+    this->faceLeft = left;
+}
+
+bool Actor::facingLeft(){
+    return faceLeft;
+}
+
 int Actor::getRadius(){
     return stats->getRadius();
 }

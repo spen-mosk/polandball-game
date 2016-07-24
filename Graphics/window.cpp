@@ -42,6 +42,7 @@
 #include "GameObjects/Actors/player.h"
 #include "window.h"
 #include "GameObjects/Actors/Statistics/playerstatistics.h"
+#include "GameObjects/Attacks/Statistics/attackstatistics.h"
 
 #include <QGridLayout>
 #include <QLabel>
@@ -53,8 +54,8 @@
 Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
-    std::vector<int> vec = std::vector<int>();
-    PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, vec, vec, vec, 35);
+    AttackStatistics * tack = new AttackStatistics(10, 10, 10, true, 10, 1, true);
+    PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, tack, tack, tack, 35);
     Player * player = new Player(0, 50, stats);
     GameWidget *openGL = new GameWidget(player, this);
     printf("WE Started");

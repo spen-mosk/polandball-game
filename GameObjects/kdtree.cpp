@@ -7,11 +7,234 @@
 KDTree::KDTree()
 {
    this->size = 0;
+   this->elems = std::vector<GameObject*>();
 }
 
 KDTree::~KDTree(){
     delete root;
 }
+
+KDTree::get(int index){
+    return this->elems[index];
+}
+
+KDTree::Node ** KDTree::findNode(GameObject* obj, int level, Node * current, Node * parent){
+    if(current == 0){
+        return NULL;
+    }
+    if((obj->getX() == current->data->getX() && obj->getY() == current->data->getY())){
+        Node* returnable[2];
+        current->priority = level;
+        if(parent != 0){
+            parent->priority = level -1;
+        }
+        returnable[0] = current;
+        returnable[1] = parent;
+        return returnable;
+    }
+    if(level % 2 == 0){
+        if(obj->getX() < current->data->getX()){
+            return findNode(obj, ++level, current->left, current);
+        }
+        else{
+            return findNode(obj, ++level, current->right, current);
+        }
+    }
+    else{
+        if(obj->getY() < current->data->getY()){
+            return findNode(obj, ++level, current->left, current);
+        }
+        else{
+            return findNode(obj, ++level, current->right, current);
+        }
+    }
+}
+
+void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
+    int level = parent->priority;
+    if(toDelete->left == 0 && toDelete->right == 0){
+        if(level % 2 == 0){
+           if(toDelete->data->getX() < parent->data->getX()){
+               parent->left = 0;
+           }
+           else{
+               parent->right = 0;
+           }
+        }
+        else{
+           if(toDelete->data->getY() < parent->data->getY()){
+               parent->left = 0;
+           }
+           else{
+               parent->right = 0;
+           }
+        }
+        if(deletion){
+            delete toDelete;
+        }
+    }
+    else if(toDelete->left == 0){
+        if(level % 2 == 0){
+           if(toDelete->data->getX() < parent->data->getX()){
+               parent->left = toDelete->right;
+           }
+           else{
+               parent->right = toDelete->right;
+           }
+        }
+        else{
+           if(toDelete->data->getY() < parent->data->getY()){
+               parent->left = toDelete->right;
+           }
+           else{
+               parent->right = toDelete->right;
+           }
+        }
+        toDelete->right = 0;
+        if(deletion){
+            delete toDelete;
+        }
+    }
+    else if(toDelete->right == 0){
+        if(level % 2 == 0){
+           if(toDelete->data->getX() < parent->data->getX()){
+               parent->left = toDelete->left;
+           }
+           else{
+               parent->right = toDelete->left;
+           }
+        }
+        else{
+           if(toDelete->data->getY() < parent->data->getY()){
+               parent->left = toDelete->left;
+           }
+           else{
+               parent->right = toDelete->left;
+           }
+        }
+        toDelete->left = 0;
+        if(deletion){
+            delete toDelete;
+        }
+    }
+    else{
+        Node * replace;
+        Node * replaceParent;
+        int currentLevel = level +1;
+        toDelete->priority = currentLevel;
+        if(level % 2 == 0){
+            std::vector<Node*> *children = new std::vector<Node*>();
+            toDelete->left->priority = ++currentLevel;
+            children->push_back(toDelete->left);
+            while(children->size() > 0){
+                std::vector<Node*> *newChildren = new std::vector<Node*>();
+                for(int i = 0; i < children->size(); i++){
+                    Node * current = (*children)[i];
+                    currentLevel = current->priority;
+                    if(current->left != 0){
+                        current->left->priority = currentLevel + 1;
+                        if(replace == 0 || current->left->data->getX() > replace->data->getX()){
+                            replace = current->left;
+                            replaceParent = current;
+                        }
+                        newChildren->push_back(current->left);
+                    }
+                    if(current->right != 0){
+                        current->right->priority = currentLevel + 1;
+                        if(replace == 0 || current->right->data->getX() > replace->data->getX()){
+                            replace = current->right;
+                            replaceParent = current;
+                        }
+                        newChildren->push_back(current->right);
+                    }
+                }
+                children = newChildren;
+            }
+            Node * replacement = new Node();
+            replacement->data = replace->data;
+            replacement->priority = replace->priority;
+            replacement->left = toDelete->left;
+            replacement->right = toDelete->right;
+            if(toDelete->data->getX() < parent->data->getX()){
+                parent->left = replacement;
+            }
+            else{
+                parent->right = replacement;
+            }
+            toDelete->left = 0;
+            toDelete->right = 0;
+            if(deletion){
+                delete toDelete;
+            }
+            deleteNode(replace, parent, deletion);
+        }
+        else{
+            std::vector<Node*> *children = new std::vector<Node*>();
+            toDelete->left->priority = ++currentLevel;
+            children->push_back(toDelete->left);
+            while(children->size() > 0){
+                std::vector<Node*> *newChildren = new std::vector<Node*>();
+                for(int i = 0; i < children->size(); i++){
+                    Node * current = (*children)[i];
+                    currentLevel = current->priority;
+                    if(current->left != 0){
+                        current->left->priority = currentLevel + 1;
+                        if(replace == 0 || current->left->data->getY() > replace->data->getY()){
+                            replace = current->left;
+                            replaceParent = current;
+                        }
+                        newChildren->push_back(current->left);
+                    }
+                    if(current->right != 0){
+                        current->right->priority = currentLevel + 1;
+                        if(replace == 0 || current->right->data->getY() > replace->data->getY()){
+                            replace = current->right;
+                            replaceParent = current;
+                        }
+                        newChildren->push_back(current->right);
+                    }
+                }
+                children = newChildren;
+            }
+            Node * replacement = new Node();
+            replacement->data = replace->data;
+            replacement->priority = replace->priority;
+            replacement->left = toDelete->left;
+            replacement->right = toDelete->right;
+            if(toDelete->data->getY() < parent->data->getY()){
+                parent->left = replacement;
+            }
+            else{
+                parent->right = replacement;
+            }
+            toDelete->left = 0;
+            toDelete->right = 0;
+            if(deletion){
+                delete toDelete;
+            }
+            deleteNode(replace, parent, deletion);
+        }
+    }
+}
+
+void KDTree::removeObj(GameObject * obj, bool deletion){
+    Node ** data = findNode(obj, 0, root, 0);
+    if(data != NULL){
+        elems.erase(std::remove(elems.begin(), elems.end(), obj));
+        size--;
+        deleteNode(data[0], data[1], deletion);
+    }
+}
+
+void KDTree::remove(GameObject * obj){
+    removeObj(obj, false);
+}
+
+void KDTree::erase(GameObject* obj){
+    removeObj(obj, true);
+}
+
+
 
 
 std::vector<GameObject*> KDTree::kNN(GameObject * obj, int k){

@@ -2,20 +2,23 @@
 #define PLAYERSTATISTICS_H
 #include <vector>
 #include "actorstatistics.h"
+#include "GameObjects/Attacks/Statistics/meleeattackstatistics.h"
+#include "GameObjects/Attacks/Statistics/rangedattackstatistics.h"
+#include "GameObjects/Attacks/Statistics/ultimateattackstatistics.h"
 
 class PlayerStatistics : public ActorStatistics
 {
 public:
-    PlayerStatistics(int, int, int, bool, std::vector<int>, std::vector<int>, std::vector<int>, int);
-    std::vector<int> getMeleeInfo();
-    std::vector<int> getRangedInfo();
-    std::vector<int> getUltInfo();
+    PlayerStatistics(int, int, int, bool, AttackStatistics*, AttackStatistics*, AttackStatistics*, int);
+    AttackStatistics* getMeleeInfo();
+    AttackStatistics* getRangedInfo();
+    AttackStatistics* getUltInfo();
     int getMaxJumps();
 
 private:
-    std::vector<int> meleeAtk;
-    std::vector<int> rangedAtk;
-    std::vector<int> ultAtk;
+    AttackStatistics* primary;
+    AttackStatistics* secondary;
+    AttackStatistics* tertiary;
     int maxJump;
 };
 

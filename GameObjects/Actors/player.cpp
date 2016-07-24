@@ -38,10 +38,12 @@ void Player::update(){
         }
     }
     if(keySet->contains(Qt::Key_Right)){
-        this->updateLocation(stats->getSpeed(),0);
+        this->updateLocation(stats->getSpeed(), 0);
+        setFacing(false);
     }
     if(keySet->contains(Qt::Key_Left)){
         this->updateLocation(-stats->getSpeed(), 0);
+        setFacing(true);
     }
 }
 
@@ -81,17 +83,25 @@ void Player::draw(QPainter * painter){
     painter->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
 }
 
-MeleeAttack* Player::generateMeleeAttack(){
-    int placeholder = 10;
-    return new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, true);
+MeleeAttack* Player::primaryAttack(){
+    AttackStatistics* melle = stats->getMeleeInfo();
+    return new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + melle->getHeight()/2, melle, this);
 }
 
-RangedAttack* Player::generateRangedAttack(){
-    int placeholder = 5;
-    return new RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + placeholder/2, placeholder,placeholder*2,placeholder, 1, true);
+RangedAttack* Player::secondaryAttack(){
+    AttackStatistics* melle = stats->getRangedInfo();
+    return new RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + melle->getHeight()/2, melle);
 }
 
-Attack* Player::generateUltAttack(){
-    Attack* ult = new MeleeAttack(1,1,1,1,1,true);
-    return ult;
+Attack* Player::ultAttack(){
+    AttackStatistics *ult = stats->getUltInfo();
+    Attack* attack;
+    if(ult->isMelee()){
+        attack = new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + ult->getHeight()/2, ult, this);
+    }
+    else{
+        attack = new RangedAttack(this->getCenter()->x(),this->getCenter()->y() + ult->getHeight()/2, ult);
+
+    }
+    return attack;
 }

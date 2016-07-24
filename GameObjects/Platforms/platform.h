@@ -14,6 +14,8 @@ public:
     virtual void update();
     virtual void onContact(Actor *){};
     virtual void surfaceEffect(Actor *){};
+protected:
+    void handleCollision(GameObject*, bool);
 
 private:
     int platType;

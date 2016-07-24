@@ -16,15 +16,21 @@ public:
     QPoint * getPosition();
     bool contains(QPoint * point);
     QPoint * getCenter();
+    bool facingLeft();
+    void setFacing(bool left);
     void updateLocation(int,int);
     int getRadius();
     virtual void jump() = 0;
     virtual void resetJump() = 0;
     virtual void maximizeJump() = 0;
 
+protected:
+    void handleCollision(GameObject*, bool);
+
 private:
     int xMove;
     int yMove;
+    bool faceLeft = false;
     ActorStatistics * stats;
 };
 
