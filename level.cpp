@@ -40,7 +40,7 @@ void Level::update(){
         GameObject * obj = tree.get(i);
         obj->update();
     }
-    this->applyGravity();
+    //this->applyGravity();
     //this->ActorPlatformCollisions();
     this->checkCollisions();
 }
@@ -173,6 +173,7 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
 
 }
 */
+/*
 void Level::applyGravity(){
     for(int i = 0; i < tree.size(); i++){
  //       printf("APPLYING GRAV\n");
@@ -192,3 +193,4 @@ void Level::applyGravity(){
         }
     }
 }
+*/

@@ -19,7 +19,7 @@ public:
     Level(Player *, std::vector<GameObject *>, int);
     virtual ~Level();
     void update();
-    void applyGravity();
+//    void applyGravity();
     void ActorPlatformCollisions();
     void onDelete(DeleteSubject*);
     KDTree * getObjects();

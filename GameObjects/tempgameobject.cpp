@@ -9,6 +9,7 @@ int TempGameObject::getDuration(){
 }
 
 void TempGameObject::update(){
+    printf("existence %d\n", existence);
     if(++existence >= duration){
         updateObservers();
     }
@@ -18,6 +19,6 @@ int TempGameObject::getExistence(){
     return existence;
 }
 
-void TempGameObject::handleCollision(GameObject * obj){
+void TempGameObject::handleCollision(GameObject * obj, bool boolean){
 
 }

@@ -2,11 +2,11 @@
 #include <QPoint>
 #include <queue>
 #include <vector>
+#include <limits.h>
 #include "level.h"
 
 KDTree::KDTree()
 {
-   this->size = 0;
    this->elems = std::vector<GameObject*>();
 }
 
@@ -14,7 +14,7 @@ KDTree::~KDTree(){
     delete root;
 }
 
-KDTree::get(int index){
+GameObject * KDTree::get(int index){
     return this->elems[index];
 }
 
@@ -51,7 +51,13 @@ KDTree::Node ** KDTree::findNode(GameObject* obj, int level, Node * current, Nod
 }
 
 void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
-    int level = parent->priority;
+    int level;
+    if(parent == 0){
+        level = -1;
+    }
+    else{
+        level = parent->priority;
+    }
     if(toDelete->left == 0 && toDelete->right == 0){
         if(level % 2 == 0){
            if(toDelete->data->getX() < parent->data->getX()){
@@ -118,11 +124,11 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
         }
     }
     else{
-        Node * replace;
-        Node * replaceParent;
+        Node * replace = toDelete->left;
+        Node * replaceParent = toDelete;
         int currentLevel = level +1;
         toDelete->priority = currentLevel;
-        if(level % 2 == 0){
+        if(currentLevel % 2 == 0){
             std::vector<Node*> *children = new std::vector<Node*>();
             toDelete->left->priority = ++currentLevel;
             children->push_back(toDelete->left);
@@ -155,7 +161,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
             replacement->priority = replace->priority;
             replacement->left = toDelete->left;
             replacement->right = toDelete->right;
-            if(toDelete->data->getX() < parent->data->getX()){
+            if(parent == 0){
+                root = replacement;
+            }
+            else if(toDelete->data->getX() < parent->data->getX()){
                 parent->left = replacement;
             }
             else{
@@ -166,7 +175,7 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
             if(deletion){
                 delete toDelete;
             }
-            deleteNode(replace, parent, deletion);
+            deleteNode(replace, replaceParent, deletion);
         }
         else{
             std::vector<Node*> *children = new std::vector<Node*>();
@@ -220,9 +229,8 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
 void KDTree::removeObj(GameObject * obj, bool deletion){
     Node ** data = findNode(obj, 0, root, 0);
     if(data != NULL){
-        elems.erase(std::remove(elems.begin(), elems.end(), obj));
-        size--;
         deleteNode(data[0], data[1], deletion);
+        elems.erase(std::remove(elems.begin(), elems.end(), obj));
     }
 }
 
@@ -248,6 +256,10 @@ std::vector<GameObject*> KDTree::kNN(GameObject * obj, int k){
         list.push_back(node->data);
     }
     return list;
+}
+
+int KDTree::size(){
+    return elems.size();
 }
 
 std::vector<GameObject*> KDTree::rangeSearch(GameObject * obj, int range){
@@ -348,13 +360,14 @@ void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, in
 void KDTree::insert(GameObject * obj){
     Node *node = new Node();
     node->data = obj;
-    if(size == 0){
+    if(size() == 0){
+        this->elems.push_back(obj);
         root = node;
     }
     else{
         insertRecursive(obj, root, 0);
+        this->elems.push_back(obj);
     }
-    size++;
 }
 
 void KDTree::insertRecursive(GameObject* obj,Node * compare,  int level){

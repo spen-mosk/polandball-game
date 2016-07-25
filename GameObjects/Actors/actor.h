@@ -16,8 +16,8 @@ public:
     QPoint * getPosition();
     bool contains(QPoint * point);
     QPoint * getCenter();
-    bool facingLeft();
     void setFacing(bool left);
+    bool facingLeft();
     void updateLocation(int,int);
     int getRadius();
     virtual void jump() = 0;
@@ -30,8 +30,8 @@ protected:
 private:
     int xMove;
     int yMove;
-    bool faceLeft = false;
     ActorStatistics * stats;
+    bool faceLeft;
 };
 
 #endif // ACTOR_H

@@ -26,7 +26,9 @@ HEADERS     = \
     GameObjects/Attacks/Statistics/rangedattackstatistics.h \
     GameObjects/Attacks/Statistics/ultimateattackstatistics.h \
     GameObjects/deleteobserver.h \
-    GameObjects/deletesubject.h
+    GameObjects/deletesubject.h \
+    GameObjects/Actors/Statistics/enemystatistics.h \
+    GameObjects/Actors/enemy.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -53,7 +55,9 @@ SOURCES     = \
     GameObjects/Attacks/Statistics/meleeattackstatistics.cpp \
     GameObjects/Attacks/Statistics/rangedattackstatistics.cpp \
     GameObjects/Attacks/Statistics/ultimateattackstatistics.cpp \
-    GameObjects/deletesubject.cpp
+    GameObjects/deletesubject.cpp \
+    GameObjects/Actors/Statistics/enemystatistics.cpp \
+    GameObjects/Actors/enemy.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

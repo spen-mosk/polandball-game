@@ -18,11 +18,11 @@ QPoint * GameObject::getDrawingPosition(){
     return point;
 }
 
-void GameObject::initialCollision(GameObject*){
+void GameObject::initialCollision(GameObject* obj){
     this->handleCollision(obj, true);
 }
 
-void GameObject::secondCollision(GameObject*){
+void GameObject::secondCollision(GameObject* obj){
     this->handleCollision(obj, false);
 }
 
