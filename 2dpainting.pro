@@ -28,7 +28,8 @@ HEADERS     = \
     GameObjects/deleteobserver.h \
     GameObjects/deletesubject.h \
     GameObjects/Actors/Statistics/enemystatistics.h \
-    GameObjects/Actors/enemy.h
+    GameObjects/Actors/enemy.h \
+    ourmath.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -57,7 +58,8 @@ SOURCES     = \
     GameObjects/Attacks/Statistics/ultimateattackstatistics.cpp \
     GameObjects/deletesubject.cpp \
     GameObjects/Actors/Statistics/enemystatistics.cpp \
-    GameObjects/Actors/enemy.cpp
+    GameObjects/Actors/enemy.cpp \
+    ourmath.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

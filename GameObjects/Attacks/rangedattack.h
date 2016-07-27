@@ -4,7 +4,7 @@
 
 class RangedAttack: public Attack{
 public:
-    RangedAttack(int,int, AttackStatistics*);
+    RangedAttack(int,int, bool, AttackStatistics*);
     virtual void draw(QPainter *);
     virtual void update();
     int getSpeed();

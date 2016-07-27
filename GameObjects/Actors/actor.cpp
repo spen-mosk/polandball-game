@@ -3,7 +3,7 @@
 #include <vector>
 
 Actor::Actor(int a, int b, ActorStatistics * stats)
-    :GameObject(a, b, stats->getRadius(), stats->getRadius()){
+    :GameObject(a, b, stats->getRadius(), stats->getRadius(), stats->getRadius()){
     this->stats = stats;
     QPoint * center = this->getCenter();
 }
@@ -16,6 +16,12 @@ void Actor::updateLocation(int xOffset, int yOffset){
 void Actor::handleCollision(GameObject * obj, bool first){
     if(first){
         obj->secondCollision(this);
+    }
+}
+
+void Actor::update(){
+    if(getGrav()){
+        this->updateLocation(0, -stats->getGravity());
     }
 }
 

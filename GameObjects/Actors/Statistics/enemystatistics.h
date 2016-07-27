@@ -9,7 +9,7 @@
 class EnemyStatistics : public ActorStatistics
 {
 public:
-    EnemyStatistics(int, int, int, bool, AttackStatistics*, int);
+    EnemyStatistics(int, int, int, bool, int,AttackStatistics*, int);
     AttackStatistics* getAttackInfo();
     int getMaxJumps();
 private:

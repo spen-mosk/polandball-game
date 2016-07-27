@@ -36,19 +36,24 @@ void Level::update(){
      * Update all actors
      * Apply gravity
      */
-    for(int i = 0; i < tree.size(); i++){
+    int size = tree.size();
+    for(int i = 0; i < size; i++){
         GameObject * obj = tree.get(i);
         obj->update();
     }
-    //this->applyGravity();
-    //this->ActorPlatformCollisions();
     this->checkCollisions();
+    //this->ActorPlatformCollisions();
 }
 
 void Level::handlePress(int key){
     player->addKey(key);
     if(key == Qt::Key_Z){
         TempGameObject * attack = player->primaryAttack();
+        attack->registerObserver(this);
+        tree.insert(attack);
+    }
+    if(key == Qt::Key_X){
+        TempGameObject *attack = player->secondaryAttack();
         attack->registerObserver(this);
         tree.insert(attack);
     }
@@ -63,24 +68,13 @@ void Level::handleRelease(int key){
     player->removeKey(key);
 }
 
-int distance(Actor * one, GameObject*two){
-   QPoint * point = one->getCenter();
-   int maxX2 = two->getX() + two->getWidth();
-   int minY2 = two->getY() - two->getHeight();
-   int minX2 = two->getX();
-   int maxY2 = two->getY();
-   int dx = (minX2 - point->x() > point->x() - maxX2) ? minX2 - point->x() : point->x() - maxX2;
-   dx = (dx > 0) ? dx : 0;
-   int dy = (minY2 - point->y() > point->y() - maxY2) ? minY2 - point->y() : point->y() - maxY2;
-   dy = (dy > 0) ? dy : 0;
-   return sqrt(dx*dx + dy*dy);
-}
 
 void Level::checkCollisions(){
     std::vector<GameObject*> objs = std::vector<GameObject*>();
-    for(int i = 0; i < tree.size(); i++){
-        GameObject * obj = tree.get(i);
-        int radius = obj->getHeight() < obj->getWidth() ? obj->getHeight() : obj->getWidth();
+    int size = tree.size();
+    for(int i = 0; i < size; i++){
+        GameObject * obj = tree.get(0);
+        int radius = obj->getCollRadius();
         tree.remove(obj);
         objs.push_back(obj);
         std::vector<GameObject *> list = tree.rangeSearch(obj, radius);
@@ -91,7 +85,6 @@ void Level::checkCollisions(){
     for(int b = 0; b < objs.size(); b++){
         tree.insert(objs[b]);
     }
-
 }
 
 void Level::actorCollisions(Actor * actor, GameObject * plat){

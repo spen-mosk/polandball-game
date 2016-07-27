@@ -9,7 +9,7 @@
 class PlayerStatistics : public ActorStatistics
 {
 public:
-    PlayerStatistics(int, int, int, bool, AttackStatistics*, AttackStatistics*, AttackStatistics*, int);
+    PlayerStatistics(int, int, int, bool, int, AttackStatistics*, AttackStatistics*, AttackStatistics*, int);
     AttackStatistics* getMeleeInfo();
     AttackStatistics* getRangedInfo();
     AttackStatistics* getUltInfo();

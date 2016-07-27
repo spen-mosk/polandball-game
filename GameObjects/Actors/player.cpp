@@ -4,10 +4,10 @@
 Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat){
     keySet = new QSet<int>();
     this->jumpCount = 0;
-    this->verticalSpeed = 0;
+    this->verticalSpeed = 3;
     this->stats = stat;
-    this->jumpDelayCount = 0;
-    this->jumpDelay = 28;
+    this->jumpDelayCount = 28;
+    this->jumpDelay = 14;
 }
 
 Player::~Player(){
@@ -30,11 +30,15 @@ void Player::endJump(){
 }
 
 void Player::update(){
+    Actor::update();
     int x = Qt::Key_Up;
+    if(!getGrav()){
+        printf("Resetting %d\n", jumpCount);
+        resetJump();
+    }
     if(keySet->contains(x)){
         if(jumpDelayCount == jumpDelay){
-        this->jump();
-        this->updateLocation(0, verticalSpeed);
+            this->jump();
         }
     }
     if(keySet->contains(Qt::Key_Right)){
@@ -45,23 +49,19 @@ void Player::update(){
         this->updateLocation(-stats->getSpeed(), 0);
         setFacing(true);
     }
+    setGrav(true);
 }
 
 void Player::jump(){
     if(jumpCount < this->stats->getMaxJumps()){
+        this->setGrav(true);
         jumpCount += 1;
-        if(verticalSpeed < 1){
-            verticalSpeed = 4;
-        }
-    }
-    else{
-        verticalSpeed = 0;
+        this->updateLocation(0, verticalSpeed);
     }
 }
 
 void Player::resetJump(){
     jumpCount = 0;
-    verticalSpeed = 0;
     if(jumpDelayCount < jumpDelay){
         printf("%d\n",jumpDelayCount);
         jumpDelayCount += 1;
@@ -70,6 +70,7 @@ void Player::resetJump(){
 
 void Player::maximizeJump(){
     printf("maximized\n");
+    jumpCount = this->stats->getMaxJumps();
     if(jumpCount == 0){
         jumpCount = this->stats->getMaxJumps();
     }
@@ -90,7 +91,12 @@ MeleeAttack* Player::primaryAttack(){
 
 RangedAttack* Player::secondaryAttack(){
     AttackStatistics* melle = stats->getRangedInfo();
-    return new RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + melle->getHeight()/2, melle);
+    if(facingLeft()){
+        return new RangedAttack(this->getCenter()->x()-this->getRadius() - melle->getWidth(),this->getCenter()->y() + melle->getHeight()/2, this->facingLeft(), melle);
+    }
+    else{
+        return new RangedAttack(this->getCenter()->x()+this->getRadius(),this->getCenter()->y() + melle->getHeight()/2, this->facingLeft(), melle);
+    }
 }
 
 Attack* Player::ultAttack(){
@@ -100,7 +106,7 @@ Attack* Player::ultAttack(){
         attack = new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + ult->getHeight()/2, ult, this);
     }
     else{
-        attack = new RangedAttack(this->getCenter()->x(),this->getCenter()->y() + ult->getHeight()/2, ult);
+        attack = new RangedAttack(this->getCenter()->x(),this->getCenter()->y() + ult->getHeight()/2, this->facingLeft(), ult);
 
     }
     return attack;

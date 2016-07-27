@@ -23,6 +23,7 @@ public:
     virtual void jump() = 0;
     virtual void resetJump() = 0;
     virtual void maximizeJump() = 0;
+    virtual void update();
 
 protected:
     void handleCollision(GameObject*, bool);

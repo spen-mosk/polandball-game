@@ -1,12 +1,26 @@
 #include "gameobject.h"
 #include <stdio.h>
 
-GameObject::GameObject(int x, int y, int h, int w)
+GameObject::GameObject(int x, int y, int h, int w, int rad)
 {
     xPos = x;
     yPos = y;
     height = h;
     width = w;
+    collRad= rad;
+    this->grav = true;
+}
+
+bool GameObject::getGrav(){
+    return grav;
+}
+
+void GameObject::setGrav(bool grav){
+    this->grav = grav;
+}
+
+int GameObject::getCollRadius(){
+    return collRad;
 }
 
 int GameObject::getX(){

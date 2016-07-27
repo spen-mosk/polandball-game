@@ -15,6 +15,7 @@ Camera::~Camera(){
 }
 
 std::vector<GameObject *> * Camera::snapshot(Player * center, KDTree * tree){
+    tree->remove(center);
     std::vector<GameObject*> actors = tree->rangeSearch(center, metersPerScreen / 2);
     double leftX = center->getCenter()->x() - (metersPerScreen / 2);
     double topY = center->getCenter()->y() + ((screenHeight / pixPerMeter) / 2);
@@ -38,5 +39,6 @@ std::vector<GameObject *> * Camera::snapshot(Player * center, KDTree * tree){
     center->drawingHeight = center->getHeight() * pixPerMeter;
     center->drawingWidth = center->getWidth() * pixPerMeter;
     toDraw->push_back(center);
+    tree->insert(center);
     return toDraw;
 }

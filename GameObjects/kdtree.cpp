@@ -1,4 +1,5 @@
 #include "kdtree.h"
+#include "ourmath.h"
 #include <QPoint>
 #include <queue>
 #include <vector>
@@ -60,7 +61,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
     }
     if(toDelete->left == 0 && toDelete->right == 0){
         if(level % 2 == 0){
-           if(toDelete->data->getX() < parent->data->getX()){
+            if(parent == 0){
+                root = 0;
+            }
+           else if(toDelete->data->getX() < parent->data->getX()){
                parent->left = 0;
            }
            else{
@@ -68,7 +72,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
            }
         }
         else{
-           if(toDelete->data->getY() < parent->data->getY()){
+           if(parent == 0){
+               root = 0;
+           }
+           else if(toDelete->data->getY() < parent->data->getY()){
                parent->left = 0;
            }
            else{
@@ -81,7 +88,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
     }
     else if(toDelete->left == 0){
         if(level % 2 == 0){
-           if(toDelete->data->getX() < parent->data->getX()){
+            if(parent == 0){
+                root = toDelete->right;
+            }
+           else if(toDelete->data->getX() < parent->data->getX()){
                parent->left = toDelete->right;
            }
            else{
@@ -89,7 +99,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
            }
         }
         else{
-           if(toDelete->data->getY() < parent->data->getY()){
+            if(parent == 0){
+                root = toDelete->right;
+            }
+           else if(toDelete->data->getY() < parent->data->getY()){
                parent->left = toDelete->right;
            }
            else{
@@ -103,7 +116,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
     }
     else if(toDelete->right == 0){
         if(level % 2 == 0){
-           if(toDelete->data->getX() < parent->data->getX()){
+            if(parent == 0){
+                root = toDelete->left;
+            }
+           else if(toDelete->data->getX() < parent->data->getX()){
                parent->left = toDelete->left;
            }
            else{
@@ -111,7 +127,10 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
            }
         }
         else{
-           if(toDelete->data->getY() < parent->data->getY()){
+            if(parent == 0){
+                root = toDelete->left;
+            }
+           else if(toDelete->data->getY() < parent->data->getY()){
                parent->left = toDelete->left;
            }
            else{
@@ -159,6 +178,7 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
             Node * replacement = new Node();
             replacement->data = replace->data;
             replacement->priority = replace->priority;
+            deleteNode(replace, replaceParent, deletion);
             replacement->left = toDelete->left;
             replacement->right = toDelete->right;
             if(parent == 0){
@@ -175,7 +195,6 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
             if(deletion){
                 delete toDelete;
             }
-            deleteNode(replace, replaceParent, deletion);
         }
         else{
             std::vector<Node*> *children = new std::vector<Node*>();
@@ -208,6 +227,7 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
             Node * replacement = new Node();
             replacement->data = replace->data;
             replacement->priority = replace->priority;
+            deleteNode(replace, replaceParent, deletion);
             replacement->left = toDelete->left;
             replacement->right = toDelete->right;
             if(toDelete->data->getY() < parent->data->getY()){
@@ -221,7 +241,6 @@ void KDTree::deleteNode(Node * toDelete, Node * parent, bool deletion){
             if(deletion){
                 delete toDelete;
             }
-            deleteNode(replace, parent, deletion);
         }
     }
 }
@@ -275,7 +294,7 @@ void KDTree::rangeRecursive(GameObject*obj, std::vector<GameObject*> *vec, int r
     int y = obj->getY();
     int treeX = node->data->getX();
     int treeY = node->data->getY();
-    int dist = distance((Actor*)obj, node->data);
+    double dist = distance(obj, node->data);
     if(dist < range){
         vec->push_back(node->data);
     }
@@ -317,7 +336,7 @@ void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, in
     int y = obj->getY();
     int treeX = node->data->getX();
     int treeY = node->data->getY();
-    int priority = distance((Actor*)obj, node->data);
+    int priority = distance(obj, node->data);
     node->priority = priority;
     queue->push(node);
     if(queue->size() > k){
@@ -360,7 +379,7 @@ void KDTree::kNNRecursive(GameObject* obj, std::priority_queue<Node*> *queue, in
 void KDTree::insert(GameObject * obj){
     Node *node = new Node();
     node->data = obj;
-    if(size() == 0){
+    if(size() == 0 || root == 0){
         this->elems.push_back(obj);
         root = node;
     }
@@ -414,7 +433,5 @@ void KDTree::insertRecursive(GameObject* obj,Node * compare,  int level){
                 insertRecursive(obj, compare->right, ++level);
             }
         }
-
     }
-
 }

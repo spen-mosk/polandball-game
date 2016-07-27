@@ -7,7 +7,7 @@
 class GameObject : public QObject
 {
 public:
-    GameObject(int, int, int, int);
+    GameObject(int, int, int, int, int);
     virtual ~GameObject(){};
     virtual void draw(QPainter *) = 0;
     void initialCollision(GameObject*);
@@ -20,7 +20,10 @@ public:
     void setX(int);
     void setY(int);
     int drawingX;
+    int getCollRadius();
     int drawingY;
+    void setGrav(bool grav);
+    bool getGrav();
     int drawingWidth;
     int drawingHeight;
     QPoint * getDrawingPosition();
@@ -34,6 +37,8 @@ private:
     int yPos;
     int height;
     int width;
+    int collRad;
+    bool grav;
 
 };
 

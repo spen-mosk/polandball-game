@@ -25,7 +25,6 @@ private:
                 this->right = 0;
             };
             ~Node(){
-                delete data;
                 delete left;
                 delete right;
             };

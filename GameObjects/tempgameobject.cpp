@@ -1,6 +1,6 @@
 #include "GameObjects/tempgameobject.h"
 
-TempGameObject::TempGameObject(int x, int y, int height, int width, int dura) : GameObject(x,y,height,width), DeleteSubject(){
+TempGameObject::TempGameObject(int x, int y, int height, int width, int dura) : GameObject(x,y,height,width, 5), DeleteSubject(){
     this->duration = dura;
 }
 
