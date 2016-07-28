@@ -19,6 +19,6 @@ int TempGameObject::getExistence(){
     return existence;
 }
 
-void TempGameObject::handleCollision(GameObject * obj, bool boolean){
+void TempGameObject::handleCollision(GameObject * obj){
 
 }

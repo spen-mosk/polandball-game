@@ -10,9 +10,7 @@ public:
     int getDuration();
     int getExistence();
     virtual void update();
-
-protected:
-    void handleCollision(GameObject*, bool);
+    void handleCollision(GameObject*);
 
 private:
     int duration;

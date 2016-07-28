@@ -9,10 +9,7 @@ void Platform::draw(QPainter * painter){
     painter->drawRect(point->x(), point->y(), drawingWidth, drawingHeight);
 }
 
-void Platform::handleCollision(GameObject * obj, bool both){
-    if(both){
-        obj->secondCollision(this);
-    }
+void Platform::handleCollision(GameObject * obj){
     int x = obj->getX();
     int y = obj->getY();
     int w = obj->getWidth();

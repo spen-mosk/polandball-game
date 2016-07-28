@@ -10,9 +10,8 @@ public:
     GameObject(int, int, int, int, int);
     virtual ~GameObject(){};
     virtual void draw(QPainter *) = 0;
-    void initialCollision(GameObject*);
-    void secondCollision(GameObject*);
     virtual void update() = 0;
+    virtual void handleCollision(GameObject*) = 0;
     int getX();
     int getY();
     int getHeight();
@@ -28,9 +27,6 @@ public:
     int drawingHeight;
     QPoint * getDrawingPosition();
     QPoint * getPosition();
-
-protected:
-    virtual void handleCollision(GameObject*, bool) = 0;
 
 private:
     int xPos;

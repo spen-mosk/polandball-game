@@ -13,10 +13,7 @@ void Actor::updateLocation(int xOffset, int yOffset){
     setY(this->getY() + yOffset);
 }
 
-void Actor::handleCollision(GameObject * obj, bool first){
-    if(first){
-        obj->secondCollision(this);
-    }
+void Actor::handleCollision(GameObject * obj){
 }
 
 void Actor::update(){

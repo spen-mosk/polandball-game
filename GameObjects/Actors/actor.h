@@ -24,9 +24,8 @@ public:
     virtual void resetJump() = 0;
     virtual void maximizeJump() = 0;
     virtual void update();
+    void handleCollision(GameObject*);
 
-protected:
-    void handleCollision(GameObject*, bool);
 
 private:
     int xMove;
