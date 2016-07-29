@@ -10,6 +10,9 @@ void Platform::draw(QPainter * painter){
 }
 
 void Platform::handleCollision(GameObject * obj){
+    if(Platform *p = dynamic_cast<Platform*>(obj)){
+        return;
+    }
     int x = obj->getX();
     int y = obj->getY();
     int w = obj->getWidth();
@@ -34,20 +37,17 @@ void Platform::handleCollision(GameObject * obj){
             && centerY < platTop && centerY > platBottom){
         int offsetX = actorRight - platLeft;
         obj->setX(x - offsetX);
-   //     printf("Collision from the left %d\n", numCollisions++);
     }
     else if(actorTop < platTop && actorTop > platBottom
             && centerX < platRight && centerX > platLeft){
         int offsetY = actorTop - platBottom;
         obj->setY(y - offsetY);
-//        printf("Collision from the bottom %d\n", numCollisions++);
     }
-    else if(actorBottom < platTop && actorBottom > platBottom
+    else if(actorBottom < platTop + obj->getHeight() && actorBottom > platBottom
             && centerX < platRight && centerX > platLeft){
         obj->setGrav(false);
         int offsetY = this->getY() - actorBottom;
-        obj->setY(y + offsetY);
- //       printf("Collision from the top %d\n", numCollisions++);
+        obj->setY(platTop + obj->getHeight());
     }
 }
 

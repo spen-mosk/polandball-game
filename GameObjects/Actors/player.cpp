@@ -33,9 +33,9 @@ void Player::update(){
     Actor::update();
     int x = Qt::Key_Up;
     if(!getGrav()){
-        printf("Resetting %d\n", jumpCount);
         resetJump();
     }
+    printf("ACTOR GRAVITY %s\n", getGrav() ? "true" : "false");
     if(keySet->contains(x)){
         if(jumpDelayCount == jumpDelay){
             this->jump();
