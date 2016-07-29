@@ -1,6 +1,7 @@
 #ifndef DELETESUBJECT_H
 #define DELETESUBJECT_H
 #include <vector>
+#include <algorithm>
 #include "deleteobserver.h"
 
 
