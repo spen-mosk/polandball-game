@@ -53,7 +53,7 @@ public:
     std::vector<T> kNN(T obj, int k){
         std::priority_queue<Node<T> *> queue;
         kNNRecursive(obj, &queue, k, this->root, 0);
-        std::vector<GameObject *> list;
+        std::vector<T> list;
         int size = queue.size();
         for(int i = 0; i < size; i++){
             Node<T> * node = (Node<T>*)queue.top();

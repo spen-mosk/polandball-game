@@ -25,6 +25,7 @@ public:
     virtual void maximizeJump() = 0;
     virtual void update();
     void handleCollision(GameObject*);
+    bool isAlly();
 
 
 private:
@@ -32,6 +33,7 @@ private:
     int yMove;
     ActorStatistics * stats;
     bool faceLeft;
+    bool ally;
 };
 
 #endif // ACTOR_H

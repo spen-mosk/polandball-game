@@ -9,6 +9,10 @@ Actor::Actor(int a, int b, ActorStatistics * stats)
     QPoint * center = this->getCenter();
 }
 
+bool Actor::isAlly(){
+    return ally;
+}
+
 void Actor::updateLocation(int xOffset, int yOffset){
     setX(this->x() + xOffset);
     setY(this->y() + yOffset);

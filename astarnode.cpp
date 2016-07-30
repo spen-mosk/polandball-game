@@ -13,7 +13,11 @@ AstarNode::AstarNode(QPoint * point){
     neighbors = vector<AstarNode*>();
 }
 
-void AstarNode::addNeigbor(AstarNode * node){
+vector<AstarNode*> AstarNode::getNeighbors(){
+    return this->neighbors;
+}
+
+void AstarNode::addNeighbor(AstarNode * node){
     this->neighbors.push_back(node);
 }
 

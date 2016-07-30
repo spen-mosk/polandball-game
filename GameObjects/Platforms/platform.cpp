@@ -1,6 +1,16 @@
 #include "platform.h"
+#include "astargraph.h"
 
 Platform::Platform(int x, int y, int h, int w) : GameObject(x, y, h, w, 1){
+    AstarGraph& graph = AstarGraph::getInstance();
+    graph.addPlat(this);
+    graph.addNode(new QPoint(x, y + 1));
+    graph.addNode(new QPoint(x + w, y + 1));
+    int start = x + 3;
+    while(start < x + w){
+        graph.addNode(new QPoint(start, y+1));
+        start += 3;
+    }
 }
 
 void Platform::draw(QPainter * painter){

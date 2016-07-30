@@ -13,7 +13,8 @@ public:
     AstarNode(QPoint *);
     int x();
     int y();
-    void addNeigbor(AstarNode*);
+    void addNeighbor(AstarNode*);
+    vector<AstarNode*> getNeighbors();
 
 private:
     int xPos;

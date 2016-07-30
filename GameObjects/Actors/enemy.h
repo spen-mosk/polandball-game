@@ -6,6 +6,8 @@
 #include "GameObjects/Attacks/rangedattack.h"
 #include "GameObjects/kdtree.h"
 #include "GameObjects/Actors/player.h"
+#include <QPoint>
+using namespace std;
 
 class Enemy : public Actor
 {
@@ -17,8 +19,9 @@ public:
     void jump();
     void resetJump();
     void maximizeJump();
+    void handleCollision(GameObject*);
     bool canAttack();
-    void lockOn(Player*);
+    void lockOn(Actor*);
     void cancelLock();
 
 private:
@@ -27,8 +30,10 @@ private:
     int jumpDelayCount;
     int verticalSpeed;
     int jumpCount;
+    vector<QPoint*> path;
     bool lockedOn;
-    Player* player;
+    QPoint * nextPoint;
+    Actor* lock;
     EnemyStatistics* stats;
 };
 
