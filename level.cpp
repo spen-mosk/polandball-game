@@ -9,7 +9,7 @@
 Level::Level(Player * player)
 {
     this->player = player;
-    tree = KDTree();
+    tree= KDTree<GameObject*> ();
     tree.insert(player);
     this->gravity = -1;
 }
@@ -27,7 +27,7 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
 Level::~Level(){
 }
 
-KDTree * Level::getObjects(){
+KDTree<GameObject*> * Level::getObjects(){
     return &tree;
 }
 
@@ -94,13 +94,13 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
     int actorRight = p->x() + actor->getRadius();
     int actorTop = p->y() + actor->getRadius();
     int actorBottom = p->y() - actor->getRadius();
-    int platLeft = plat->getX();
-    int platRight = plat->getX() + plat->getWidth();
-    int platTop = plat->getY();
-    int platBottom = plat->getY() - plat->getHeight();
+    int platLeft = plat->x();
+    int platRight = plat->x() + plat->getWidth();
+    int platTop = plat->y();
+    int platBottom = plat->y() - plat->getHeight();
     if(actorLeft > platLeft && actorLeft < platRight
             && p->y() < platTop && p->y() > platBottom){
-        int offsetX = plat->getX() + plat->getWidth() - actorLeft;
+        int offsetX = plat->x() + plat->getWidth() - actorLeft;
         actor->updateLocation(offsetX,0);
     }
     else if(actorRight < platRight && actorRight > platLeft
@@ -133,15 +133,15 @@ void Level::actorCollisions(Actor * actor, GameObject * plat){
             int actorRight = p->x() + actor->getRadius();
             int actorTop = p->y() + actor->getRadius();
             int actorBottom = p->y() - actor->getRadius();
-            int platLeft = plat->getX();
-            int platRight = plat->getX() + plat->getWidth();
-            int platTop = plat->getY();
-            int platBottom = plat->getY() - plat->getHeight();
+            int platLeft = plat->x();
+            int platRight = plat->x() + plat->getWidth();
+            int platTop = plat->y();
+            int platBottom = plat->y() - plat->getHeight();
 //            printf("actorTop: %d, actorBottom: %d, actorLeft: %d, actorRight %d\n", actorTop, actorBottom, actorLeft, actorRight);
             if(actorLeft > platLeft && actorLeft < platRight
                     && p->y() < platTop && p->y() > platBottom){
                 printf("Collision from the right\n");
-                int offsetX = plat->getX() + plat->getWidth() - actorLeft;
+                int offsetX = plat->x() + plat->getWidth() - actorLeft;
                 actor->updateLocation(offsetX,0);
             }
             else if(actorRight < platRight && actorRight > platLeft
@@ -175,7 +175,7 @@ void Level::applyGravity(){
         int actorBottom = p->y() - actors[i]->getRadius();
         bool applyGrav = true;
         for (int b = 0; b < plats.size(); b++){
-            if(actorBottom == plats[b]->getY()&& (actors[i]->getX() >= plats[b]->getX() && actors[i]->getX() <= plats[b]->getX() + plats[b]->getWidth())){
+            if(actorBottom == plats[b]->y()&& (actors[i]->x() >= plats[b]->x() && actors[i]->x() <= plats[b]->x() + plats[b]->getWidth())){
                 applyGrav = false;
                 actors[i]->resetJump();
                 break;

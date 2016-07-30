@@ -13,8 +13,8 @@ void Platform::handleCollision(GameObject * obj){
     if(Platform *p = dynamic_cast<Platform*>(obj)){
         return;
     }
-    int x = obj->getX();
-    int y = obj->getY();
+    int x = obj->x();
+    int y = obj->y();
     int w = obj->getWidth();
     int h = obj->getHeight();
     int centerX = x + obj->getWidth() / 2;
@@ -23,14 +23,14 @@ void Platform::handleCollision(GameObject * obj){
     int actorRight = x + w;
     int actorTop = y;
     int actorBottom = y - h;
-    int platLeft = this->getX();
-    int platRight = this->getX() + this->getWidth();
-    int platTop = this->getY();
-    int platBottom = this->getY() - this->getHeight();
+    int platLeft = this->x();
+    int platRight = this->x() + this->getWidth();
+    int platTop = this->y();
+    int platBottom = this->y() - this->getHeight();
     obj->setGrav(true && obj->getGrav());
     if(actorLeft > platLeft && actorLeft < platRight
             && centerY < platTop && centerY > platBottom){
-        int offsetX = this->getX() + this->getWidth() - actorLeft;
+        int offsetX = this->x() + this->getWidth() - actorLeft;
         obj->setX(x + offsetX);
     }
     else if(actorRight < platRight && actorRight > platLeft
@@ -43,10 +43,10 @@ void Platform::handleCollision(GameObject * obj){
         int offsetY = actorTop - platBottom;
         obj->setY(y - offsetY);
     }
-    else if(actorBottom < platTop + obj->getHeight() && actorBottom > platBottom
+    else if(actorBottom <= platTop + obj->getHeight() && actorBottom > platBottom
             && centerX < platRight && centerX > platLeft){
         obj->setGrav(false);
-        int offsetY = this->getY() - actorBottom;
+        int offsetY = this->y() - actorBottom;
         obj->setY(platTop + obj->getHeight());
     }
 }

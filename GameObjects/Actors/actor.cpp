@@ -3,14 +3,15 @@
 #include <vector>
 
 Actor::Actor(int a, int b, ActorStatistics * stats)
-    :GameObject(a, b, stats->getRadius(), stats->getRadius(), stats->getRadius()){
+    :GameObject(a, b, 2*stats->getRadius(), 2*stats->getRadius(), stats->getRadius()){
+
     this->stats = stats;
     QPoint * center = this->getCenter();
 }
 
 void Actor::updateLocation(int xOffset, int yOffset){
-    setX(this->getX() + xOffset);
-    setY(this->getY() + yOffset);
+    setX(this->x() + xOffset);
+    setY(this->y() + yOffset);
 }
 
 void Actor::handleCollision(GameObject * obj){
@@ -35,6 +36,6 @@ int Actor::getRadius(){
 }
 
 QPoint * Actor::getCenter(){
-    QPoint * point = new QPoint(getX() + stats->getRadius(), getY() - stats->getRadius());
+    QPoint * point = new QPoint(x() + stats->getRadius(), y() - stats->getRadius());
     return point;
 }

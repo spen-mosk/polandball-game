@@ -3,21 +3,74 @@
 
 #include <vector>
 #include <queue>
+#include "ourmath.h"
 #include "GameObjects/gameobject.h"
+
+
+
+template<class T>
 class KDTree
 {
+
 public:
-    KDTree();
-    ~KDTree();
-    int size();
-    void insert(GameObject *);
-    void remove(GameObject*);
-    void erase(GameObject*);
-    GameObject* get(int);
-    std::vector<GameObject *> kNN(GameObject*, int);
-    std::vector<GameObject*> rangeSearch(GameObject*, int);
+    KDTree()
+    {
+        this->elems = std::vector<T>();
+    }
+
+    ~KDTree(){
+         delete root;
+    }
+
+    int size(){
+        return elems.size();
+    }
+
+    void insert(T obj){
+        Node<T> *node = new Node<T>();
+        node->data = obj;
+        if(size() == 0 || root == 0){
+            this->elems.push_back(obj);
+            root = node;
+        }
+        else{
+            insertRecursive(obj, root, 0);
+            this->elems.push_back(obj);
+        }
+    }
+
+    void remove(T obj){
+        removeObj(obj, false);
+    }
+    void erase(T obj){
+        removeObj(obj, true);
+    }
+
+    T get(int index){
+        return this->elems[index];
+    }
+
+    std::vector<T> kNN(T obj, int k){
+        std::priority_queue<Node<T> *> queue;
+        kNNRecursive(obj, &queue, k, this->root, 0);
+        std::vector<GameObject *> list;
+        int size = queue.size();
+        for(int i = 0; i < size; i++){
+            Node<T> * node = (Node<T>*)queue.top();
+            queue.pop();
+            list.push_back(node->data);
+        }
+        return list;
+    }
+
+    std::vector<T> rangeSearch(T obj, int range){
+        std::vector<T> vector = std::vector<T>();
+        rangeRecursive(obj, &vector, range, this->root, 0);
+        return vector;
+    }
 
 private:
+    template<class E>
     class Node{
         public:
             Node(){
@@ -28,22 +81,384 @@ private:
                 delete left;
                 delete right;
             };
-            Node * left;
-            Node * right;
-            GameObject * data;
+            Node<E> * left;
+            Node<E> * right;
+            E data;
             int priority;
-            bool operator <(const Node rhs) const{
+            bool operator <(const Node<E> rhs) const{
                 return this->priority < rhs.priority;
             }
     };
-    Node * root;
-    std::vector<GameObject*> elems;
-    void insertRecursive(GameObject*, Node*,int level);
-    Node ** findNode(GameObject *, int, Node *, Node*);
-    void deleteNode(Node *, Node *, bool);
-    void kNNRecursive(GameObject*, std::priority_queue<Node*>*, int, Node*, int);
-    void rangeRecursive(GameObject*, std::vector<GameObject*>*, int, Node*, int);
-    void removeObj(GameObject*, bool);
-};
+    Node<T> * root;
+    std::vector<T> elems;
+    void insertRecursive(T obj, Node<T>* compare,int level){
+        int x = obj->x();
+        int y = obj->y();
+        int treeX = compare->data->x();
+        int treeY = compare->data->y();
+        if(level % 2 == 0){
+            if(x < treeX){
+                if(compare->left == 0){
+                    compare->left = new Node<T>();
+                    compare->left->data = obj;
+                }
+                else{
+                    insertRecursive(obj, compare->left, ++level);
+                }
+            }
+            else{
+                if(compare->right == 0){
+                    compare->right = new Node<T>();
+                    compare->right->data = obj;
+                }
+                else{
+                    insertRecursive(obj, compare->right, ++level);
+                }
+            }
+        }
+        else{
+            if(y < treeY){
+                if(compare->left == 0){
+                    compare->left = new Node<T>();
+                    compare->left->data = obj;
+                }
+                else{
+                    insertRecursive(obj, compare->left, ++level);
+                }
+            }
+            else{
+                if(compare->right == 0){
+                    compare->right = new Node<T>();
+                    compare->right->data = obj;
+                }
+                else{
+                    insertRecursive(obj, compare->right, ++level);
+                }
+            }
+        }
+    }
 
+    Node<T> ** findNode(T obj, int level, Node<T> * current, Node<T>* parent){
+        if(current == 0){
+            return NULL;
+        }
+        if((obj->x() == current->data->x() && obj->y() == current->data->y())){
+            Node<T>* returnable[2];
+            current->priority = level;
+        if(parent != 0){
+            parent->priority = level -1;
+        }
+            returnable[0] = current;
+            returnable[1] = parent;
+            return returnable;
+        }
+        if(level % 2 == 0){
+            if(obj->x() < current->data->x()){
+                return findNode(obj, ++level, current->left, current);
+            }
+            else{
+                return findNode(obj, ++level, current->right, current);
+            }
+        }
+        else{
+            if(obj->y() < current->data->y()){
+                return findNode(obj, ++level, current->left, current);
+            }
+            else{
+                return findNode(obj, ++level, current->right, current);
+            }
+        }
+    }
+
+    void deleteNode(Node<T> * toDelete, Node<T>* parent, bool deletion){
+        int level;
+        if(parent == 0){
+            level = -1;
+        }
+        else{
+            level = parent->priority;
+        }
+        if(toDelete->left == 0 && toDelete->right == 0){
+            if(level % 2 == 0){
+                if(parent == 0){
+                    root = 0;
+                }
+                else if(toDelete->data->x() < parent->data->x()){
+                    parent->left = 0;
+                }
+                else{
+                    parent->right = 0;
+                }
+            }
+            else{
+                if(parent == 0){
+                    root = 0;
+                }
+                else if(toDelete->data->y() < parent->data->y()){
+                    parent->left = 0;
+                }
+                else{
+                    parent->right = 0;
+                }
+            }
+            if(deletion){
+                delete toDelete;
+            }
+        }
+        else if(toDelete->left == 0){
+            if(level % 2 == 0){
+                if(parent == 0){
+                    root = toDelete->right;
+                }
+                else if(toDelete->data->x() < parent->data->x()){
+                    parent->left = toDelete->right;
+                }
+                else{
+                    parent->right = toDelete->right;
+                }
+            }
+            else{
+                if(parent == 0){
+                    root = toDelete->right;
+                }
+                else if(toDelete->data->y() < parent->data->y()){
+                     parent->left = toDelete->right;
+                }
+                else{
+                    parent->right = toDelete->right;
+                }
+            }
+            toDelete->right = 0;
+            if(deletion){
+                delete toDelete;
+            }
+        }
+        else if(toDelete->right == 0){
+            if(level % 2 == 0){
+                if(parent == 0){
+                     root = toDelete->left;
+                }
+                else if(toDelete->data->x() < parent->data->x()){
+                     parent->left = toDelete->left;
+                }
+                else{
+                    parent->right = toDelete->left;
+                }
+            }
+            else{
+                if(parent == 0){
+                    root = toDelete->left;
+                }
+                else if(toDelete->data->y() < parent->data->y()){
+                    parent->left = toDelete->left;
+                }
+                else{
+                    parent->right = toDelete->left;
+                }
+            }
+            toDelete->left = 0;
+            if(deletion){
+                delete toDelete;
+            }
+        }
+        else{
+            Node<T> * replace = toDelete->left;
+            Node<T> * replaceParent = toDelete;
+            int currentLevel = level +1;
+            toDelete->priority = currentLevel;
+            if(currentLevel % 2 == 0){
+                std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                toDelete->left->priority = ++currentLevel;
+                children->push_back(toDelete->left);
+                while(children->size() > 0){
+                    std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+                    for(int i = 0; i < children->size(); i++){
+                        Node<T> * current = (*children)[i];
+                        currentLevel = current->priority;
+                        if(current->left != 0){
+                            current->left->priority = currentLevel + 1;
+                            if(replace == 0 || current->left->data->x() > replace->data->x()){
+                                replace = current->left;
+                                replaceParent = current;
+                            }
+                            newChildren->push_back(current->left);
+                        }
+                        if(current->right != 0){
+                            current->right->priority = currentLevel + 1;
+                            if(replace == 0 || current->right->data->x() > replace->data->x()){
+                                replace = current->right;
+                                replaceParent = current;
+                            }
+                            newChildren->push_back(current->right);
+                        }
+                    }
+                    children = newChildren;
+                }
+                Node<T> * replacement = new Node<T>();
+                replacement->data = replace->data;
+                replacement->priority = replace->priority;
+                deleteNode(replace, replaceParent, deletion);
+                replacement->left = toDelete->left;
+                replacement->right = toDelete->right;
+                if(parent == 0){
+                    root = replacement;
+                }
+                else if(toDelete->data->x() < parent->data->x()){
+                    parent->left = replacement;
+                }
+                else{
+                    parent->right = replacement;
+                }
+                toDelete->left = 0;
+                toDelete->right = 0;
+                if(deletion){
+                    delete toDelete;
+                }
+            }
+            else{
+                std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                toDelete->left->priority = ++currentLevel;
+                children->push_back(toDelete->left);
+                while(children->size() > 0){
+                    std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+                    for(int i = 0; i < children->size(); i++){
+                        Node<T> * current = (*children)[i];
+                        currentLevel = current->priority;
+                        if(current->left != 0){
+                            current->left->priority = currentLevel + 1;
+                            if(replace == 0 || current->left->data->y() > replace->data->y()){
+                                replace = current->left;
+                                replaceParent = current;
+                            }
+                            newChildren->push_back(current->left);
+                        }
+                        if(current->right != 0){
+                            current->right->priority = currentLevel + 1;
+                            if(replace == 0 || current->right->data->y() > replace->data->y()){
+                                replace = current->right;
+                                replaceParent = current;
+                            }
+                            newChildren->push_back(current->right);
+                        }
+                    }
+                    children = newChildren;
+                }
+                Node<T> * replacement = new Node<T>();
+                replacement->data = replace->data;
+                replacement->priority = replace->priority;
+                deleteNode(replace, replaceParent, deletion);
+                replacement->left = toDelete->left;
+                replacement->right = toDelete->right;
+                if(toDelete->data->y() < parent->data->y()){
+                    parent->left = replacement;
+                }
+                else{
+                    parent->right = replacement;
+                }
+                toDelete->left = 0;
+                toDelete->right = 0;
+                if(deletion){
+                    delete toDelete;
+                }
+            }
+        }
+    }
+
+    void kNNRecursive(T obj, std::priority_queue<Node<T>*>* queue, int k, Node<T>* node, int level){
+        if(node == 0){
+            return;
+        }
+        int x = obj->x();
+        int y = obj->y();
+        int treeX = node->data->x();
+        int treeY = node->data->y();
+        int priority = distance(obj, node->data);
+        node->priority = priority;
+        queue->push(node);
+        if(queue->size() > k){
+            queue->pop();
+        }
+        if(level % 2 == 0){
+            if(x < treeX){
+                kNNRecursive(obj, queue, k, node->left, ++level);
+                Node<T> * greatest = queue->top();
+                if(queue->size() < k || treeX-x < greatest->priority){
+                    kNNRecursive(obj, queue, k, node->right, ++level);
+                }
+            }
+            else{
+                kNNRecursive(obj, queue, k, node->right, ++level);
+                Node<T> * greatest = queue->top();
+                if(queue->size() < k || x-treeX < greatest->priority){
+                    kNNRecursive(obj, queue, k, node->left, ++level);
+                }
+            }
+        }
+        else{
+            if(y < treeY){
+                kNNRecursive(obj, queue, k, node->left, ++level);
+                Node<T> * greatest = queue->top();
+                if(queue->size() < k || treeY - y < greatest->priority){
+                    kNNRecursive(obj, queue, k, node->right, ++level);
+                }
+            }
+            else{
+                kNNRecursive(obj, queue, k, node->right, ++level);
+                Node<T> * greatest = queue->top();
+                if(queue->size() < k || y - treeY < greatest->priority){
+                    kNNRecursive(obj, queue, k, node->left, ++level);
+                }
+            }
+        }
+    }
+
+    void rangeRecursive(T obj, std::vector<T>* vec, int range, Node<T>* node, int level){
+        if(node == 0){
+            return;
+        }
+        int x = obj->x();
+        int y = obj->y();
+        int treeX = node->data->x();
+        int treeY = node->data->y();
+        double dist = distance(obj, node->data);
+        if(dist < range){
+            vec->push_back(node->data);
+        }
+        if(level % 2 == 0){
+            if(x < treeX){
+                rangeRecursive(obj, vec, range, node->left, ++level);
+                if(treeX-x < range){
+                    rangeRecursive(obj, vec, range, node->right, ++level);
+                }
+            }
+            else{
+                rangeRecursive(obj, vec, range, node->right, ++level);
+                if(x-treeX < range){
+                    rangeRecursive(obj, vec, range, node->left, ++level);
+                }
+            }
+        }
+        else{
+            if(y < treeY){
+                rangeRecursive(obj, vec, range, node->left, ++level);
+                if(treeY - y < range){
+                    rangeRecursive(obj, vec, range, node->right, ++level);
+                }
+            }
+            else{
+                rangeRecursive(obj, vec, range, node->right, ++level);
+                if(y - treeY < range){
+                    rangeRecursive(obj, vec, range, node->left, ++level);
+                }
+            }
+        }
+    }
+    void removeObj(T obj, bool deletion){
+        Node<T> ** data = findNode(obj, 0, root, 0);
+        if(data != NULL){
+            deleteNode(data[0], data[1], deletion);
+            elems.erase(std::remove(elems.begin(), elems.end(), obj));
+        }
+    }
+};
 #endif // KDTREE_H

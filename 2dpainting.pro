@@ -29,7 +29,9 @@ HEADERS     = \
     GameObjects/deletesubject.h \
     GameObjects/Actors/Statistics/enemystatistics.h \
     GameObjects/Actors/enemy.h \
-    ourmath.h
+    ourmath.h \
+    astargraph.h \
+    astarnode.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -49,7 +51,6 @@ SOURCES     = \
     GameObjects/Attacks/attack.cpp \
     GameObjects/Attacks/rangedattack.cpp \
     GameObjects/platformbuilder.cpp \
-    GameObjects/kdtree.cpp \
     GameObjects/Actors/Statistics/actorstatistics.cpp \
     GameObjects/Actors/Statistics/playerstatistics.cpp \
     GameObjects/Attacks/Statistics/attackstatistics.cpp \
@@ -59,7 +60,9 @@ SOURCES     = \
     GameObjects/deletesubject.cpp \
     GameObjects/Actors/Statistics/enemystatistics.cpp \
     GameObjects/Actors/enemy.cpp \
-    ourmath.cpp
+    ourmath.cpp \
+    astargraph.cpp \
+    astarnode.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

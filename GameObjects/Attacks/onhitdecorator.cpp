@@ -2,7 +2,7 @@
 #include "GameObjects/Attacks/Statistics/attackstatistics.h"
 
 
-OnHitDecorator::OnHitDecorator(Attack * tack): Attack(tack->getX(),tack->getY(), tack->getStats()){
+OnHitDecorator::OnHitDecorator(Attack * tack): Attack(tack->x(),tack->y(), tack->getStats()){
     this->attack = tack;
 }
 

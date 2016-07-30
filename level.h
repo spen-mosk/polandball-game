@@ -22,7 +22,7 @@ public:
 //    void applyGravity();
     void ActorPlatformCollisions();
     void onDelete(DeleteSubject*);
-    KDTree * getObjects();
+    KDTree<GameObject*> * getObjects();
 
 public slots:
     void handlePress(int);
@@ -30,7 +30,7 @@ public slots:
 
 private:
     Player * player;
-    KDTree tree;
+    KDTree<GameObject*> tree;
     void checkCollisions();
     void actorCollisions(Actor*, GameObject*);
     int gravity = -1;

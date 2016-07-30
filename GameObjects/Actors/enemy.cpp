@@ -19,7 +19,7 @@ void Enemy::update(){
 
 void Enemy::draw(QPainter * p){
     p->setBrush(Qt::red);
-    p->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
+    p->drawEllipse(drawingX, drawingY, drawingHeight, drawingWidth);
 }
 
 void Enemy::jump(){

@@ -8,14 +8,13 @@
 #include "GameObjects/gameobject.h"
 #include <QWidget>
 
-
 class Camera
 {
 
 public:
     Camera(int, QWidget *);
     ~Camera();
-    std::vector<GameObject*> * snapshot(Player *, KDTree *);
+    std::vector<GameObject*> * snapshot(Player *, KDTree<GameObject*> *);
 
 
 private:

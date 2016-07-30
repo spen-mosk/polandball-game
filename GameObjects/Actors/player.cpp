@@ -31,11 +31,12 @@ void Player::endJump(){
 
 void Player::update(){
     Actor::update();
+    printf("PLAYER X %d, PLAYER Y %d\n", this->x(), this->y());
     int x = Qt::Key_Up;
     if(!getGrav()){
         resetJump();
     }
-    printf("ACTOR GRAVITY %s\n", getGrav() ? "true" : "false");
+    //printf("ACTOR GRAVITY %s\n", getGrav() ? "true" : "false");
     if(keySet->contains(x)){
         if(jumpDelayCount == jumpDelay){
             this->jump();
@@ -81,7 +82,7 @@ void Player::maximizeJump(){
 
 void Player::draw(QPainter * painter){
     painter->setBrush(Qt::blue);
-    painter->drawEllipse(*(getDrawingPosition()), drawingHeight, drawingWidth);
+    painter->drawEllipse(*(this->getDrawingPosition()), drawingHeight, drawingWidth);
 }
 
 MeleeAttack* Player::primaryAttack(){

@@ -6,21 +6,22 @@
 
 class GameObject : public QObject
 {
+
 public:
     GameObject(int, int, int, int, int);
     virtual ~GameObject(){};
     virtual void draw(QPainter *) = 0;
     virtual void update() = 0;
     virtual void handleCollision(GameObject*) = 0;
-    int getX();
-    int getY();
+    int x();
+    int y();
     int getHeight();
     int getWidth();
     void setX(int);
     void setY(int);
     int drawingX;
-    int getCollRadius();
     int drawingY;
+    int getCollRadius();
     void setGrav(bool grav);
     bool getGrav();
     int drawingWidth;
@@ -35,7 +36,6 @@ private:
     int width;
     int collRad;
     bool grav;
-
 };
 
 #endif // GAMEOBJECT_H

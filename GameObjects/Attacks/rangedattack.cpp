@@ -16,7 +16,7 @@ void RangedAttack::draw(QPainter *q){
 
 void RangedAttack::update(){
     Attack::update();
-    this->setX(this->getX() + this->speed);
+    this->setX(this->x() + this->speed);
 }
 
 int RangedAttack::getSpeed(){

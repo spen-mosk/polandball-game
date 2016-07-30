@@ -14,7 +14,7 @@ Camera::Camera(int meters, QWidget * parent)
 Camera::~Camera(){
 }
 
-std::vector<GameObject *> * Camera::snapshot(Player * center, KDTree * tree){
+std::vector<GameObject*> * Camera::snapshot(Player * center, KDTree<GameObject*> * tree){
     tree->remove(center);
     std::vector<GameObject*> actors = tree->rangeSearch(center, metersPerScreen / 2);
     double leftX = center->getCenter()->x() - (metersPerScreen / 2);
@@ -22,8 +22,8 @@ std::vector<GameObject *> * Camera::snapshot(Player * center, KDTree * tree){
     std::vector<GameObject *> * toDraw = new std::vector<GameObject*>();
     for(std::vector<GameObject *>::iterator it = actors.begin(); it != actors.end(); ++it) {
         GameObject * current = *it;
-        double xDisplacement = current->getX() - leftX;
-        double yDisplacement = topY - current->getY();
+        double xDisplacement = current->x() - leftX;
+        double yDisplacement = topY - current->y();
         double xPixels = xDisplacement * pixPerMeter;
         double yPixels = yDisplacement * pixPerMeter;
         current->drawingX = xPixels;
@@ -36,8 +36,8 @@ std::vector<GameObject *> * Camera::snapshot(Player * center, KDTree * tree){
     }
     center->drawingX = screenWidth / 2;
     center->drawingY = screenHeight / 2;
-    center->drawingHeight = center->getHeight() * pixPerMeter;
-    center->drawingWidth = center->getWidth() * pixPerMeter;
+    center->drawingHeight = center->getRadius() * pixPerMeter;
+    center->drawingWidth = center->getRadius() * pixPerMeter;
     toDraw->push_back(center);
     tree->insert(center);
     return toDraw;

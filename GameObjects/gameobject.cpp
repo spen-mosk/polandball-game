@@ -23,7 +23,7 @@ int GameObject::getCollRadius(){
     return collRad;
 }
 
-int GameObject::getX(){
+int GameObject::x(){
     return xPos;
 }
 
@@ -33,7 +33,7 @@ QPoint * GameObject::getDrawingPosition(){
 }
 
 
-int GameObject::getY(){
+int GameObject::y(){
     return yPos;
 }
 

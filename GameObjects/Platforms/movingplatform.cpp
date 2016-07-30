@@ -6,8 +6,8 @@ MovingPlatform::MovingPlatform(int x, int y, int h, int w, int xs, int ys) : Pla
 }
 
 void MovingPlatform::updateLocation(){
-    GameObject::setX(GameObject::getX() + xSpeed);
-    GameObject::setY(GameObject::getY() + ySpeed);
+    GameObject::setX(GameObject::x() + xSpeed);
+    GameObject::setY(GameObject::y() + ySpeed);
 }
 
 void MovingPlatform::update(){
