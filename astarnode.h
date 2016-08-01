@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <QPoint>
+#include <unordered_set>
 using namespace std;
 
 
@@ -14,12 +15,13 @@ public:
     int x();
     int y();
     void addNeighbor(AstarNode*);
-    vector<AstarNode*> getNeighbors();
+    unordered_set<AstarNode*> getNeighbors();
+    void removeNeighbor(AstarNode*);
 
 private:
     int xPos;
     int yPos;
-    vector<AstarNode*> neighbors;
+    unordered_set<AstarNode*> neighbors;
 
 };
 

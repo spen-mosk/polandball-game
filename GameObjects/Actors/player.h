@@ -21,7 +21,6 @@ public:
     void jump();
     void resetJump();
     void maximizeJump();
-    void endJump();
     void addKey(int);
     void removeKey(int);
     MeleeAttack *primaryAttack();
@@ -30,7 +29,6 @@ public:
 
 
 private:
-    int verticalSpeed;
     int jumpCount;
     PlayerStatistics * stats;
     QSet<int> * keySet;

@@ -4,7 +4,6 @@
 Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat){
     keySet = new QSet<int>();
     this->jumpCount = 0;
-    this->verticalSpeed = 3;
     this->stats = stat;
     this->jumpDelayCount = 28;
     this->jumpDelay = 14;
@@ -22,11 +21,6 @@ void Player::removeKey(int key){
     if(key == Qt::Key_Up){
         this->maximizeJump();
     }
-}
-
-void Player::endJump(){
-    jumpCount = stats->getMaxJumps();
-    verticalSpeed = 0;
 }
 
 void Player::update(){
@@ -57,7 +51,7 @@ void Player::jump(){
     if(jumpCount < this->stats->getMaxJumps()){
         this->setGrav(true);
         jumpCount += 1;
-        this->updateLocation(0, verticalSpeed);
+        this->updateLocation(0, stats->getVertSpeed());
     }
 }
 

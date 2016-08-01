@@ -79,6 +79,7 @@ void Level::checkCollisions(){
         objs.push_back(obj);
         std::vector<GameObject *> list = tree.rangeSearch(obj, radius);
         for(int a = 0; a < list.size(); a++){
+            printf("DISTANCE %d", distance(obj, list[a]));
             list[a]->handleCollision(obj);
             obj->handleCollision(list[a]);
         }

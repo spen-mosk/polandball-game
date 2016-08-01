@@ -22,7 +22,7 @@ void Enemy::update(){
     */
     //check lockedIn here
     if(canAttack()){
-
+       //DO we want to move if we canAttack?
     }
     //if we can't attack, we may want to move
     else
@@ -33,6 +33,10 @@ void Enemy::update(){
         }
         else{
             this->updateLocation(this->stats->getSpeed(), 0);
+        }
+        if(distance(nextPoint, new QPoint(this->x(), this->y())) <= 1){
+            nextPoint = *(this->path.begin());
+            this->path.erase(this->path.begin());
         }
     }
     //this means some jumping or descending is involved, and means changing platforms
@@ -73,7 +77,7 @@ void Enemy::lockOn(Actor* p){
         this->lockedOn = true;
         this->lock = p;
         AstarGraph& graph = AstarGraph::getInstance();
-        //instead of passing in coords of enemy, determine optimal attack position
+        //instead of passing in coords of lock, determine optimal attack position
         this->path = graph.findPath(new QPoint(this->x(), this->y()), new QPoint(p->x(), p->y()));
     }
     //always lock onto the closest adversary
@@ -94,7 +98,8 @@ void Enemy::cancelLock(){
 
 bool Enemy::canAttack(){
     //bool stuff based on player's position, speed, and size of enemy's attack
-    return true;
+    //this will be more if we are not locked in
+    return lockedOn;
 }
 
 Attack* Enemy::generateAttack(){

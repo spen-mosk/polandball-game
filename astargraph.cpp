@@ -1,19 +1,36 @@
 #include "astargraph.h"
 #include <QSet>
 #include <unordered_map>
+#include <iterator>
 #include "ourmath.h"
 using namespace std;
 
 void AstarGraph::addNode(QPoint * point){
     AstarNode * node = new AstarNode(point);
+    //mess with how long this gap should be
     vector<AstarNode*> nodes = tree.rangeSearch(node, 25);
+    tree.insert(node);
     for(int i = nodes.size()-1; i >= 0; i--){
         if(!intersectsPlat(node, nodes[i])){
             node->addNeighbor(nodes[i]);
             nodes[i]->addNeighbor(node);
+            unordered_set<AstarNode*> myNeighbors = node->getNeighbors();
+            unordered_set<AstarNode*> theirNeighbors = nodes[i]->getNeighbors();
+            for(auto it = myNeighbors.begin(); it != myNeighbors.end(); ++it){
+                auto found = theirNeighbors.find(*it);
+                if(found != theirNeighbors.end()){
+                    double distance1 = distance(node, *found);
+                    double distance2 = distance(nodes[i], *found);
+                    if(distance1 < distance2){
+                        nodes[i]->removeNeighbor(*found);
+                    }
+                    else{
+                        node->removeNeighbor(*found);
+                    }
+                }
+            }
         }
     }
-    tree.insert(node);
 }
 
 void AstarGraph::addPlat(Platform * plat){
@@ -62,9 +79,9 @@ vector<QPoint*> AstarGraph::findPath(QPoint * start, QPoint * end){
 
         openSet.remove(current);
         closedSet += (current);
-        vector<AstarNode*> neighbors = current->getNeighbors();
-        for(int i = 0; i < neighbors.size(); i++){
-            AstarNode* neighbor = neighbors[i];
+        unordered_set<AstarNode*> neighbors = current->getNeighbors();
+        for(auto i = neighbors.begin(); i != neighbors.end(); i++){
+            AstarNode* neighbor = *i;
             if(closedSet.contains(neighbor)){
                 continue;
             }
