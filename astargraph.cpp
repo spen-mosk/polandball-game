@@ -38,7 +38,6 @@ void AstarGraph::addPlat(Platform * plat){
 }
 
 bool AstarGraph::intersectsPlat(AstarNode * one, AstarNode * two){
-
     return false;
 }
 

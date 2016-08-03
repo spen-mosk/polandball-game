@@ -6,6 +6,10 @@
 #include "ourmath.h"
 #include "GameObjects/gameobject.h"
 #include "assert.h"
+/*
+#undef assert
+#define assert void(0);
+*/
 
 
 
