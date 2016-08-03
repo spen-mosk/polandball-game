@@ -5,6 +5,7 @@
 #include <queue>
 #include "ourmath.h"
 #include "GameObjects/gameobject.h"
+#include "assert.h"
 
 
 
@@ -26,7 +27,37 @@ public:
         return elems.size();
     }
 
+    std::vector<T> getElems(){
+        return this->elems;
+    }
+
+    int countNodes(){
+        if(root==NULL){
+            return 0;
+        }
+                std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                children->push_back(root);
+                int count = 0;
+                while(children->size() > 0){
+                    std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+                    for(int i = 0; i < children->size(); i++){
+                        count++;
+                        Node<T> * current = (*children)[i];
+                        if(current->left != 0){
+                            newChildren->push_back(current->left);
+                        }
+                        if(current->right != 0){
+                            newChildren->push_back(current->right);
+                        }
+                    }
+                    children = newChildren;
+                }
+
+                return count;
+    }
+
     void insert(T obj){
+        int startSize = this->size();
         Node<T> *node = new Node<T>();
         node->data = obj;
         if(size() == 0 || root == 0){
@@ -36,11 +67,19 @@ public:
         else{
             insertRecursive(obj, root, 0);
             this->elems.push_back(obj);
+            //sort by collRadius, greatest to least
         }
+        assert(this->size()==startSize+1);
+        printf("\nsize: %d, count %d\n", this->size(), this->countNodes());
+            assert(this->size() == this->countNodes());
     }
 
     void remove(T obj){
+        int startSize = this->size();
         removeObj(obj, false);
+        printf("\nthis->size(): %d, start %d\n", this->size(), startSize);
+        assert(startSize==this->size()+1);
+        assert(this->size() == this->countNodes());
     }
     void erase(T obj){
         removeObj(obj, true);
@@ -51,7 +90,7 @@ public:
     }
 
     std::vector<T> kNN(T obj, int k){
-        std::priority_queue<Node<T> *> queue;
+        std::priority_queue<Node<T> *, std::vector<Node<T>*>, comparator> queue;
         kNNRecursive(obj, &queue, k, this->root, 0);
         std::vector<T> list;
         int size = queue.size();
@@ -64,8 +103,20 @@ public:
     }
 
     std::vector<T> rangeSearch(T obj, int range){
+        int startSize = this->size();
         std::vector<T> vector = std::vector<T>();
         rangeRecursive(obj, &vector, range, this->root, 0);
+        assert(this->size() == startSize);
+        assert(this->size() == this->countNodes());
+        return vector;
+    }
+
+    std::vector<T> rangeSearch(T obj, int range, int width, int height){
+        int startSize = this->size();
+        std::vector<T> vector = std::vector<T>();
+        rangeRecursive(obj, &vector, range, this->root, 0, width, height);
+        assert(this->size() == startSize);
+        assert(this->size() == this->countNodes());
         return vector;
     }
 
@@ -85,9 +136,14 @@ private:
             Node<E> * right;
             E data;
             int priority;
-            bool operator <(const Node<E> rhs) const{
-                return this->priority < rhs.priority;
-            }
+    };
+
+    struct comparator{
+
+        bool operator()(Node<T> * node1, Node<T>* node2){
+            return node1->priority < node2->priority;
+        }
+
     };
     Node<T> * root;
     std::vector<T> elems;
@@ -142,12 +198,13 @@ private:
         if(current == 0){
             return NULL;
         }
-        if((obj->x() == current->data->x() && obj->y() == current->data->y())){
-            Node<T>* returnable[2];
-            current->priority = level;
         if(parent != 0){
             parent->priority = level -1;
         }
+
+        if(obj->equals(current->data)){
+            Node<T>* returnable[2];
+            current->priority = level;
             returnable[0] = current;
             returnable[1] = parent;
             return returnable;
@@ -364,7 +421,7 @@ private:
         }
     }
 
-    void kNNRecursive(T obj, std::priority_queue<Node<T>*>* queue, int k, Node<T>* node, int level){
+    void kNNRecursive(T obj, std::priority_queue<Node<T>*, vector<Node<T>*>, comparator>* queue, int k, Node<T>* node, int level){
         if(node == 0){
             return;
         }
@@ -427,13 +484,13 @@ private:
         if(level % 2 == 0){
             if(x < treeX){
                 rangeRecursive(obj, vec, range, node->left, ++level);
-                if(treeX-x < range){
+                if(x + range > treeX){
                     rangeRecursive(obj, vec, range, node->right, ++level);
                 }
             }
             else{
                 rangeRecursive(obj, vec, range, node->right, ++level);
-                if(x-treeX < range){
+                if(x-range < treeX){
                     rangeRecursive(obj, vec, range, node->left, ++level);
                 }
             }
@@ -441,24 +498,74 @@ private:
         else{
             if(y < treeY){
                 rangeRecursive(obj, vec, range, node->left, ++level);
-                if(treeY - y < range){
+                if(y + range > treeY){
                     rangeRecursive(obj, vec, range, node->right, ++level);
                 }
             }
             else{
                 rangeRecursive(obj, vec, range, node->right, ++level);
-                if(y - treeY < range){
+                if(y - range < treeY){
                     rangeRecursive(obj, vec, range, node->left, ++level);
                 }
             }
         }
     }
+
+    void rangeRecursive(T obj, std::vector<T>* vec, int range, Node<T>* node, int level, int width, int height){
+        if(node == 0){
+            return;
+        }
+        int x = obj->x();
+        int y = obj->y();
+        int treeX = node->data->x();
+        int treeY = node->data->y();
+        double dist = distance(obj, node->data);
+        if(dist < range){
+            vec->push_back(node->data);
+        }
+        if(level % 2 == 0){
+            if(x < treeX){
+                rangeRecursive(obj, vec, range, node->left, ++level, width, height);
+                if(x + width + range > treeX){
+                    rangeRecursive(obj, vec, range, node->right, ++level, width, height);
+                }
+            }
+            else{
+                rangeRecursive(obj, vec, range, node->right, ++level, width, height);
+                if(x-range < treeX + node->data->getWidth()){
+                    rangeRecursive(obj, vec, range, node->left, ++level, width, height);
+                }
+            }
+        }
+        else{
+            if(y < treeY){
+                rangeRecursive(obj, vec, range, node->left, ++level, width, height);
+                if(y + range > treeY - node->data->getHeight()){
+                    rangeRecursive(obj, vec, range, node->right, ++level, width, height);
+                }
+            }
+            else{
+                rangeRecursive(obj, vec, range, node->right, ++level);
+                if(y - height - range < treeY){
+                    rangeRecursive(obj, vec, range, node->left, ++level, width, height);
+                }
+            }
+        }
+    }
+
+
     void removeObj(T obj, bool deletion){
+        int startSize = this->size();
         Node<T> ** data = findNode(obj, 0, root, 0);
         if(data != NULL){
             deleteNode(data[0], data[1], deletion);
-            elems.erase(std::remove(elems.begin(), elems.end(), obj));
+            auto iter = std::remove(elems.begin(), elems.end(), obj);
+            elems.erase(iter);
         }
+        printf("\nstart %d, this->size() %d\n", this->countNodes(), this->size());
+        assert(this->countNodes() == this->size());
+        assert(startSize-1 == this->size());
     }
 };
+
 #endif // KDTREE_H

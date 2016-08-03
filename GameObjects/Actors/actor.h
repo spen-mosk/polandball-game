@@ -11,7 +11,7 @@ class Actor : public GameObject
 {
 
 public:
-    Actor(int, int, ActorStatistics * stats);
+    Actor(int, int, ActorStatistics * stats, int);
     virtual ~Actor(){};
     QPoint * getPosition();
     bool contains(QPoint * point);
@@ -29,6 +29,7 @@ public:
 
 
 private:
+    static int num;
     int xMove;
     int yMove;
     ActorStatistics * stats;

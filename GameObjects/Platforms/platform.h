@@ -17,6 +17,7 @@ public:
     void handleCollision(GameObject*);
 
 private:
+    static int num;
     int platType;
     bool breakable;
 

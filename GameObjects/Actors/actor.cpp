@@ -1,9 +1,13 @@
 #include "actor.h"
+#include "enemy.h"
 #include <stdio.h>
 #include <vector>
 
-Actor::Actor(int a, int b, ActorStatistics * stats)
-    :GameObject(a, b, 2*stats->getRadius(), 2*stats->getRadius(), stats->getRadius()){
+int Actor::num = 0;
+
+Actor::Actor(int a, int b, ActorStatistics * stats, int collRad)
+    :GameObject(a, b, 2*stats->getRadius(), 2*stats->getRadius(), collRad, "Actor"+
+                                std::to_string(Actor::num++)){
 
     this->stats = stats;
     QPoint * center = this->getCenter();
@@ -19,6 +23,11 @@ void Actor::updateLocation(int xOffset, int yOffset){
 }
 
 void Actor::handleCollision(GameObject * obj){
+    if(Enemy * enemy = dynamic_cast<Enemy*>(obj)){
+        if(distance(obj, this) == 0){
+            printf("STOP\n");
+        }
+    }
 }
 
 void Actor::update(){

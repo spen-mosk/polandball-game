@@ -32,7 +32,7 @@ private:
     int jumpCount;
     vector<QPoint*> path;
     bool lockedOn;
-    QPoint * nextPoint;
+    QPoint * nextPoint = NULL;
     Actor* lock;
     EnemyStatistics* stats;
 };

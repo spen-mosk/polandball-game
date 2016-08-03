@@ -9,11 +9,13 @@
 class EnemyStatistics : public ActorStatistics
 {
 public:
-    EnemyStatistics(int, int, int, bool, int,AttackStatistics*, int);
+    EnemyStatistics(int, int, int, bool, int,AttackStatistics*, int, int);
     AttackStatistics* getAttackInfo();
     int getMaxJumps();
+    int getAwarenessRange();
 private:
     int maxJumps;
+    int awareness;
     AttackStatistics* enemyAttack;
 
 };

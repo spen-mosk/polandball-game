@@ -1,16 +1,20 @@
 #include "platform.h"
 #include "astargraph.h"
 
-Platform::Platform(int x, int y, int h, int w) : GameObject(x, y, h, w, 1){
+int Platform::num = 0;
+
+Platform::Platform(int x, int y, int h, int w) :
+        GameObject(x, y, h, w, 1, "Plat"+std::to_string(Platform::num++)){
     AstarGraph& graph = AstarGraph::getInstance();
     graph.addPlat(this);
-    graph.addNode(new QPoint(x, y + 1));
-    graph.addNode(new QPoint(x + w, y + 1));
-    int start = x + 3;
+    std::vector<AstarNode*> nodes = vector<AstarNode*>();
+    int start = x;
     while(start < x + w){
-        graph.addNode(new QPoint(start, y+1));
+        nodes.push_back(new AstarNode(new QPoint(start, y + 1)));
         start += 3;
     }
+    nodes.push_back(new AstarNode(new QPoint(x + w, y + 1)));
+    graph.addNodes(nodes);
 }
 
 void Platform::draw(QPainter * painter){

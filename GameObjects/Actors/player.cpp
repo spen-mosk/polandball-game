@@ -1,7 +1,7 @@
 #include "player.h"
 #include <stdio.h>
 
-Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat){
+Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat, stat->getRadius()){
     keySet = new QSet<int>();
     this->jumpCount = 0;
     this->stats = stat;
@@ -25,7 +25,7 @@ void Player::removeKey(int key){
 
 void Player::update(){
     Actor::update();
-    printf("PLAYER X %d, PLAYER Y %d\n", this->x(), this->y());
+    //printf("PLAYER X %d, PLAYER Y %d\n", this->x(), this->y());
     int x = Qt::Key_Up;
     if(!getGrav()){
         resetJump();

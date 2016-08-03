@@ -13,6 +13,7 @@ public:
     void handleCollision(GameObject*);
 
 private:
+    static int num;
     int duration;
     int existence = 0;
 };

@@ -4,7 +4,7 @@
 #include <cmath>
 using namespace std;
 
-Enemy::Enemy(int x, int y, EnemyStatistics* stat): Actor(x,y,stat)
+Enemy::Enemy(int x, int y, EnemyStatistics* stat): Actor(x,y,stat, stat->getAwarenessRange())
 {
     this->stats = stat;
 }
@@ -21,8 +21,17 @@ void Enemy::update(){
     }
     */
     //check lockedIn here
+    Actor::update();
+    if(nextPoint == NULL && this->path.size() != 0){
+        nextPoint = *(this->path.begin());
+        this->path.erase(this->path.begin());
+    }
+    if(!this->getGrav()){
+        resetJump();
+    }
     if(canAttack()){
-       //DO we want to move if we canAttack?
+        //DO we want to move if we canAttack?
+        //Probably not
     }
     //if we can't attack, we may want to move
     else
@@ -34,17 +43,35 @@ void Enemy::update(){
         else{
             this->updateLocation(this->stats->getSpeed(), 0);
         }
-        if(distance(nextPoint, new QPoint(this->x(), this->y())) <= 1){
-            nextPoint = *(this->path.begin());
-            this->path.erase(this->path.begin());
-        }
     }
     //this means some jumping or descending is involved, and means changing platforms
     //we need to do calculations to see if we can make it
     //Its 5:00 am, I don't feel like doing those right now
-    else{
-
+    else if(nextPoint != NULL){
+        int realMax = stats->getMaxJumps() - this->jumpCount;
+        int jumpHeight = (verticalSpeed - stats->getGravity()) * realMax;
+        int xDist = abs(nextPoint->x() - this->x());
+        int cycles = xDist / this->stats->getSpeed();
+        int descent = stats->getGravity() * (cycles - realMax);
+        int yHeight = jumpHeight - descent;
+        if(this->jumpCount > stats->getMaxJumps() || yHeight > nextPoint->y()){
+            this->jump();
+            if(this->x() < nextPoint->x()){
+                this->updateLocation(this->stats->getSpeed(), 0);
+            }
+            else if(this->x() > nextPoint->x()){
+                this->updateLocation(-this->stats->getSpeed(), 0);
+            }
+        }
     }
+    if(nextPoint != NULL && distance(nextPoint, new QPoint(this->x(), this->y())) <= 1 && this->path.size() > 0){
+        nextPoint = *(this->path.begin());
+        this->path.erase(this->path.begin());
+    }
+    else if(this->path.size() == 0){
+        nextPoint = NULL;
+    }
+    this->setGrav(true);
 }
 
 void Enemy::draw(QPainter * p){
@@ -54,6 +81,7 @@ void Enemy::draw(QPainter * p){
 
 void Enemy::handleCollision(GameObject * obj){
     if(Actor * act = dynamic_cast<Actor*>(obj)){
+        //TODO this is actually wrong, but it works for now
         if(act->isAlly() == this->isAlly()){
             this->lockOn(act);
         }
@@ -61,6 +89,9 @@ void Enemy::handleCollision(GameObject * obj){
 }
 
 void Enemy::jump(){
+    if(this->jumpCount++ < this->stats->getMaxJumps()){
+        this->updateLocation(0, this->verticalSpeed);
+    }
 
 }
 
@@ -69,14 +100,14 @@ void Enemy::maximizeJump(){
 }
 
 void Enemy::resetJump(){
-
+    this->jumpCount = 0;
 }
 
 void Enemy::lockOn(Actor* p){
+    AstarGraph& graph = AstarGraph::getInstance();
     if(!lockedOn){
         this->lockedOn = true;
         this->lock = p;
-        AstarGraph& graph = AstarGraph::getInstance();
         //instead of passing in coords of lock, determine optimal attack position
         this->path = graph.findPath(new QPoint(this->x(), this->y()), new QPoint(p->x(), p->y()));
     }
@@ -84,9 +115,14 @@ void Enemy::lockOn(Actor* p){
     else{
        if(distance(this, p) < distance(this, lock)){
            this->lock = p;
-           AstarGraph& graph = AstarGraph::getInstance();
            //change this so instead of generating a new path, we modify the existing path
            //instead of passing in coords of enemy, determine optimal attack position
+           this->path = graph.findPath(new QPoint(this->x(), this->y()), new QPoint(p->x(), p->y()));
+       }
+       else if(distance(this, p) == distance(this, lock) && this->path.size() > 0){
+           this->path = graph.modifyPath(this->path, new QPoint(p->x(), p->y()));
+       }
+       else if(this->path.size() == 0){
            this->path = graph.findPath(new QPoint(this->x(), this->y()), new QPoint(p->x(), p->y()));
        }
     }
@@ -99,7 +135,7 @@ void Enemy::cancelLock(){
 bool Enemy::canAttack(){
     //bool stuff based on player's position, speed, and size of enemy's attack
     //this will be more if we are not locked in
-    return lockedOn;
+    return lockedOn && false;
 }
 
 Attack* Enemy::generateAttack(){

@@ -1,11 +1,12 @@
 #include "gameobject.h"
 #include <stdio.h>
 
-GameObject::GameObject(int x, int y, int h, int w, int rad)
+GameObject::GameObject(int x, int y, int h, int w, int rad, std::string name)
 {
     xPos = x;
     yPos = y;
     height = h;
+    this->name = name;
     width = w;
     collRad= rad;
     this->grav = true;
@@ -25,6 +26,10 @@ int GameObject::getCollRadius(){
 
 int GameObject::x(){
     return xPos;
+}
+
+bool GameObject::equals(GameObject * other){
+    return other->name == this->name && this->x() == other->x() && this->y() == other->y();
 }
 
 QPoint * GameObject::getDrawingPosition(){

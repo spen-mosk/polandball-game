@@ -20,10 +20,10 @@ double distance(GameObject * one, GameObject*two){
     int y1 = one->y();
     int xr1 = x1 +one->getWidth();
     int yb1 = y1 - one->getHeight();
-    int x2 = one->x();
-    int y2 = one->y();
-    int xr2 = x2 +one->getWidth();
-    int yb2 = y2 - one->getHeight();
+    int x2 = two->x();
+    int y2 = two->y();
+    int xr2 = x2 +two->getWidth();
+    int yb2 = y2 - two->getHeight();
     bool top = y2 < yb1;
     bool right = xr2 < x1;
     bool left = x2 > xr1;
@@ -31,7 +31,7 @@ double distance(GameObject * one, GameObject*two){
     int dx = 0;
     int dy = 0;
     if(left){
-        dx = x2 - xr2;
+        dx = x2 - xr1;
     }
     if(right){
         dx = xr2 - x1;

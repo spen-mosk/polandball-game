@@ -1,7 +1,11 @@
 #include "GameObjects/tempgameobject.h"
 #include "GameObjects/Platforms/platform.h"
 
-TempGameObject::TempGameObject(int x, int y, int height, int width, int dura) : GameObject(x,y,height,width, 5), DeleteSubject(){
+int TempGameObject::num = 0;
+
+TempGameObject::TempGameObject(int x, int y, int height, int width, int dura) :
+        GameObject(x,y,height,width, 5, "Temp"+std::to_string(TempGameObject::num++)),
+        DeleteSubject(){
     this->duration = dura;
 }
 

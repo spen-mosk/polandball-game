@@ -10,8 +10,9 @@ using namespace std;
 class AstarGraph
 {
 public:
-    void addNode(QPoint*);
+    void addNodes(vector<AstarNode*>);
     vector<QPoint*> findPath(QPoint*, QPoint*);
+    vector<QPoint*> modifyPath(vector<QPoint*>, QPoint*);
     static AstarGraph& getInstance(){
         static AstarGraph instance;
         return instance;

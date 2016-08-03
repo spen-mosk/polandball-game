@@ -3,12 +3,13 @@
 #include <QPoint>
 #include <QObject>
 #include <QPainter>
+#include <string>
 
 class GameObject : public QObject
 {
 
 public:
-    GameObject(int, int, int, int, int);
+    GameObject(int, int, int, int, int, std::string);
     virtual ~GameObject(){};
     virtual void draw(QPainter *) = 0;
     virtual void update() = 0;
@@ -19,10 +20,14 @@ public:
     int getWidth();
     void setX(int);
     void setY(int);
+    bool equals(GameObject*);
     int drawingX;
     int drawingY;
     int getCollRadius();
     void setGrav(bool grav);
+    bool operator <(const GameObject* rhs) const{
+        return collRad < rhs->collRad;
+    }
     bool getGrav();
     int drawingWidth;
     int drawingHeight;
@@ -30,6 +35,7 @@ public:
     QPoint * getPosition();
 
 private:
+    std::string name;
     int xPos;
     int yPos;
     int height;
