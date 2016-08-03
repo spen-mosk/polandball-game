@@ -6,7 +6,7 @@
 class RangedAttackStatistics : public AttackStatistics
 {
 public:
-    RangedAttackStatistics(int, int, int, int, bool);
+    RangedAttackStatistics(int, int, int, int, bool, int);
     int getSpeed();
 private:
     int speed;

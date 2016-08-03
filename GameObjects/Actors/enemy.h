@@ -26,6 +26,7 @@ public:
 
 private:
     //AI to be added/used in makeDecision
+    int attackDelayCount = 0;
     int jumpDelay;
     int jumpDelayCount;
     int verticalSpeed;

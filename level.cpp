@@ -49,6 +49,7 @@ void Level::update(){
 
 void Level::handlePress(int key){
     player->addKey(key);
+    if(player->canAttack()){
     if(key == Qt::Key_Z){
         TempGameObject * attack = player->primaryAttack();
         attack->registerObserver(this);
@@ -58,6 +59,7 @@ void Level::handlePress(int key){
         TempGameObject *attack = player->secondaryAttack();
         attack->registerObserver(this);
         tree.insert(attack);
+    }
     }
 }
 

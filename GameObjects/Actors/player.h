@@ -26,9 +26,13 @@ public:
     MeleeAttack *primaryAttack();
     RangedAttack *secondaryAttack();
     Attack*ultAttack();
+    bool canAttack();
 
 
 private:
+    int meleeDelayCount;
+    int rangedDelayCount;
+    int ultDelayCount;
     int jumpCount;
     PlayerStatistics * stats;
     QSet<int> * keySet;

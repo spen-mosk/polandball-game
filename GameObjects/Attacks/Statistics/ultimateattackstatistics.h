@@ -7,7 +7,7 @@
 class UltimateAttackStatistics : public MeleeAttackStatistics,RangedAttackStatistics
 {
 public:
-    UltimateAttackStatistics(int, int, int, int, bool, bool);
+    UltimateAttackStatistics(int, int, int, int, bool, bool, int);
     bool isMelee();
 private:
     bool attackType;

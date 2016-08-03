@@ -1,6 +1,6 @@
 #include "attackstatistics.h"
 
-AttackStatistics::AttackStatistics(int h, int w, int d, bool allied, int dmg, int speed, bool isMelee)
+AttackStatistics::AttackStatistics(int h, int w, int d, bool allied, int dmg, int speed, bool isMelee, int dlay)
 {
     this->height = h;
     this->damage = dmg;
@@ -9,6 +9,7 @@ AttackStatistics::AttackStatistics(int h, int w, int d, bool allied, int dmg, in
     this->ally = allied;
     this->speed = speed;
     this->melee = isMelee;
+    this->delay = dlay;
 }
 
 int AttackStatistics::getHeight(){
@@ -37,4 +38,8 @@ int AttackStatistics::getDuration(){
 
 bool AttackStatistics::isAlly(){
     return ally;
+}
+
+int AttackStatistics::getDelay(){
+    return delay;
 }
