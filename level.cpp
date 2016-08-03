@@ -40,7 +40,7 @@ void Level::update(){
     if(tree.size() > 4){
         printf("TREE SIZE %d\n", size);
     }
-    for(int i = 0; i < size; i++){
+    for(int i = 0; i < tree.size(); i++){
         GameObject * obj = tree.get(i);
         obj->update();
     }

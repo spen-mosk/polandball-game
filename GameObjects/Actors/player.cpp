@@ -5,8 +5,8 @@ Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat, stat->g
     keySet = new QSet<int>();
     this->jumpCount = 0;
     this->stats = stat;
-    this->jumpDelayCount = 28;
-    this->jumpDelay = 14;
+    this->jumpDelayCount = 0;
+    this->jumpDelay = 28;
 }
 
 Player::~Player(){
@@ -52,6 +52,8 @@ void Player::jump(){
         this->setGrav(true);
         jumpCount += 1;
         this->updateLocation(0, stats->getVertSpeed());
+    }else{
+        this->maximizeJump();
     }
 }
 
