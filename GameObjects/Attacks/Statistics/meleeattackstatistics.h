@@ -7,7 +7,7 @@
 class MeleeAttackStatistics : public AttackStatistics
 {
 public:
-    MeleeAttackStatistics(int, int, int, bool);
+    MeleeAttackStatistics(int, int, int, bool, int);
 };
 
 #endif // MELEEATTACKSTATISTICS_H

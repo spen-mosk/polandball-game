@@ -5,8 +5,11 @@ Player::Player(int x, int y, PlayerStatistics *stat) : Actor(x, y, stat, stat->g
     keySet = new QSet<int>();
     this->jumpCount = 0;
     this->stats = stat;
-    this->jumpDelayCount = 28;
-    this->jumpDelay = 14;
+    this->jumpDelayCount = 0;
+    this->jumpDelay = 28;
+    this->meleeDelayCount = stat->getMeleeInfo()->getDelay();
+    this->rangedDelayCount = stat->getRangedInfo()->getDelay();
+    this->ultDelayCount = stat->getUltInfo()->getDelay();
 }
 
 Player::~Player(){
@@ -25,6 +28,15 @@ void Player::removeKey(int key){
 
 void Player::update(){
     Actor::update();
+    if(this->rangedDelayCount < stats->getRangedInfo()->getDelay()){
+        this->rangedDelayCount += 1;
+    }
+    if(this->meleeDelayCount < stats->getMeleeInfo()->getDelay()){
+        this->meleeDelayCount += 1;
+    }
+    if(this->ultDelayCount < stats->getUltInfo()->getDelay()){
+        this->ultDelayCount += 1;
+    }
     //printf("PLAYER X %d, PLAYER Y %d\n", this->x(), this->y());
     int x = Qt::Key_Up;
     if(!getGrav()){
@@ -52,6 +64,8 @@ void Player::jump(){
         this->setGrav(true);
         jumpCount += 1;
         this->updateLocation(0, stats->getVertSpeed());
+    }else{
+        this->maximizeJump();
     }
 }
 
@@ -80,11 +94,13 @@ void Player::draw(QPainter * painter){
 }
 
 MeleeAttack* Player::primaryAttack(){
+    this->meleeDelayCount = 0;
     AttackStatistics* melle = stats->getMeleeInfo();
     return new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + melle->getHeight()/2, melle, this);
 }
 
 RangedAttack* Player::secondaryAttack(){
+    this->rangedDelayCount = 0;
     AttackStatistics* melle = stats->getRangedInfo();
     if(facingLeft()){
         return new RangedAttack(this->getCenter()->x()-this->getRadius() - melle->getWidth(),this->getCenter()->y() + melle->getHeight()/2, this->facingLeft(), melle);
@@ -95,6 +111,7 @@ RangedAttack* Player::secondaryAttack(){
 }
 
 Attack* Player::ultAttack(){
+    this->ultDelayCount = 0;
     AttackStatistics *ult = stats->getUltInfo();
     Attack* attack;
     if(ult->isMelee()){
@@ -105,4 +122,9 @@ Attack* Player::ultAttack(){
 
     }
     return attack;
+}
+
+bool Player::canAttack(){
+    return (this->rangedDelayCount == stats->getRangedInfo()->getDelay()) && (this->meleeDelayCount == stats->getMeleeInfo()->getDelay())
+            && (this->ultDelayCount == stats->getUltInfo()->getDelay());
 }

@@ -54,9 +54,9 @@
 Window::Window()
 {
     setWindowTitle(tr("Polandball Game"));
-    AttackStatistics * tack = new AttackStatistics(10, 10, 10, true, 10, 1, true);
-    AttackStatistics * range = new AttackStatistics(10, 10, 100, true, 10, 1, false);
-    PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, 1, tack, tack, tack, 5, 3);
+    AttackStatistics * tack = new AttackStatistics(2, 2, 20, true, 10, 1, true, 40);
+    AttackStatistics * range = new AttackStatistics(2, 2, 100, true, 10, 1, false, 40);
+    PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, 1, tack, range, tack, 25, 3);
     Player * player = new Player(0, 50, stats);
     GameWidget *openGL = new GameWidget(player, this);
     printf("WE Started");

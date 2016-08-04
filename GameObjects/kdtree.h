@@ -35,27 +35,65 @@ public:
         return this->elems;
     }
 
+bool satisfiesProp(){
+    if(root == 0){
+        return true;
+    }
+    int level = -1;
+    bool satisfies = true;
+    std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+    children->push_back(root);
+    int count = 0;
+    while(children->size() > 0){
+        level++;
+        std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+        for(int i = 0; i < children->size(); i++){
+            Node<T> * current = (*children)[i];
+            if(current->left != 0){
+                newChildren->push_back(current->left);
+                if(level % 2 == 0){
+                    satisfies = satisfies && current->left->data->x() < current->data->x();
+                }
+                else{
+                    satisfies = satisfies && current->left->data->y() < current->data->y();
+                }
+            }
+            if(current->right != 0){
+                newChildren->push_back(current->right);
+                if(level % 2 == 0){
+                    satisfies = satisfies && current->right->data->x() >= current->data->x();
+                }
+                else{
+                    satisfies = satisfies && current->right->data->y() >= current->data->y();
+                }
+            }
+        }
+        children = newChildren;
+    }
+    return satisfies;
+}
+
     int countNodes(){
         if(root==NULL){
             return 0;
         }
-                std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
-                children->push_back(root);
-                int count = 0;
-                while(children->size() > 0){
-                    std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
-                    for(int i = 0; i < children->size(); i++){
-                        count++;
-                        Node<T> * current = (*children)[i];
-                        if(current->left != 0){
-                            newChildren->push_back(current->left);
-                        }
-                        if(current->right != 0){
-                            newChildren->push_back(current->right);
-                        }
-                    }
-                    children = newChildren;
+        std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+        children->push_back(root);
+        int count = 0;
+        while(children->size() > 0){
+            std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+            for(int i = 0; i < children->size(); i++){
+                count++;
+                Node<T> * current = (*children)[i];
+                if(current->left != 0){
+                    newChildren->push_back(current->left);
                 }
+                if(current->right != 0){
+                    newChildren->push_back(current->right);
+                }
+            }
+            children = newChildren;
+        }
 
                 return count;
     }
@@ -70,12 +108,23 @@ public:
         }
         else{
             insertRecursive(obj, root, 0);
-            this->elems.push_back(obj);
+            auto i = elems.begin();
+            for(i; i != elems.end(); i++){
+                T elem = *i;
+                if(obj->getCollRadius() >= elem->getCollRadius()){
+                    elems.insert(i, obj);
+                    break;
+                }
+            }
+            if(i == elems.end()){
+                elems.push_back(obj);
+            }
             //sort by collRadius, greatest to least
         }
+        assert(satisfiesProp());
         assert(this->size()==startSize+1);
         printf("\nsize: %d, count %d\n", this->size(), this->countNodes());
-            assert(this->size() == this->countNodes());
+        assert(this->size() == this->countNodes());
     }
 
     void remove(T obj){
@@ -103,6 +152,7 @@ public:
             queue.pop();
             list.push_back(node->data);
         }
+        assert(satisfiesProp());
         return list;
     }
 
@@ -110,6 +160,7 @@ public:
         int startSize = this->size();
         std::vector<T> vector = std::vector<T>();
         rangeRecursive(obj, &vector, range, this->root, 0);
+        assert(satisfiesProp());
         assert(this->size() == startSize);
         assert(this->size() == this->countNodes());
         return vector;
@@ -119,6 +170,7 @@ public:
         int startSize = this->size();
         std::vector<T> vector = std::vector<T>();
         rangeRecursive(obj, &vector, range, this->root, 0, width, height);
+        assert(satisfiesProp());
         assert(this->size() == startSize);
         assert(this->size() == this->countNodes());
         return vector;
@@ -239,145 +291,62 @@ private:
         else{
             level = parent->priority;
         }
-        if(toDelete->left == 0 && toDelete->right == 0){
-            if(level % 2 == 0){
-                if(parent == 0){
-                    root = 0;
-                }
-                else if(toDelete->data->x() < parent->data->x()){
-                    parent->left = 0;
-                }
-                else{
-                    parent->right = 0;
-                }
-            }
-            else{
-                if(parent == 0){
-                    root = 0;
-                }
-                else if(toDelete->data->y() < parent->data->y()){
-                    parent->left = 0;
-                }
-                else{
-                    parent->right = 0;
-                }
-            }
-            if(deletion){
-                delete toDelete;
-            }
-        }
-        else if(toDelete->left == 0){
-            if(level % 2 == 0){
-                if(parent == 0){
-                    root = toDelete->right;
-                }
-                else if(toDelete->data->x() < parent->data->x()){
-                    parent->left = toDelete->right;
-                }
-                else{
-                    parent->right = toDelete->right;
-                }
-            }
-            else{
-                if(parent == 0){
-                    root = toDelete->right;
-                }
-                else if(toDelete->data->y() < parent->data->y()){
-                     parent->left = toDelete->right;
-                }
-                else{
-                    parent->right = toDelete->right;
-                }
-            }
-            toDelete->right = 0;
-            if(deletion){
-                delete toDelete;
-            }
-        }
-        else if(toDelete->right == 0){
-            if(level % 2 == 0){
-                if(parent == 0){
-                     root = toDelete->left;
-                }
-                else if(toDelete->data->x() < parent->data->x()){
-                     parent->left = toDelete->left;
-                }
-                else{
-                    parent->right = toDelete->left;
-                }
-            }
-            else{
-                if(parent == 0){
-                    root = toDelete->left;
-                }
-                else if(toDelete->data->y() < parent->data->y()){
-                    parent->left = toDelete->left;
-                }
-                else{
-                    parent->right = toDelete->left;
-                }
-            }
-            toDelete->left = 0;
-            if(deletion){
-                delete toDelete;
-            }
-        }
-        else{
+        if(toDelete->left != 0){
             Node<T> * replace = toDelete->left;
             Node<T> * replaceParent = toDelete;
             int currentLevel = level +1;
             toDelete->priority = currentLevel;
-            if(currentLevel % 2 == 0){
-                std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
-                toDelete->left->priority = ++currentLevel;
-                children->push_back(toDelete->left);
-                while(children->size() > 0){
-                    std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
-                    for(int i = 0; i < children->size(); i++){
-                        Node<T> * current = (*children)[i];
-                        currentLevel = current->priority;
-                        if(current->left != 0){
-                            current->left->priority = currentLevel + 1;
-                            if(replace == 0 || current->left->data->x() > replace->data->x()){
-                                replace = current->left;
-                                replaceParent = current;
-                            }
-                            newChildren->push_back(current->left);
-                        }
-                        if(current->right != 0){
-                            current->right->priority = currentLevel + 1;
-                            if(replace == 0 || current->right->data->x() > replace->data->x()){
-                                replace = current->right;
-                                replaceParent = current;
-                            }
-                            newChildren->push_back(current->right);
-                        }
-                    }
-                    children = newChildren;
-                }
-                Node<T> * replacement = new Node<T>();
-                replacement->data = replace->data;
-                replacement->priority = replace->priority;
-                deleteNode(replace, replaceParent, deletion);
-                replacement->left = toDelete->left;
-                replacement->right = toDelete->right;
-                if(parent == 0){
-                    root = replacement;
-                }
-                else if(toDelete->data->x() < parent->data->x()){
-                    parent->left = replacement;
-                }
-                else{
-                    parent->right = replacement;
-                }
-                toDelete->left = 0;
-                toDelete->right = 0;
-                if(deletion){
-                    delete toDelete;
-                }
-            }
-            else{
-                std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                 if(currentLevel % 2 == 0){
+                 std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                 toDelete->left->priority = ++currentLevel;
+                 children->push_back(toDelete->left);
+                 while(children->size() > 0){
+                     std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+                     for(int i = 0; i < children->size(); i++){
+                         Node<T> * current = (*children)[i];
+                         currentLevel = current->priority;
+                         if(current->left != 0){
+                             current->left->priority = currentLevel + 1;
+                             if(replace == 0 || current->left->data->x() > replace->data->x()){
+                                 replace = current->left;
+                                 replaceParent = current;
+                             }
+                             newChildren->push_back(current->left);
+                         }
+                         if(current->right != 0){
+                             current->right->priority = currentLevel + 1;
+                             if(replace == 0 || current->right->data->x() > replace->data->x()){
+                                 replace = current->right;
+                                 replaceParent = current;
+                             }
+                             newChildren->push_back(current->right);
+                         }
+                     }
+                     children = newChildren;
+                 }
+                 Node<T> * replacement = new Node<T>();
+                 replacement->data = replace->data;
+                 replacement->priority = replace->priority;
+                 deleteNode(replace, replaceParent, deletion);
+                 replacement->left = toDelete->left;
+                 replacement->right = toDelete->right;
+                 if(parent == 0){
+                     root = replacement;
+                 }
+                 else if(toDelete->data->x() < parent->data->x()){
+                     parent->left = replacement;
+                 }
+                 else{
+                     parent->right = replacement;
+                 }
+                 toDelete->left = 0;
+                 toDelete->right = 0;
+                 if(deletion){
+                     delete toDelete;
+                 }
+           }
+           else{
+              std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
                 toDelete->left->priority = ++currentLevel;
                 children->push_back(toDelete->left);
                 while(children->size() > 0){
@@ -422,6 +391,134 @@ private:
                     delete toDelete;
                 }
             }
+        }
+        else if(toDelete->right != 0){
+            Node<T> * replace = toDelete->right;
+            Node<T> * replaceParent = toDelete;
+            int currentLevel = level +1;
+            toDelete->priority = currentLevel;
+                 if(currentLevel % 2 == 0){
+                 std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                 toDelete->left->priority = ++currentLevel;
+                 children->push_back(toDelete->right);
+                 while(children->size() > 0){
+                     std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+                     for(int i = 0; i < children->size(); i++){
+                         Node<T> * current = (*children)[i];
+                         currentLevel = current->priority;
+                         if(current->left != 0){
+                             current->left->priority = currentLevel + 1;
+                             if(replace == 0 || current->left->data->x() < replace->data->x()){
+                                 replace = current->left;
+                                 replaceParent = current;
+                             }
+                             newChildren->push_back(current->left);
+                         }
+                         if(current->right != 0){
+                             current->right->priority = currentLevel + 1;
+                             if(replace == 0 || current->right->data->x() < replace->data->x()){
+                                 replace = current->right;
+                                 replaceParent = current;
+                             }
+                             newChildren->push_back(current->right);
+                         }
+                     }
+                     children = newChildren;
+                 }
+                 Node<T> * replacement = new Node<T>();
+                 replacement->data = replace->data;
+                 replacement->priority = replace->priority;
+                 deleteNode(replace, replaceParent, deletion);
+                 replacement->left = toDelete->left;
+                 replacement->right = toDelete->right;
+                 if(parent == 0){
+                     root = replacement;
+                 }
+                 else if(toDelete->data->x() < parent->data->x()){
+                     parent->left = replacement;
+                 }
+                 else{
+                     parent->right = replacement;
+                 }
+                 toDelete->left = 0;
+                 toDelete->right = 0;
+                 if(deletion){
+                     delete toDelete;
+                 }
+           }
+           else{
+              std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+                toDelete->right->priority = ++currentLevel;
+                children->push_back(toDelete->right);
+                while(children->size() > 0){
+                    std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+                    for(int i = 0; i < children->size(); i++){
+                        Node<T> * current = (*children)[i];
+                        currentLevel = current->priority;
+                        if(current->left != 0){
+                            current->left->priority = currentLevel + 1;
+                            if(replace == 0 || current->left->data->y() < replace->data->y()){
+                                replace = current->left;
+                                replaceParent = current;
+                            }
+                            newChildren->push_back(current->left);
+                        }
+                        if(current->right != 0){
+                            current->right->priority = currentLevel + 1;
+                            if(replace == 0 || current->right->data->y() < replace->data->y()){
+                                replace = current->right;
+                                replaceParent = current;
+                            }
+                            newChildren->push_back(current->right);
+                        }
+                    }
+                    children = newChildren;
+                }
+                Node<T> * replacement = new Node<T>();
+                replacement->data = replace->data;
+                replacement->priority = replace->priority;
+                deleteNode(replace, replaceParent, deletion);
+                replacement->left = toDelete->left;
+                replacement->right = toDelete->right;
+                if(toDelete->data->y() < parent->data->y()){
+                    parent->left = replacement;
+                }
+                else{
+                    parent->right = replacement;
+                }
+                toDelete->left = 0;
+                toDelete->right = 0;
+                if(deletion){
+                    delete toDelete;
+                }
+            }
+        }
+        else{
+            if(level % 2 == 0){
+                if(parent == 0){
+                     root = 0;
+                }
+                else if(toDelete->data->x() < parent->data->x()){
+                    parent->left = 0;
+                }
+                else{
+                    parent->right = 0;
+                }
+             }
+             else{
+                if(parent == 0){
+                    root = 0;
+                }
+                else if(toDelete->data->y() < parent->data->y()){
+                    parent->left = 0;
+                }
+                else{
+                    parent->right = 0;
+                }
+             }
+             if(deletion){
+                 delete toDelete;
+             }
         }
     }
 
@@ -567,6 +664,7 @@ private:
             elems.erase(iter);
         }
         printf("\nstart %d, this->size() %d\n", this->countNodes(), this->size());
+        assert(satisfiesProp());
         assert(this->countNodes() == this->size());
         assert(startSize-1 == this->size());
     }

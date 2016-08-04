@@ -21,6 +21,10 @@ void AstarNode::addNeighbor(AstarNode * node){
     this->neighbors.insert(node);
 }
 
+int AstarNode::getCollRadius(){
+    return 0;
+}
+
 void AstarNode::removeNeighbor(AstarNode * node){
     neighbors.erase(node);
 }

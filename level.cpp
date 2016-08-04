@@ -40,7 +40,7 @@ void Level::update(){
     if(tree.size() > 4){
         printf("TREE SIZE %d\n", size);
     }
-    for(int i = 0; i < size; i++){
+    for(int i = 0; i < tree.size(); i++){
         GameObject * obj = tree.get(i);
         obj->update();
     }
@@ -49,6 +49,7 @@ void Level::update(){
 
 void Level::handlePress(int key){
     player->addKey(key);
+    if(player->canAttack()){
     if(key == Qt::Key_Z){
         TempGameObject * attack = player->primaryAttack();
         attack->registerObserver(this);
@@ -58,6 +59,7 @@ void Level::handlePress(int key){
         TempGameObject *attack = player->secondaryAttack();
         attack->registerObserver(this);
         tree.insert(attack);
+    }
     }
 }
 
@@ -88,6 +90,7 @@ void Level::checkCollisions(){
         }
     }
     assert(tree.size() == 0);
+    std::random_shuffle(objs.begin(), objs.end());
     for(int b = 0; b < objs.size(); b++){
         tree.insert(objs[b]);
     }
