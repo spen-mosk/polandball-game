@@ -8,8 +8,8 @@ Platform::Platform(int x, int y, int h, int w) :
     AstarGraph& graph = AstarGraph::getInstance();
     graph.addPlat(this);
     std::vector<AstarNode*> nodes = vector<AstarNode*>();
-    int start = x;
-    while(start < x + w){
+    int start = x+1;
+    while(start < x + w-1){
         nodes.push_back(new AstarNode(new QPoint(start, y + 1)));
         start += 3;
     }

@@ -44,22 +44,23 @@ void Level::update(){
         GameObject * obj = tree.get(i);
         obj->update();
     }
+    tree.rebuildTree();
     this->checkCollisions();
 }
 
 void Level::handlePress(int key){
     player->addKey(key);
     if(player->canAttack()){
-    if(key == Qt::Key_Z){
-        TempGameObject * attack = player->primaryAttack();
-        attack->registerObserver(this);
-        tree.insert(attack);
-    }
-    if(key == Qt::Key_X){
-        TempGameObject *attack = player->secondaryAttack();
-        attack->registerObserver(this);
-        tree.insert(attack);
-    }
+        if(key == Qt::Key_Z){
+            TempGameObject * attack = player->primaryAttack();
+            attack->registerObserver(this);
+            tree.insert(attack);
+        }
+        if(key == Qt::Key_X){
+            TempGameObject *attack = player->secondaryAttack();
+            attack->registerObserver(this);
+            tree.insert(attack);
+        }
     }
 }
 
@@ -75,23 +76,14 @@ void Level::handleRelease(int key){
 
 void Level::checkCollisions(){
     std::vector<GameObject*> objs = tree.getElems();
-    int size = objs.size();
-    int treeSize = tree.size();
     for(int i = 0; i < objs.size(); i++){
         int objsSize = objs.size();
         GameObject * obj = objs[i];
         int radius = obj->getCollRadius();
-        tree.remove(obj);
         int innerSize = tree.size();
         std::vector<GameObject *> list = tree.rangeSearch(obj, radius, obj->getWidth(), obj->getHeight());
         for(int a = 0; a < list.size(); a++){
-            list[a]->handleCollision(obj);
             obj->handleCollision(list[a]);
         }
-    }
-    assert(tree.size() == 0);
-    std::random_shuffle(objs.begin(), objs.end());
-    for(int b = 0; b < objs.size(); b++){
-        tree.insert(objs[b]);
     }
 }

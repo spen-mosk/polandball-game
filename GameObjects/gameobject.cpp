@@ -29,6 +29,9 @@ int GameObject::x(){
 }
 
 bool GameObject::equals(GameObject * other){
+    if(other == 0){
+        return false;
+    }
     return other->name == this->name && this->x() == other->x() && this->y() == other->y();
 }
 

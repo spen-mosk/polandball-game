@@ -7,6 +7,7 @@ using namespace std;
 Enemy::Enemy(int x, int y, EnemyStatistics* stat): Actor(x,y,stat, stat->getAwarenessRange())
 {
     this->stats = stat;
+    this->verticalSpeed = 3;
 }
 
 void Enemy::update(){
@@ -71,6 +72,7 @@ void Enemy::update(){
     else if(this->path.size() == 0){
         nextPoint = NULL;
     }
+    printf("ENEMY X: %d, ENEMY Y %d\n", this->x(), this->y());
     this->setGrav(true);
 }
 

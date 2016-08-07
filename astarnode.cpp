@@ -17,6 +17,13 @@ unordered_set<AstarNode*> AstarNode::getNeighbors(){
     return this->neighbors;
 }
 
+bool AstarNode::equals(AstarNode * other){
+    if(other == 0){
+        return false;
+    }
+    return other->x() == this->x() && other->y() == this->y();
+}
+
 void AstarNode::addNeighbor(AstarNode * node){
     this->neighbors.insert(node);
 }

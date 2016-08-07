@@ -3,13 +3,12 @@
 
 #include <vector>
 #include <queue>
+#include <climits>
 #include "ourmath.h"
 #include "GameObjects/gameobject.h"
 #include "assert.h"
-/*
 #undef assert
 #define assert void(0);
-*/
 
 
 
@@ -35,43 +34,61 @@ public:
         return this->elems;
     }
 
-bool satisfiesProp(){
-    if(root == 0){
-        return true;
-    }
-    int level = -1;
-    bool satisfies = true;
-    std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
-    children->push_back(root);
-    int count = 0;
-    while(children->size() > 0){
-        level++;
-        std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
-        for(int i = 0; i < children->size(); i++){
-            Node<T> * current = (*children)[i];
-            if(current->left != 0){
-                newChildren->push_back(current->left);
-                if(level % 2 == 0){
-                    satisfies = satisfies && current->left->data->x() < current->data->x();
-                }
-                else{
-                    satisfies = satisfies && current->left->data->y() < current->data->y();
-                }
-            }
-            if(current->right != 0){
-                newChildren->push_back(current->right);
-                if(level % 2 == 0){
-                    satisfies = satisfies && current->right->data->x() >= current->data->x();
-                }
-                else{
-                    satisfies = satisfies && current->right->data->y() >= current->data->y();
-                }
-            }
+    bool satisfiesProp(){
+        if(root == 0){
+            return true;
         }
-        children = newChildren;
+        int level = -1;
+        bool satisfies = true;
+        std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+        children->push_back(root);
+        int count = 0;
+        while(children->size() > 0){
+            level++;
+            std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+            for(int i = 0; i < children->size(); i++){
+                Node<T> * current = (*children)[i];
+                if(current->left != 0){
+                    newChildren->push_back(current->left);
+                    if(level % 2 == 0){
+                        satisfies = satisfies && current->left->data->x() < current->data->x();
+                    }
+                    else{
+                        satisfies = satisfies && current->left->data->y() < current->data->y();
+                    }
+                }
+                if(current->right != 0){
+                    newChildren->push_back(current->right);
+                    if(level % 2 == 0){
+                        satisfies = satisfies && current->right->data->x() >= current->data->x();
+                    }
+                    else{
+                        satisfies = satisfies && current->right->data->y() >= current->data->y();
+                    }
+                }
+            }
+            children = newChildren;
+        }
+        return satisfies;
     }
-    return satisfies;
-}
+
+    void rebuildTree(){
+        if(root == 0){
+            return;
+        }
+        std::vector<Node<T>**> broken = std::vector<Node<T>**>();
+        brokenInvariants(root, &broken, INT_MIN, INT_MIN, INT_MAX, INT_MAX, 0);
+        for(int i = 0; i < broken.size(); i++){
+            Node<T> ** nodes = broken[i];
+            T obj = nodes[0]->data;
+            this->deleteNode(nodes[0], nodes[1], false);
+            this->insertRecursive(obj, root, 0);
+            assert(this->countNodes() == this->size());
+            printf("MUST REBUILD\n");
+        }
+        assert(this->satisfiesProp());
+    }
+
 
     int countNodes(){
         if(root==NULL){
@@ -94,8 +111,7 @@ bool satisfiesProp(){
             }
             children = newChildren;
         }
-
-                return count;
+        return count;
     }
 
     void insert(T obj){
@@ -123,17 +139,16 @@ bool satisfiesProp(){
         }
         assert(satisfiesProp());
         assert(this->size()==startSize+1);
-        printf("\nsize: %d, count %d\n", this->size(), this->countNodes());
         //assert(this->size() == this->countNodes());
     }
 
     void remove(T obj){
         int startSize = this->size();
         removeObj(obj, false);
-        printf("\nthis->size(): %d, start %d\n", this->size(), startSize);
         assert(startSize==this->size()+1);
         assert(this->size() == this->countNodes());
     }
+
     void erase(T obj){
         removeObj(obj, true);
     }
@@ -201,8 +216,10 @@ private:
         }
 
     };
+
     Node<T> * root;
     std::vector<T> elems;
+
     void insertRecursive(T obj, Node<T>* compare,int level){
         int x = obj->x();
         int y = obj->y();
@@ -269,16 +286,32 @@ private:
             if(obj->x() < current->data->x()){
                 return findNode(obj, ++level, current->left, current);
             }
-            else{
+            else if(obj->x() > current->data->x()){
                 return findNode(obj, ++level, current->right, current);
+            }
+            else{
+                Node<T> ** right = findNode(obj, level+1, current->right, current);
+                Node<T> ** left =  findNode(obj, level+1, current->left, current);
+                if(right != 0){
+                    return right;
+                }
+                return left;
             }
         }
         else{
             if(obj->y() < current->data->y()){
                 return findNode(obj, ++level, current->left, current);
             }
-            else{
+            else if(obj->y() > current->data->y()){
                 return findNode(obj, ++level, current->right, current);
+            }
+            else{
+                Node<T> ** right = findNode(obj, level+1, current->right, current);
+                Node<T> ** left =  findNode(obj, level+1, current->left, current);
+                if(right != 0){
+                    return right;
+                }
+                return left;
             }
         }
     }
@@ -314,16 +347,8 @@ private:
             if(parent == 0){
                 root = NULL;
             }
-            else if(level % 2 == 0){
-                if(toDelete->data->x() < parent->data->x()){
-                    parent->left = NULL;
-                }
-                else{
-                    parent->right = NULL;
-                }
-            }
             else{
-                if(toDelete->data->y() < parent->data->y()){
+                if(parent->left !=  NULL && toDelete->data->equals(parent->left->data)){
                     parent->left = NULL;
                 }
                 else{
@@ -347,31 +372,18 @@ private:
             }
         }
         else{
-            if(level % 2 == 0){
-                if(parent == 0){
-                     root = 0;
-                }
-                else if(toDelete->data->x() < parent->data->x()){
-                    parent->left = 0;
-                }
-                else{
-                    parent->right = 0;
-                }
-             }
-             else{
-                if(parent == 0){
-                    root = 0;
-                }
-                else if(toDelete->data->y() < parent->data->y()){
-                    parent->left = 0;
-                }
-                else{
-                    parent->right = 0;
-                }
-             }
-             if(deletion){
-                 delete toDelete;
-             }
+            if(parent == 0){
+                root = 0;
+            }
+            else if(parent->left !=  NULL && toDelete->data->equals(parent->left->data)){
+                parent->left = NULL;
+            }
+            else{
+                parent->right = NULL;
+            }
+        }
+        if(deletion){
+            delete toDelete;
         }
     }
 
@@ -507,6 +519,38 @@ private:
         }
     }
 
+    void brokenInvariants(Node<T> * current, std::vector<Node<T>**> *vec, int minX, int minY, int maxX, int maxY, int level){
+        int leftMaxX = maxX, leftMaxY = maxY;
+        int rightMinX = minX, rightMinY = minY;
+        if(level % 2 == 0){
+            leftMaxX = current->data->x();
+            rightMinX = current->data->x();
+        }
+        else{
+            leftMaxY = current->data->y();
+            rightMinY = current->data->y();
+        }
+        if(current->left != 0 && (current->left->data->x() > leftMaxX || current->left->data->x() < minX
+                   || current->left->data->y() > leftMaxY || current->left->data->y() < minY)){
+            Node<T> ** data = (Node<T>**)malloc(sizeof(Node<T>*) * 2);
+            data[0] = current->left;
+            data[1] = current;
+            vec->push_back(data);
+        }
+        else if(current->left != 0){
+            brokenInvariants(current->left, vec, minX, minY, leftMaxX, leftMaxY, level+1);
+        }
+        if(current->right != 0 && (current->right->data->x() > maxX || current->right->data->x() < rightMinX
+                   || current->right->data->y() > maxY || current->right->data->y() < rightMinY)){
+            Node<T> ** data = (Node<T>**)malloc(sizeof(Node<T>*) * 2);
+            data[0] = current->right;
+            data[1] = current;
+            vec->push_back(data);
+        }
+        else if(current->right != 0){
+            brokenInvariants(current->right, vec, rightMinX, rightMinY, maxX, maxY, level+1);
+        }
+    }
 
     void removeObj(T obj, bool deletion){
         int startSize = this->size();
@@ -516,7 +560,6 @@ private:
             auto iter = std::remove(elems.begin(), elems.end(), obj);
             elems.erase(iter);
         }
-        printf("\nstart %d, this->size() %d\n", this->countNodes(), this->size());
         assert(satisfiesProp());
         //assert(this->countNodes() == this->size());
         assert(startSize-1 == this->size());

@@ -17,6 +17,7 @@ public:
     void addNeighbor(AstarNode*);
     unordered_set<AstarNode*> getNeighbors();
     void removeNeighbor(AstarNode*);
+    bool equals(AstarNode*);
     int getCollRadius();
 
 private:
