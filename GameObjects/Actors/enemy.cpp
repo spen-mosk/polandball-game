@@ -82,7 +82,7 @@ void Enemy::draw(QPainter * p){
 }
 
 void Enemy::handleCollision(GameObject * obj){
-    if(Actor * act = dynamic_cast<Actor*>(obj)){
+    if(Player * act = dynamic_cast<Player*>(obj)){
         //TODO this is actually wrong, but it works for now
         if(act->isAlly() == this->isAlly()){
             this->lockOn(act);
