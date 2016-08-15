@@ -7,8 +7,10 @@
 #include "ourmath.h"
 #include "GameObjects/gameobject.h"
 #include "assert.h"
+/*
 #undef assert
 #define assert void(0);
+*/
 
 
 
@@ -84,7 +86,6 @@ public:
             this->deleteNode(nodes[0], nodes[1], false);
             this->insertRecursive(obj, root, 0);
             assert(this->countNodes() == this->size());
-            printf("MUST REBUILD\n");
         }
         assert(this->satisfiesProp());
     }
@@ -171,24 +172,19 @@ public:
         return list;
     }
 
-    std::vector<T> rangeSearch(T obj, int range){
-        int startSize = this->size();
-        std::vector<T> vector = std::vector<T>();
-        rangeRecursive(obj, &vector, range, this->root, 0);
-        assert(satisfiesProp());
-        assert(this->size() == startSize);
-        assert(this->size() == this->countNodes());
-        return vector;
-    }
 
-    std::vector<T> rangeSearch(T obj, int range, int width, int height){
-        int startSize = this->size();
-        std::vector<T> vector = std::vector<T>();
-        rangeRecursive(obj, &vector, range, this->root, 0, width, height);
-        assert(satisfiesProp());
-        assert(this->size() == startSize);
-        assert(this->size() == this->countNodes());
-        return vector;
+    std::vector<T> rangeSearch(T obj, int x, int y, int xw, int yh){
+        if(root == 0){
+            return std::vector<T>();
+        }
+        if(obj->y() < 5 && obj->getWidth() == 2){
+            printf("STOP\n");
+        }
+        int plane[4] = {x, y, xw, yh};
+        int region[4] = {INT_MIN, INT_MAX, INT_MAX, INT_MIN};
+        std::vector<T> objs = std::vector<T>();
+        rangeRecursive(obj, &objs, root, 0, plane, region);
+        return objs;
     }
 
 private:
@@ -435,86 +431,57 @@ private:
         }
     }
 
-    void rangeRecursive(T obj, std::vector<T>* vec, int range, Node<T>* node, int level){
-        if(node == 0){
-            return;
-        }
-        int x = obj->x();
-        int y = obj->y();
-        int treeX = node->data->x();
-        int treeY = node->data->y();
-        double dist = distance(obj, node->data);
-        if(dist < range){
-            vec->push_back(node->data);
-        }
-        if(level % 2 == 0){
-            if(x < treeX){
-                rangeRecursive(obj, vec, range, node->left, ++level);
-                if(x + range > treeX){
-                    rangeRecursive(obj, vec, range, node->right, ++level);
+    void fillTree(Node<T> * node, std::vector<T> * vec){
+        std::vector<Node<T>*> *children = new std::vector<Node<T>*>();
+        children->push_back(node);
+        while(children->size() > 0){
+            std::vector<Node<T>*> *newChildren = new std::vector<Node<T>*>();
+            for(int i = 0; i < children->size(); i++){
+                Node<T> * current = (*children)[i];
+                vec->push_back(current->data);
+                if(current->left != 0){
+                    newChildren->push_back(current->left);
+                }
+                if(current->right != 0){
+                    newChildren->push_back(current->right);
                 }
             }
-            else{
-                rangeRecursive(obj, vec, range, node->right, ++level);
-                if(x-range < treeX){
-                    rangeRecursive(obj, vec, range, node->left, ++level);
-                }
-            }
-        }
-        else{
-            if(y < treeY){
-                rangeRecursive(obj, vec, range, node->left, ++level);
-                if(y + range > treeY){
-                    rangeRecursive(obj, vec, range, node->right, ++level);
-                }
-            }
-            else{
-                rangeRecursive(obj, vec, range, node->right, ++level);
-                if(y - range < treeY){
-                    rangeRecursive(obj, vec, range, node->left, ++level);
-                }
-            }
+            children = newChildren;
         }
     }
 
-    void rangeRecursive(T obj, std::vector<T>* vec, int range, Node<T>* node, int level, int width, int height){
-        if(node == 0){
-            return;
-        }
-        int x = obj->x();
-        int y = obj->y();
-        int treeX = node->data->x();
-        int treeY = node->data->y();
-        double dist = distance(obj, node->data);
-        if(dist < range){
-            vec->push_back(node->data);
-        }
+    void rangeRecursive(T obj, std::vector<T> *vec, Node<T> *node, int level, int* region, int*currentReg){
+        int leftQuad[4] = {currentReg[0], currentReg[1], currentReg[2], currentReg[3]};
+        int rightQuad[4] = {currentReg[0], currentReg[1], currentReg[2], currentReg[3]};
         if(level % 2 == 0){
-            if(x < treeX){
-                rangeRecursive(obj, vec, range, node->left, ++level, width, height);
-                if(x + width + range > treeX){
-                    rangeRecursive(obj, vec, range, node->right, ++level, width, height);
-                }
-            }
-            else{
-                rangeRecursive(obj, vec, range, node->right, ++level, width, height);
-                if(x-range < treeX + node->data->getWidth()){
-                    rangeRecursive(obj, vec, range, node->left, ++level, width, height);
-                }
-            }
+            leftQuad[2] = node->data->x();
+            rightQuad[0] = node->data->x();
         }
         else{
-            if(y < treeY){
-                rangeRecursive(obj, vec, range, node->left, ++level, width, height);
-                if(y + range > treeY - node->data->getHeight()){
-                    rangeRecursive(obj, vec, range, node->right, ++level, width, height);
-                }
+            leftQuad[1] = node->data->y();
+            rightQuad[3] = node->data->y();
+        }
+        T data = node->data;
+        int objs[4] = {data->x(),data->y(), data->x() + data->getWidth(), data->y() - data->getHeight()};
+        if(intersects(region, objs) || intersects(objs, region)){
+            vec->push_back(data);
+        }
+        if(contains(region, leftQuad)){
+            fillTree(node, vec);
+        }
+        else if(intersects(region, leftQuad) || intersects(leftQuad, region)){
+            if(node->left != 0){
+                printf("Going Left\n");
+                rangeRecursive(obj, vec, node->left, level+1, region, leftQuad);
             }
-            else{
-                rangeRecursive(obj, vec, range, node->right, ++level);
-                if(y - height - range < treeY){
-                    rangeRecursive(obj, vec, range, node->left, ++level, width, height);
-                }
+        }
+        if(contains(region, rightQuad)){
+            fillTree(node, vec);
+        }
+        else if(intersects(region, rightQuad) || intersects(rightQuad, region)){
+            if(node->right != 0){
+                printf("Going Right\n");
+                rangeRecursive(obj, vec, node->right, level+1,  region, rightQuad);
             }
         }
     }

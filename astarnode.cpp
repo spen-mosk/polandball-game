@@ -17,6 +17,14 @@ unordered_set<AstarNode*> AstarNode::getNeighbors(){
     return this->neighbors;
 }
 
+int AstarNode::getWidth(){
+    return 0;
+}
+
+int AstarNode::getHeight(){
+    return 0;
+}
+
 bool AstarNode::equals(AstarNode * other){
     if(other == 0){
         return false;

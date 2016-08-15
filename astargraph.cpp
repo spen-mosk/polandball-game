@@ -12,8 +12,11 @@ void AstarGraph::addNodes(vector<AstarNode*> nodes){
         nodes[i]->addNeighbor(nodes[i-1]);
     }
     //mess with how long this gap should be
-    vector<AstarNode*> nodes1 = tree.rangeSearch(nodes[0], 25);
-    vector<AstarNode*> nodes2 = tree.rangeSearch(nodes[nodes.size() -1], 25);
+    vector<AstarNode*> nodes1 = tree.rangeSearch(nodes[0], nodes[0]->x() - 15, nodes[0]->y() + 15,
+                                                  nodes[0]->x() + 15, nodes[0]->y() - 15);
+    int final = nodes.size() - 1;
+    vector<AstarNode*> nodes2= tree.rangeSearch(nodes[final], nodes[final]->x() - 15, nodes[final]->y() + 15,
+                                                  nodes[final]->x() + 15, nodes[final]->y() - 15);
 
     for(int i = 0; i < nodes1.size(); i++){
         if(!intersectsPlat(nodes1[i], nodes[nodes.size() -1])){

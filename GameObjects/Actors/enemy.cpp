@@ -72,7 +72,7 @@ void Enemy::update(){
     else if(this->path.size() == 0){
         nextPoint = NULL;
     }
-    printf("ENEMY X: %d, ENEMY Y %d\n", this->x(), this->y());
+    //printf("ENEMY X: %d, ENEMY Y %d\n", this->x(), this->y());
     this->setGrav(true);
 }
 

@@ -23,11 +23,6 @@ void Actor::updateLocation(int xOffset, int yOffset){
 }
 
 void Actor::handleCollision(GameObject * obj){
-    if(Enemy * enemy = dynamic_cast<Enemy*>(obj)){
-        if(distance(obj, this) == 0){
-            printf("STOP\n");
-        }
-    }
 }
 
 void Actor::update(){

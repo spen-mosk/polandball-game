@@ -14,6 +14,8 @@ public:
     AstarNode(QPoint *);
     int x();
     int y();
+    int getWidth();
+    int getHeight();
     void addNeighbor(AstarNode*);
     unordered_set<AstarNode*> getNeighbors();
     void removeNeighbor(AstarNode*);

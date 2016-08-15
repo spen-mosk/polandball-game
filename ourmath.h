@@ -11,3 +11,7 @@ double distance(GameObject*, GameObject*);
 double distance(AstarNode*, AstarNode*);
 
 double distance(QPoint*, QPoint*);
+
+bool intersects(int*, int*);
+
+bool contains(int*, int*);

@@ -72,13 +72,11 @@ void Player::jump(){
 void Player::resetJump(){
     jumpCount = 0;
     if(jumpDelayCount < jumpDelay){
-        printf("%d\n",jumpDelayCount);
         jumpDelayCount += 1;
     }
 }
 
 void Player::maximizeJump(){
-    printf("maximized\n");
     jumpCount = this->stats->getMaxJumps();
     if(jumpCount == 0){
         jumpCount = this->stats->getMaxJumps();

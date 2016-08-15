@@ -37,9 +37,6 @@ void Level::update(){
      * Apply gravity
      */
     int size = tree.size();
-    if(tree.size() > 4){
-        printf("TREE SIZE %d\n", size);
-    }
     for(int i = 0; i < tree.size(); i++){
         GameObject * obj = tree.get(i);
         obj->update();
@@ -81,7 +78,8 @@ void Level::checkCollisions(){
         GameObject * obj = objs[i];
         int radius = obj->getCollRadius();
         int innerSize = tree.size();
-        std::vector<GameObject *> list = tree.rangeSearch(obj, radius, obj->getWidth(), obj->getHeight());
+        std::vector<GameObject *> list = tree.rangeSearch(obj, obj->x() - radius, obj->y() + radius,
+                                                          obj->x() + obj->getWidth()+ radius, obj->y() -obj->getHeight() - radius);
         for(int a = 0; a < list.size(); a++){
             obj->handleCollision(list[a]);
         }

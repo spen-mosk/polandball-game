@@ -15,6 +15,50 @@ double distance(QPoint * one, QPoint * two){
     return sqrt(square(one->x() - two->x()) + square(one->y() - two->y()));
 }
 
+bool contains(int * one, int * two){
+    return one[0] <= two[0] && one[2] >= two[2] && one[1] >= two[1] && one[3] <= two[3];
+}
+
+bool intersects(int * one, int * two){
+    bool rightX = one[2] >= two[0] && one[2] <= two[2];
+    bool leftX = one[0] >= two[0] && one[0] <= two[2];
+    bool topY = one[1] >= two[3] && one[1] <= two[1];
+    bool bottomY = one[3] >= two[3] && one[3] <= two[1];
+    if(rightX){
+        if(topY){
+            return true;
+        }
+        if(bottomY){
+            return true;
+        }
+        if(one[1] >= two[1] && one[3] <= two[3]){
+            return true;
+        }
+    }
+    if(leftX){
+        if(topY){
+            return true;
+        }
+        if(bottomY){
+            return true;
+        }
+        if(one[1] >= two[1] && one[3] <= two[3]){
+            return true;
+        }
+    }
+    if(topY){
+        if(one[0] <= two[0] && one[2] >= two[2]){
+            return true;
+        }
+    }
+    if(bottomY){
+        if(one[0] <= two[0] && one[2] >= two[2]){
+            return true;
+        }
+    }
+    return false;
+}
+
 double distance(GameObject * one, GameObject*two){
     int x1 = one->x();
     int y1 = one->y();
