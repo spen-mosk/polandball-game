@@ -4,8 +4,8 @@
 int TempGameObject::num = 0;
 
 TempGameObject::TempGameObject(int x, int y, int height, int width, int dura) :
-        GameObject(x,y,height,width, 5, "Temp"+std::to_string(TempGameObject::num++)),
-        DeleteSubject(){
+        GameObject(x,y,height,width, 5, "Temp"+std::to_string(TempGameObject::num++)){
+    REGISTER
     this->duration = dura;
 }
 
@@ -16,7 +16,7 @@ int TempGameObject::getDuration(){
 void TempGameObject::update(){
     printf("existence %d\n", existence);
     if(++existence >= duration){
-        updateObservers();
+        emit deleteEvent(DeleteEvent(this));
     }
 }
 
@@ -47,10 +47,8 @@ void TempGameObject::handleCollision(GameObject * obj){
             && centerX < platRight && centerX > platLeft
     || actorBottom < platTop && actorBottom > platBottom
             && centerX < platRight && centerX > platLeft){
-
         if(Platform * plat = dynamic_cast<Platform*>(obj)){
             this->existence = this->duration;
         }
     }
-
 }

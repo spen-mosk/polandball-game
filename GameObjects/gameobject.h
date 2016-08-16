@@ -7,6 +7,7 @@
 
 class GameObject : public QObject
 {
+    Q_OBJECT
 
 public:
     GameObject(int, int, int, int, int, std::string);

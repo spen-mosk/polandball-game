@@ -31,7 +31,10 @@ HEADERS     = \
     GameObjects/Actors/enemy.h \
     ourmath.h \
     astargraph.h \
-    astarnode.h
+    astarnode.h \
+    Event/eventbus.h \
+    Event/keyevent.h \
+    Event/deleteevent.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -62,7 +65,10 @@ SOURCES     = \
     GameObjects/Actors/enemy.cpp \
     ourmath.cpp \
     astargraph.cpp \
-    astarnode.cpp
+    astarnode.cpp \
+    Event/eventbus.cpp \
+    Event/keyevent.cpp \
+    Event/deleteevent.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting

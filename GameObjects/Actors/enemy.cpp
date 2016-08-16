@@ -123,12 +123,37 @@ void Enemy::lockOn(Actor* p){
        }
        else if(distance(this, p) == distance(this, lock) && this->path.size() > 0){
            this->path = graph.modifyPath(this->path, new QPoint(p->x(), p->y()));
+           /*
+           if(this->path.size() > 1){
+               QPoint * last = this->path[this->path.size()-1];
+               QPoint * second = this->path[this->path.size()-2];
+               QPoint target = QPoint(p->x(), p->y());
+               if((target.x() < last->x() && target.x() > second->x())
+                       || (target.x() > last->x() && target.x() < second->x())){
+                   this->path.erase(--(this->path.end()));
+               }
+               this->path.push_back(&target);
+           }
+           */
        }
        else if(this->path.size() == 0){
            this->path = graph.findPath(new QPoint(this->x(), this->y()), new QPoint(p->x(), p->y()));
+           /*
+           if(this->path.size() > 1){
+               QPoint * last = this->path[this->path.size()-1];
+               QPoint * second = this->path[this->path.size()-2];
+               QPoint target = QPoint(p->x(), p->y());
+               if((target.x() < last->x() && target.x() > second->x())
+                       || (target.x() > last->x() && target.x() < second->x())){
+                   this->path.erase(--(this->path.end()));
+               }
+               this->path.push_back(&target);
+           }
+           */
        }
     }
 }
+
 
 void Enemy::cancelLock(){
     this->lockedOn = false;

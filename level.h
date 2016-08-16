@@ -9,8 +9,10 @@
 #include "GameObjects/kdtree.h"
 #include <QObject>
 #include "GameObjects/deletesubject.h"
+#include "Event/keyevent.h"
+#include "Event/eventbus.h"
 
-class Level : public QObject, public DeleteObserver
+class Level : public QObject
 {
     Q_OBJECT
 
@@ -19,14 +21,14 @@ public:
     Level(Player *, std::vector<GameObject *>, int);
     virtual ~Level();
     void update();
-//    void applyGravity();
     void ActorPlatformCollisions();
-    void onDelete(DeleteSubject*);
     KDTree<GameObject*> * getObjects();
-
-public slots:
     void handlePress(int);
     void handleRelease(int);
+
+public slots:
+    void handleKeyEvent(KeyEvent);
+    void handleDeleteEvent(DeleteEvent);
 
 private:
     Player * player;

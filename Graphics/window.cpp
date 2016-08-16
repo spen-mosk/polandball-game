@@ -53,13 +53,13 @@
 //! [0]
 Window::Window()
 {
+    REGISTER;
     setWindowTitle(tr("Polandball Game"));
     AttackStatistics * tack = new AttackStatistics(2, 2, 20, true, 10, 1, true, 40);
     AttackStatistics * range = new AttackStatistics(2, 2, 100, true, 10, 1, false, 40);
     PlayerStatistics * stats = new PlayerStatistics(1, 1, 1, true, 1, tack, range, tack, 25, 3);
     Player * player = new Player(0, 50, stats);
     GameWidget *openGL = new GameWidget(player, this);
-    printf("WE Started");
 }
 
 Window::~Window(){
@@ -68,11 +68,11 @@ Window::~Window(){
 
 void Window::keyPressEvent(QKeyEvent *event){
     int key = event->key();
-    emit keyPress(key);
+    emit keyPress(KeyEvent(key, true));
 }
 
 void Window::keyReleaseEvent(QKeyEvent *event){
     int key = event->key();
-    emit keyRelease(key);
+    emit keyRelease(KeyEvent(key, false));
 }
 //! [0]

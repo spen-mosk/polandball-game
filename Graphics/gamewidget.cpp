@@ -67,8 +67,8 @@ GameWidget::GameWidget(Player * control, QWidget *parent)
     camera = new Camera(160, this);
     interval = 22;
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-    parent->connect(parent, SIGNAL(keyPress(int)), level, SLOT(handlePress(int)));
-    parent->connect(parent, SIGNAL(keyRelease(int)), level, SLOT(handleRelease(int)));
+    //parent->connect(parent, SIGNAL(keyPress(int)), level, SLOT(handlePress(int)));
+    //parent->connect(parent, SIGNAL(keyRelease(int)), level, SLOT(handleRelease(int)));
     timer->start();
 }
 

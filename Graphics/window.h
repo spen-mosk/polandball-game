@@ -43,6 +43,8 @@
 
 
 #include <QWidget>
+#include "Event/eventbus.h"
+#include "Event/keyevent.h"
 
 //! [0]
 class Window : public QWidget
@@ -57,8 +59,8 @@ public:
     void keyReleaseEvent(QKeyEvent *);
 
 signals:
-    void keyPress(int);
-    void keyRelease(int);
+    void keyPress(KeyEvent);
+    void keyRelease(KeyEvent);
 };
 //! [0]
 

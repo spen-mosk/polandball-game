@@ -3,7 +3,11 @@
 #include <vector>
 #include "GameObjects/gameobject.h"
 #include "deletesubject.h"
-class TempGameObject : public GameObject, public DeleteSubject{
+#include "Event/eventbus.h"
+#include "Event/deleteevent.h"
+class TempGameObject : public GameObject
+{
+    Q_OBJECT
 
 public:
     TempGameObject(int, int, int, int, int);
@@ -11,6 +15,9 @@ public:
     int getExistence();
     virtual void update();
     void handleCollision(GameObject*);
+
+signals:
+    void deleteEvent(DeleteEvent);
 
 private:
     static int num;

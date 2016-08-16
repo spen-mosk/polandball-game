@@ -8,6 +8,7 @@
 
 Level::Level(Player * player)
 {
+    REGISTER;
     this->player = player;
     tree= KDTree<GameObject*> ();
     tree.insert(player);
@@ -15,6 +16,7 @@ Level::Level(Player * player)
 }
 
 Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
+    REGISTER;
     gravity = grav;
     //allObjs = KDTree();
     for(int i = 0; i < levelObs.size(); i++){
@@ -29,6 +31,15 @@ Level::~Level(){
 
 KDTree<GameObject*> * Level::getObjects(){
     return &tree;
+}
+
+void Level::handleKeyEvent(KeyEvent event){
+    if(event.getType()){
+        handlePress(event.getKey());
+    }
+    else{
+        handleRelease(event.getKey());
+    }
 }
 
 void Level::update(){
@@ -50,20 +61,17 @@ void Level::handlePress(int key){
     if(player->canAttack()){
         if(key == Qt::Key_Z){
             TempGameObject * attack = player->primaryAttack();
-            attack->registerObserver(this);
             tree.insert(attack);
         }
         if(key == Qt::Key_X){
             TempGameObject *attack = player->secondaryAttack();
-            attack->registerObserver(this);
             tree.insert(attack);
         }
     }
 }
 
-void Level::onDelete(DeleteSubject * willDelete){
-    TempGameObject* toDelete = (TempGameObject*)willDelete;
-    tree.remove(toDelete);
+void Level::handleDeleteEvent(DeleteEvent event){
+    tree.remove(event.getObject());
 }
 
 void Level::handleRelease(int key){
