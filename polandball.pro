@@ -25,8 +25,6 @@ HEADERS     = \
     GameObjects/Attacks/Statistics/meleeattackstatistics.h \
     GameObjects/Attacks/Statistics/rangedattackstatistics.h \
     GameObjects/Attacks/Statistics/ultimateattackstatistics.h \
-    GameObjects/deleteobserver.h \
-    GameObjects/deletesubject.h \
     GameObjects/Actors/Statistics/enemystatistics.h \
     GameObjects/Actors/enemy.h \
     ourmath.h \
@@ -60,7 +58,6 @@ SOURCES     = \
     GameObjects/Attacks/Statistics/meleeattackstatistics.cpp \
     GameObjects/Attacks/Statistics/rangedattackstatistics.cpp \
     GameObjects/Attacks/Statistics/ultimateattackstatistics.cpp \
-    GameObjects/deletesubject.cpp \
     GameObjects/Actors/Statistics/enemystatistics.cpp \
     GameObjects/Actors/enemy.cpp \
     ourmath.cpp \

@@ -27,8 +27,8 @@ public:
     void handleRelease(int);
 
 public slots:
-    void handleKeyEvent(KeyEvent);
-    void handleDeleteEvent(DeleteEvent);
+    EVENT_BUS void handleKeyEvent(KeyEvent);
+    EVENT_BUS void handleDeleteEvent(DeleteEvent);
 
 private:
     Player * player;

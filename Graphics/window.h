@@ -59,8 +59,8 @@ public:
     void keyReleaseEvent(QKeyEvent *);
 
 signals:
-    void keyPress(KeyEvent);
-    void keyRelease(KeyEvent);
+    EVENT_BUS void keyPress(KeyEvent);
+    EVENT_BUS void keyRelease(KeyEvent);
 };
 //! [0]
 

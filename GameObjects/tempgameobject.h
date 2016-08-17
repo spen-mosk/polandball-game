@@ -17,7 +17,7 @@ public:
     void handleCollision(GameObject*);
 
 signals:
-    void deleteEvent(DeleteEvent);
+    EVENT_BUS void deleteEvent(DeleteEvent);
 
 private:
     static int num;

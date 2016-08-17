@@ -1,3 +1,6 @@
+#ifndef Q_MOC_RUN
+#define EVENT_BUS
+#endif
 #ifndef EVENTBUS_H
 #define EVENTBUS_H
 
@@ -24,10 +27,6 @@ public:
     }
 
     void registerObject(QObject *);
-
-public slots:
-
-signals:
 
 private:
     EventBus(){};
