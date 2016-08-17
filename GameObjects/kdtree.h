@@ -124,14 +124,16 @@ public:
         else{
             insertRecursive(obj, root, 0);
             auto i = elems.begin();
+            int counter = 0;
             for(i; i != elems.end(); i++){
                 T elem = *i;
                 if(obj->getCollRadius() >= elem->getCollRadius()){
                     elems.insert(i, obj);
                     break;
                 }
+                counter++;
             }
-            if(i == elems.end()){
+            if(counter == elems.size()){
                 elems.push_back(obj);
             }
             //sort by collRadius, greatest to least
