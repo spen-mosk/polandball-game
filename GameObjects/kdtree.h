@@ -178,7 +178,7 @@ public:
             return std::vector<T>();
         }
         if(obj->y() < 5 && obj->getWidth() == 2){
-            printf("STOP\n");
+//            printf("STOP\n");
         }
         int plane[4] = {x, y, xw, yh};
         int region[4] = {INT_MIN, INT_MAX, INT_MAX, INT_MIN};
@@ -471,7 +471,7 @@ private:
         }
         else if(intersects(region, leftQuad) || intersects(leftQuad, region)){
             if(node->left != 0){
-                printf("Going Left\n");
+//                printf("Going Left\n");
                 rangeRecursive(obj, vec, node->left, level+1, region, leftQuad);
             }
         }
@@ -480,7 +480,7 @@ private:
         }
         else if(intersects(region, rightQuad) || intersects(rightQuad, region)){
             if(node->right != 0){
-                printf("Going Right\n");
+ //               printf("Going Right\n");
                 rangeRecursive(obj, vec, node->right, level+1,  region, rightQuad);
             }
         }

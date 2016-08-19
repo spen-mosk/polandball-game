@@ -2,7 +2,6 @@
 #define TEMPGAMEOBJECT_H
 #include <vector>
 #include "GameObjects/gameobject.h"
-#include "deletesubject.h"
 #include "Event/eventbus.h"
 #include "Event/deleteevent.h"
 class TempGameObject : public GameObject
