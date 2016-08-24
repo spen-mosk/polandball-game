@@ -46,6 +46,7 @@
 #include <stdio.h>
 #include <QOpenGLWidget>
 #include <vector>
+#include "GameObjects/Attacks/Statistics/ultimateattackstatistics.h"
 
 //! [0]
 GameWidget::GameWidget(Player * control, QWidget *parent)
@@ -56,7 +57,8 @@ GameWidget::GameWidget(Player * control, QWidget *parent)
     player = control;
     timer = new QTimer(this);
     std::vector<GameObject*> testingitems;
-    EnemyStatistics* stats = new EnemyStatistics(1, 1, 1, false, 1, NULL, 50, 40);
+    AttackStatistics * range = new AttackStatistics(2, 2, 100, true, 10, 1, false, 40);
+    EnemyStatistics* stats = new EnemyStatistics(1, 1, 1, false, 1, range, 50, 40);
     Enemy * enemy = new Enemy(220, 23, stats);
     testingitems.push_back(new Platform(0,0,200,200));
     testingitems.push_back(enemy);

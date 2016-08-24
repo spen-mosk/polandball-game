@@ -14,7 +14,7 @@ int TempGameObject::getDuration(){
 }
 
 void TempGameObject::update(){
-    printf("existence %d\n", existence);
+//    printf("existence %d\n", existence);
     if(++existence >= duration){
         emit deleteEvent(DeleteEvent(this));
     }

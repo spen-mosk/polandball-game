@@ -8,6 +8,7 @@ Enemy::Enemy(int x, int y, EnemyStatistics* stat): Actor(x,y,stat, stat->getAwar
 {
     this->stats = stat;
     this->verticalSpeed = 3;
+    this->lockedOn = false;
 }
 
 void Enemy::update(){
@@ -31,6 +32,7 @@ void Enemy::update(){
         resetJump();
     }
     if(canAttack()){
+        printf("powpow");
         //DO we want to move if we canAttack?
         //Probably not
     }
@@ -160,11 +162,37 @@ void Enemy::cancelLock(){
 }
 
 bool Enemy::canAttack(){
+    if(lockedOn == false){
+        return false;
+    }else{
+        int eBot = this->getCenter()->y() + this->getRadius();
+        int tBot = this->lock->getCenter()->y() + this->lock->getRadius();
+        if(eBot != tBot){
+            return false;
+        }
+        AttackStatistics *myatk = stats->getAttackInfo();
+        if(myatk->isMelee()){
+            return distance(this,lock) < myatk->getWidth();
+        }
+        else{
+            return distance(this,lock) < myatk->getSpeed()*myatk->getDuration();
+
+        }
+    }
     //bool stuff based on player's position, speed, and size of enemy's attack
     //this will be more if we are not locked in
     return lockedOn && false;
 }
 
 Attack* Enemy::generateAttack(){
-    return NULL;
+    AttackStatistics *myatk = stats->getAttackInfo();
+    Attack* attack;
+    if(myatk->isMelee()){
+        attack = new MeleeAttack(this->getCenter()->x(),this->getCenter()->y() + myatk->getHeight()/2, myatk, this);
+    }
+    else{
+        attack = new RangedAttack(this->getCenter()->x(),this->getCenter()->y() + myatk->getHeight()/2, this->facingLeft(), myatk);
+
+    }
+    return attack;
 }
