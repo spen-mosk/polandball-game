@@ -1,4 +1,5 @@
 #include "level.h"
+#include "levelwriter.h"
 #include "GameObjects/gameobject.h"
 #include "GameObjects/Actors/actor.h"
 #include "GameObjects/Platforms/platform.h"
@@ -6,11 +7,17 @@
 #include <vector>
 #include <math.h>
 
-Level::Level(Player * player)
+Level::Level(Player * player, const char * level, int grav)
 {
     REGISTER;
     this->player = player;
     tree= KDTree<GameObject*> ();
+    std::vector<GameObject*> levelObs = readLevel(level);
+
+    for(int i = 0; i < levelObs.size(); i++){
+        tree.insert(levelObs[i]);
+    }
+
     tree.insert(player);
     this->gravity = -1;
 }
@@ -19,6 +26,8 @@ Level::Level(Player * player, std::vector<GameObject *> levelObs, int grav){
     REGISTER;
     gravity = grav;
     //allObjs = KDTree();
+    writeLevel(levelObs, "/Users/otto-jaursk/test_io/testlevel.txt");
+
     for(int i = 0; i < levelObs.size(); i++){
         tree.insert(levelObs[i]);
     }

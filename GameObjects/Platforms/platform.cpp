@@ -17,6 +17,12 @@ Platform::Platform(int x, int y, int h, int w) :
     graph.addNodes(nodes);
 }
 
+void Platform::write(FILE * stream){
+    std::string string = "platform\t";
+    string += std::to_string(this->x()) + "\t" + std::to_string(this->y()) + "\t" + std::to_string(this->getHeight()) + "\t" + std::to_string(this->getWidth()) + "\n";
+    fprintf(stream, "%s", string.c_str());
+}
+
 void Platform::draw(QPainter * painter){
     painter->setBrush(Qt::white);
     QPoint *point = getDrawingPosition();

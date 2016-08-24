@@ -59,13 +59,15 @@ GameWidget::GameWidget(Player * control, QWidget *parent)
     std::vector<GameObject*> testingitems;
     AttackStatistics * range = new AttackStatistics(2, 2, 100, true, 10, 1, false, 40);
     EnemyStatistics* stats = new EnemyStatistics(1, 1, 1, false, 1, range, 50, 40);
+    /*
     Enemy * enemy = new Enemy(220, 23, stats);
     testingitems.push_back(new Platform(0,0,200,200));
     testingitems.push_back(enemy);
     testingitems.push_back(new Platform(-100,100,100,105));
     testingitems.push_back(new Platform(210, -5, 100, 100));
+    */
     //testingitems.push_back(new Platform(19,100,100,100));
-    level = new Level(player,testingitems, -1);
+    level = new Level(player,"/Users/otto-jaursk/test_io/testlevel.txt", -1);
     camera = new Camera(160, this);
     interval = 22;
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));

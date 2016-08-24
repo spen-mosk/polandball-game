@@ -3,7 +3,7 @@
 #include <vector>
 #include "GameObjects/gameobject.h"
 
-void writeLevel(std::vector<GameObject*>);
+void writeLevel(std::vector<GameObject*>, const char * filename);
 
 std::vector<GameObject*> readLevel(const char * filename);
 

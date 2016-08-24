@@ -6,6 +6,8 @@
 #include <string>
 #include <fstream>
 
+#define STR(a) #a
+
 class GameObject : public QObject
 {
     Q_OBJECT
@@ -16,7 +18,7 @@ public:
     virtual void draw(QPainter *) = 0;
     virtual void update() = 0;
     virtual void handleCollision(GameObject*) = 0;
-    virtual void write(std::ofstream* out) = 0;
+    virtual void write(FILE* out) = 0;
     int x();
     int y();
     int getHeight();

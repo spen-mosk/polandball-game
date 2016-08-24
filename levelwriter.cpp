@@ -7,10 +7,11 @@
 #include "GameObjects/Actors/enemy.h"
 
 void writeLevel(std::vector<GameObject *> objs, const char* filename){
-    std::ofstream stream(filename);
+    FILE * file = fopen(filename, "w");
     for(int i = 0; i < objs.size(); i++){
-        objs[i]->write(&stream);
+        objs[i]->write(file);
     }
+    fclose(file);
 }
 
 std::vector<GameObject*> readLevel(const char *filename){

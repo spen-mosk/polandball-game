@@ -16,7 +16,7 @@ class Level : public QObject
     Q_OBJECT
 
 public:
-    Level(Player *);
+    Level(Player *, const char *, int);
     Level(Player *, std::vector<GameObject *>, int);
     virtual ~Level();
     void update();

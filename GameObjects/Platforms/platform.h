@@ -14,7 +14,7 @@ public:
     virtual void update();
     virtual void onContact(Actor *){};
     virtual void surfaceEffect(Actor *){};
-    virtual void write(std::ofstream*) override {};
+    virtual void write(FILE*) override;
     void handleCollision(GameObject*);
 
 private:

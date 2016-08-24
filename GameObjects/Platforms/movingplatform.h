@@ -9,6 +9,7 @@ class MovingPlatform : public Platform
 public:
     MovingPlatform(int, int, int, int, int, int, std::vector<int*>);
     virtual void update() override;
+    virtual void write(FILE * stream) override;
 
 private:
     int xSpeed;

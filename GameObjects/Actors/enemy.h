@@ -19,6 +19,7 @@ public:
     void jump();
     void resetJump();
     void maximizeJump();
+    virtual void write(FILE *stream) override;
     void handleCollision(GameObject*);
     bool canAttack();
     void lockOn(Actor*);

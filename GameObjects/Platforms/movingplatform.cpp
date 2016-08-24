@@ -8,6 +8,18 @@ MovingPlatform::MovingPlatform(int x, int y, int h, int w, int xs, int ys, std::
     this->nextPoint = 0;
 }
 
+void MovingPlatform::write(FILE *stream){
+    std::string string = "movingplatform\t";
+    string += std::to_string(this->x()) + "\t" + std::to_string(this->y()) + "\t" + std::to_string(this->getHeight()) + "\t" + std::to_string(this->getWidth()) + "\t"
+              + std::to_string(this->xSpeed) + "\t" + std::to_string(this->ySpeed) +"\t";
+    string += this->points.size();
+    for(int a = 0; a < this->points.size(); a++){
+        string += "\t" + std::to_string(points[a][0]) + "\t" + std::to_string(points[a][1]);
+    }
+    string +="\n";
+    fprintf(stream, "%s", string.c_str());
+}
+
 void MovingPlatform::update(){
     int nextX = points[nextPoint][0];
     int nextY = points[nextPoint][1];

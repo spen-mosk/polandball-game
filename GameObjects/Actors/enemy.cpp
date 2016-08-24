@@ -10,6 +10,19 @@ Enemy::Enemy(int x, int y, EnemyStatistics* stat): Actor(x,y,stat, stat->getAwar
     this->verticalSpeed = 3;
     this->lockedOn = false;
 }
+//(int radius, int speed, int maxhealth, bool ally, int grav,AttackStatistics* atk, int jumps, int aware)
+//(int h, int w, int d, bool allied, int dmg, int speed, bool isMelee, int dlay)
+void Enemy::write(FILE *stream){
+    std::string string = "enemy\t";
+    AttackStatistics * attak = stats->getAttackInfo();
+    string += std::to_string(this->x()) + "\t" + std::to_string(this->y()) + "\t" + std::to_string(stats->getRadius()) + "\t" +
+            std::to_string(stats->getSpeed()) + "\t"
+            + std::to_string(stats->getMaxHealth()) + "\t" + std::to_string(stats->isAlly() ? 1 : 0) + "\t" +
+            std::to_string(stats->getGravity()) + "\t"
+            + std::to_string(attak->getHeight()) + "\t" + std::to_string(attak->getWidth()) + "\t" + std::to_string(attak->getDuration()) +"\t" + std::to_string(attak->isAlly() ? 1 : 0)
+            + "\t" + std::to_string(attak->getDamage()) + "\t" + std::to_string(attak->getSpeed()) + "\t" + std::to_string(attak->isMelee() ? 1 : 0) + "\t" + std::to_string(attak->getDelay()) + "\n";
+    fprintf(stream, "%s", string.c_str());
+}
 
 void Enemy::update(){
     /*

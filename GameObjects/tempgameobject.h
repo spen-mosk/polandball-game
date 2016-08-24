@@ -13,7 +13,7 @@ public:
     int getDuration();
     int getExistence();
     virtual void update();
-    virtual void write(std::ofstream *out){};
+    virtual void write(FILE *out){};
     void handleCollision(GameObject*);
 
 signals:
