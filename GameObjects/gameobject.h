@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPainter>
 #include <string>
+#include <fstream>
 
 class GameObject : public QObject
 {
@@ -15,6 +16,7 @@ public:
     virtual void draw(QPainter *) = 0;
     virtual void update() = 0;
     virtual void handleCollision(GameObject*) = 0;
+    virtual void write(std::ofstream* out) = 0;
     int x();
     int y();
     int getHeight();

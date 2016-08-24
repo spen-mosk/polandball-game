@@ -8,7 +8,6 @@
 #include <QSet>
 #include "GameObjects/kdtree.h"
 #include <QObject>
-#include "GameObjects/deletesubject.h"
 #include "Event/keyevent.h"
 #include "Event/eventbus.h"
 

@@ -24,6 +24,7 @@ public:
     virtual void resetJump() = 0;
     virtual void maximizeJump() = 0;
     virtual void update();
+    virtual void write(std::ofstream *stream){};
     void handleCollision(GameObject*);
     bool isAlly();
 

@@ -32,7 +32,8 @@ HEADERS     = \
     astarnode.h \
     Event/eventbus.h \
     Event/keyevent.h \
-    Event/deleteevent.h
+    Event/deleteevent.h \
+    levelwriter.h
 SOURCES     = \
               main.cpp \
               Graphics/window.cpp \
@@ -65,7 +66,8 @@ SOURCES     = \
     astarnode.cpp \
     Event/eventbus.cpp \
     Event/keyevent.cpp \
-    Event/deleteevent.cpp
+    Event/deleteevent.cpp \
+    levelwriter.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/opengl/2dpainting
